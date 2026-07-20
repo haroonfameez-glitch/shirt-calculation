@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Find Your Shirt Size in One Minute | OTAA</title>
+<meta name="description" content="Answer three quick questions — no tape needed — and get your exact OTAA shirt size across our Slim and Classic cuts. Free exchanges, always." />
+<meta name="robots" content="noindex" />
+<meta property="og:title" content="Find Your Shirt Size in One Minute | OTAA" />
+<meta property="og:description" content="Find your exact size, then build a three-pack — any 3 shirts for $285 ($95 each). Wrinkle-free. Free shipping over $100, free exchanges." />
+<meta property="og:image" content="https://cdn.shopify.com/s/files/1/0182/8937/files/Carruthers_White_Dobby_Non-Iron_Shirt_1.jpg?v=1720688326&width=1200" />
+<meta property="og:type" content="website" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="color-scheme" content="light" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.shopify.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Darker+Grotesque:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  .ofx{
+    --yellow:#F5B800; --yellow-deep:#E0A800; --yellow-soft:#FBE5AE; --yellow-wash:#FCF4DC;
+    --ink:#1A1916; --ink-mid:#3A3832; --ink-2:#56534C;
+    --line:#E4E1DA; --line-2:#EEEBE4;
+    --white:#FFFFFF; --paper:#FAF8F3; --off:#F3F1EB;
+    --stone:#8C8779;
+    --green:#2D6A36; --amber:#C8860A; --red:#B23A2E;
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --sans:'Darker Grotesque','Segoe UI',system-ui,-apple-system,sans-serif;
+    --e:cubic-bezier(.16,1,.3,1);
+    color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; line-height:1.4;
+  }
+  .ofx *,.ofx *::before,.ofx *::after{margin:0;padding:0;box-sizing:border-box}
+  .ofx button{font-family:inherit;cursor:pointer;color:inherit}
+
+  #ofx-root{ min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:36px 18px 120px;
+    background:#E7E4DD; background-image:radial-gradient(1100px 560px at 50% -10%, #EFEDE6, transparent 72%); }
+
+  .ofx .card{ width:600px; max-width:100%; background:var(--white); border-radius:8px;
+    box-shadow:0 32px 90px rgba(20,18,14,.18); animation:ofx-in .6s var(--e) both; }
+  @keyframes ofx-in{ from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+  @keyframes ofx-fade{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+  /* header */
+  .ofx .head{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; padding:24px 34px 20px; border-bottom:1px solid var(--line); }
+  .ofx .head .eyebrow{ font-size:10.5px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:5px; }
+  .ofx .head h1{ font-family:var(--serif); font-weight:300; font-size:36px; line-height:.95; letter-spacing:-.5px; color:var(--ink); }
+  .ofx .head h1 em{ font-style:italic; font-weight:400; }
+  .ofx .head .since{ font-size:13px; font-weight:500; color:var(--stone); text-align:right; line-height:1.4; }
+  /* premium PDP (locked) header — the shirt's name is the serif hero, the size ask is a quiet overline */
+  .ofx .head.locked{ align-items:flex-start; }
+  .ofx .head.locked .eyebrow{ color:var(--stone); font-size:10px; letter-spacing:3.4px; margin-bottom:10px; }
+  .ofx .head.locked h1{ font-size:22px; font-weight:400; line-height:1.14; letter-spacing:-.1px; max-width:20ch; }
+  .ofx .head.locked .fitline{ font-family:var(--serif); font-style:italic; font-size:15.5px; color:var(--stone); margin-top:8px; letter-spacing:.2px; }
+  /* SKU selling attributes under the recommended size */
+  .ofx .sellpoints{ display:flex; flex-wrap:wrap; gap:6px; margin-top:13px; }
+  .ofx .sellpoints .sp{ font-size:10.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--ink); background:#FAF8F3; border:1px solid var(--line); border-radius:100px; padding:5px 10px; }
+  .ofx .sizestock{ font-size:12.5px; font-weight:600; color:var(--green); margin-top:11px; display:flex; align-items:center; gap:7px; }
+  .ofx .sizestock.low{ color:var(--amber); }
+  .ofx .sizestock .dot{ width:6px; height:6px; border-radius:50%; background:currentColor; display:inline-block; flex:none; }
+  .ofx .cta.added{ background:var(--green); border-color:var(--green); color:#fff; }
+
+  /* two-pane grid */
+  .ofx .grid{ display:block; }
+  .ofx .pane-in{ padding:26px 34px 34px; }
+  .ofx .pane-res{ background:transparent; padding:0; display:block; }
+  .ofx .res-inner{ padding:26px 34px 30px; display:block; }
+  .ofx .res-scroll{ overflow:visible; }
+  /* ---- guided wizard: one question per screen ---- */
+  .ofx [data-w]{ display:none; }
+  .ofx [data-w].w-on{ display:block; animation:ofx-fade .28s var(--e); }
+  .ofx.show-shop .pane-in{ display:none; }            /* on the result step the inputs collapse away */
+  .ofx .shoplist,.ofx .chart{ display:none; }          /* shirts grid + full chart appear only at the end */
+  .ofx.show-shop .shoplist,.ofx.show-shop .chart,.ofx.show-chart .chart{ display:block; }
+  .ofx .mbar{ display:none!important; }                /* old fixed add-to-bag bar retired; wizard nav + result CTA replace it */
+  .ofx .wprog{ display:flex; align-items:center; gap:8px; padding:16px 34px 2px; }
+  .ofx .wprog .seg{ flex:1; height:4px; border-radius:3px; background:var(--line); overflow:hidden; }
+  .ofx .wprog .seg i{ display:block; height:100%; width:0; background:var(--yellow-deep); transition:width .35s var(--e); }
+  .ofx .wprog .seg.done i{ width:100%; }
+  .ofx .wprog .seg.now i{ width:100%; background:var(--ink); }
+  .ofx .wprog .lbl{ font-size:10.5px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--stone); white-space:nowrap; margin-left:2px; }
+  .ofx .wnav{ display:flex; align-items:center; gap:12px; padding:8px 34px 30px; }
+  .ofx .wnav .back{ font:inherit; font-size:14px; font-weight:600; color:var(--ink-mid); background:none; border:none; padding:10px 2px; cursor:pointer; transition:color .15s var(--e); }
+  .ofx .wnav .back:hover{ color:var(--ink); }
+  .ofx .wnav .next{ margin-left:auto; background:var(--ink); color:var(--yellow); border:none; border-radius:8px; padding:14px 30px; font-size:15px; font-weight:700; letter-spacing:.4px; cursor:pointer; transition:filter .18s var(--e); }
+  .ofx .wnav .next:hover{ filter:brightness(1.09); }
+  .ofx .wnav [hidden]{ display:none!important; }
+  .ofx .wtip{ font-size:12px; font-weight:600; color:var(--ink-mid); text-align:center; margin-top:15px; letter-spacing:.2px; }
+  .ofx .chartjump{ display:flex; align-items:center; justify-content:center; gap:8px; width:fit-content; max-width:100%; margin:18px auto 0; background:var(--white); border:1.5px solid var(--line); border-radius:9px; padding:13px 22px; font:inherit; font-size:13.5px; font-weight:700; letter-spacing:.2px; color:var(--ink); cursor:pointer; transition:all .16s var(--e); }
+  .ofx .chartjump:hover{ border-color:var(--ink); background:var(--off); }
+  .ofx .chartjump svg{ flex-shrink:0; color:var(--ink-mid); }
+  @media(max-width:560px){
+    .ofx .wprog{ padding:14px 20px 2px; } .ofx .wnav{ padding:6px 20px 26px; }
+    .ofx .build .bd{ display:none; }                  /* compact build cards: icon + label only on small screens */
+    .ofx .builds{ grid-template-columns:1fr 1fr; gap:8px; }
+    .ofx .build{ flex-direction:row; align-items:center; gap:10px; padding:13px 12px; }
+    .ofx .build .bod{ width:23px; height:29px; }
+    .ofx .build .bt{ font-size:13.5px; }
+    .ofx .build.on::after{ top:50%; transform:translateY(-50%); }
+  }
+
+  /* step labels */
+  .ofx .step{ display:flex; align-items:center; gap:9px; font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--ink-mid); margin:0 0 13px; }
+  .ofx .step .n{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--ink); color:var(--yellow); font-size:11px; font-weight:700; letter-spacing:0; }
+  .ofx .step.s2{ margin-top:26px; } .ofx .step.s3{ margin-top:26px; }
+
+  /* mode selector — obviously clickable */
+  .ofx .modes{ display:flex; flex-direction:column; gap:9px; }
+  .ofx .mode{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; background:var(--white);
+    border:1.5px solid var(--line); border-radius:8px; padding:15px 18px; transition:all .2s var(--e); }
+  .ofx .mode:hover{ border-color:var(--stone); background:#fff; }
+  .ofx .mode .ic{ flex-shrink:0; width:38px; height:38px; border-radius:8px; background:var(--off); display:flex; align-items:center; justify-content:center; color:var(--ink-mid); transition:all .2s; }
+  .ofx .mode .tx{ flex:1; min-width:0; }
+  .ofx .mode .tt{ display:block; font-size:16px; font-weight:700; color:var(--ink); line-height:1.2; }
+  .ofx .mode .ds{ display:block; font-size:13px; font-weight:500; color:var(--stone); margin-top:4px; padding-right:2px; line-height:1.35; }
+  .ofx .mode .rd{ flex-shrink:0; width:20px; height:20px; border-radius:50%; border:2px solid var(--line); position:relative; transition:all .2s; }
+  .ofx .mode.on{ border-color:var(--ink); background:var(--yellow-wash); box-shadow:0 2px 0 rgba(20,18,14,.04); }
+  .ofx .mode.on .ic{ background:var(--yellow); color:var(--ink); }
+  .ofx .mode.on .rd{ border-color:var(--ink); background:var(--ink); }
+  .ofx .mode.on .rd::after{ content:""; position:absolute; inset:4px; border-radius:50%; background:var(--yellow); }
+  .ofx .mode .badge{ flex-shrink:0; margin-left:12px; font-size:9.5px; font-weight:800; letter-spacing:.7px; text-transform:uppercase; padding:5px 10px; border-radius:100px; white-space:nowrap; border:1px solid transparent; }
+  .ofx .mode .badge.b-best{ color:var(--yellow-deep); background:var(--yellow-wash); border-color:var(--yellow-soft); }
+  .ofx .mode .badge.b-quick{ color:var(--stone); background:var(--off); border-color:var(--line); }
+  .ofx .mode .badge.b-precise{ color:var(--ink-mid); background:#fff; border-color:var(--line-2); }
+  .ofx .mode.on .badge{ background:#fff; border-color:rgba(20,18,14,.10); }
+
+  .ofx .pane{ display:none; } .ofx .pane.show{ display:block; animation:ofx-fade .25s var(--e); }
+
+  /* fields */
+  .ofx .field{ padding:15px 0; border-top:1px solid var(--line-2); }
+  .ofx .field:first-child{ border-top:none; }
+  .ofx .frow{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+  .ofx .nm{ font-size:15px; font-weight:600; color:var(--ink); }
+  .ofx .nm .sub{ font-weight:500; color:var(--stone); font-size:13px; margin-left:4px; }
+  .ofx .val{ font-family:var(--serif); font-size:28px; font-weight:500; color:var(--ink); line-height:1; white-space:nowrap; }
+  .ofx .val small{ font-size:13px; font-family:var(--sans); font-weight:600; color:var(--stone); margin-left:2px; }
+
+  .ofx input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:4px; border-radius:4px; background:var(--line); outline:none; margin:14px 0 0; }
+  .ofx input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:24px; height:24px; border-radius:50%; background:var(--yellow); border:3px solid var(--white); box-shadow:0 0 0 1.5px var(--ink),0 4px 10px rgba(20,18,14,.22); cursor:pointer; transition:transform .12s; }
+  .ofx input[type=range]::-webkit-slider-thumb:hover{ transform:scale(1.12); }
+  .ofx input[type=range]::-moz-range-thumb{ width:24px;height:24px;border-radius:50%;background:var(--yellow);border:3px solid #fff;box-shadow:0 0 0 1.5px var(--ink);cursor:pointer; }
+  .ofx .ticks{ display:flex; justify-content:space-between; font-size:11px; color:var(--stone); margin-top:7px; font-weight:600; }
+  .ofx .hint{ font-size:12.5px; color:var(--stone); font-weight:500; margin:2px 0 10px; line-height:1.4; }
+
+  .ofx .uline{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .ofx .utog{ display:inline-flex; background:var(--off); border:1px solid var(--line); border-radius:6px; padding:3px; flex-shrink:0; }
+  .ofx .utog button{ border:none; background:none; color:var(--stone); font-size:12px; font-weight:700; letter-spacing:.4px; padding:6px 12px; border-radius:4px; transition:all .18s; }
+  .ofx .utog button.on{ background:var(--ink); color:var(--yellow); }
+
+  /* segmented — clear, readable */
+  .ofx .seg{ display:flex; gap:7px; flex-wrap:wrap; }
+  .ofx .seg.q4 button{ flex:1 1 calc(50% - 4px); }
+  .ofx .seg button{ flex:1; min-width:84px; background:var(--white); border:1.5px solid var(--line); border-radius:7px; padding:11px 8px; color:var(--ink-mid); font-size:14.5px; font-weight:600; transition:all .2s var(--e); display:flex; flex-direction:column; align-items:center; gap:1px; }
+  .ofx .seg button .s{ font-size:11.5px; font-weight:600; color:var(--stone); }
+  .ofx .seg button:hover{ border-color:var(--stone); }
+  .ofx .seg button.on{ background:var(--ink); border-color:var(--ink); color:#fff; box-shadow:0 3px 8px rgba(20,18,14,.16); }
+  .ofx .seg button.on .s{ color:var(--yellow); }
+  .ofx .seg.withcue button{ padding:10px 8px 9px; gap:3px; }
+  .ofx .seg .cue{ width:27px; height:25px; display:block; opacity:.9; transition:transform .25s var(--e), opacity .2s var(--e); }
+  .ofx .seg button:hover .cue{ opacity:1; }
+  .ofx .seg button.on .cue{ opacity:1; transform:scale(1.1); }
+
+  .ofx .guard{ display:none; gap:10px; align-items:flex-start; background:#FBEDEA; border:1px solid #E7C3BD; border-radius:7px; padding:11px 13px; margin-top:13px; }
+  .ofx .guard.show{ display:flex; }
+  .ofx .guard .tx{ font-size:13px; color:var(--ink-mid); line-height:1.45; font-weight:500; }
+
+  /* body-type cards */
+  .ofx .builds{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  .ofx .build{ display:flex; flex-direction:column; align-items:flex-start; gap:7px; text-align:left; background:var(--white); border:1.5px solid var(--line); border-radius:8px; padding:13px 13px 14px; transition:all .2s var(--e); position:relative; }
+  .ofx .build:hover{ border-color:var(--stone); }
+  .ofx .build .bod{ width:32px; height:41px; }
+  .ofx .build .bod svg{ width:100%; height:100%; display:block; }
+  .ofx .build .bt{ font-size:14px; font-weight:700; color:var(--ink); line-height:1.1; }
+  .ofx .build .bd{ display:flex; flex-direction:column; gap:3px; }
+  .ofx .build .bd i{ font-style:normal; font-size:11.5px; font-weight:500; color:var(--ink-2); line-height:1.3; padding-left:11px; position:relative; }
+  .ofx .build .bd i::before{ content:""; position:absolute; left:2px; top:6px; width:3px; height:3px; border-radius:50%; background:var(--stone); }
+  .ofx .build.on{ border-color:var(--ink); background:var(--yellow-wash); box-shadow:0 3px 8px rgba(20,18,14,.10); }
+  .ofx .build.on .bd i::before{ background:var(--yellow-deep); }
+  .ofx .build.on::after{ content:"✓"; position:absolute; top:10px; right:11px; width:18px; height:18px; border-radius:50%; background:var(--ink); color:var(--yellow); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+
+  /* ============ RESULT PANE ============ */
+  .ofx .res-inner{ padding:26px 30px 30px; flex:1; min-height:0; display:flex; flex-direction:column; }
+  .ofx .res-scroll{ flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+  .ofx .res-foot{ flex-shrink:0; padding-top:14px; margin-top:6px; border-top:1px solid var(--line-2); }
+  .ofx .res-foot .cta{ margin-top:0; }
+  .ofx .res-foot .chartlink{ margin-top:10px; }
+  .ofx .res-eyebrow{ font-size:10.5px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--stone); text-align:center; }
+  .ofx .shirtwrap{ display:flex; justify-content:center; padding:6px 0 4px; }
+  .ofx #ofx-shirt{ width:188px; height:233px; overflow:visible; display:block; filter:drop-shadow(0 12px 22px rgba(20,18,14,.10)); }
+  .ofx .res-head{ text-align:center; }
+  .ofx .res-pill{ display:inline-block; background:var(--ink); color:var(--yellow); font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; padding:6px 14px; border-radius:100px; }
+  .ofx .res-size{ font-family:var(--serif); font-weight:300; font-size:88px; line-height:.82; letter-spacing:-3px; color:var(--ink); margin:10px 0 0; }
+  .ofx .res-sub{ font-size:14px; font-weight:600; color:var(--ink-2); margin-top:8px; letter-spacing:.2px; }
+  /* (8) subtle, premium AI cue */
+  .ofx .ai-cue{ display:inline-flex; align-items:center; gap:5px; margin-top:11px; font-size:10px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:var(--stone); }
+  .ofx .ai-cue svg{ color:var(--yellow-deep); flex-shrink:0; }
+  /* (5) Classic Fit gets its own accent so a Slim->Classic switch is unmistakable */
+  .ofx .res-inner[data-fit="classic"] .res-pill{ background:var(--green); color:#fff; }
+  .ofx .res-inner[data-fit="classic"] .res-eyebrow{ color:var(--green); }
+  .ofx .res-inner[data-fit="classic"] .ai-cue svg{ color:var(--green); }
+  .ofx .res-inner[data-fit="classic"] .shirtwrap{ background:radial-gradient(135px 120px at 50% 44%, rgba(45,106,54,.12), transparent 70%); border-radius:14px; }
+
+  .ofx .conf{ display:flex; align-items:center; gap:11px; margin:18px 0 0; padding:12px 14px; background:var(--white); border:1px solid var(--line); border-radius:7px; }
+  .ofx .conf .segs{ display:flex; gap:3px; flex-shrink:0; }
+  .ofx .conf .segs i{ width:18px; height:6px; border-radius:3px; background:var(--line); }
+  .ofx .conf .segs i.on{ background:var(--ink); }
+  .ofx .conf .lvl{ font-size:14px; font-weight:800; letter-spacing:0; text-transform:none; color:var(--ink); line-height:1.2; }
+  .ofx .conf .nt{ font-size:13px; color:var(--ink-2); font-weight:500; line-height:1.35; margin-top:1px; }
+
+  .ofx .reason{ font-size:14.5px; line-height:1.5; color:var(--ink-mid); font-weight:500; margin-top:14px; }
+
+  .ofx .fitmap{ margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }
+  .ofx .fmlabel{ font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--stone); margin-bottom:10px; }
+  .ofx .fmrow{ display:flex; align-items:center; gap:11px; padding:5px 0; }
+  .ofx .fmrow .fn{ font-size:13px; font-weight:600; color:var(--ink-mid); width:62px; flex-shrink:0; }
+  .ofx .fmrow .track{ flex:1; height:5px; background:var(--off); border-radius:5px; position:relative; }
+  .ofx .fmrow .mid{ position:absolute; left:50%; top:-3px; bottom:-3px; width:1px; background:var(--line); }
+  .ofx .fmrow .fill{ position:absolute; top:0; bottom:0; border-radius:5px; transition:all .45s var(--e); }
+  .ofx .fmrow .vd{ font-size:12px; font-weight:700; width:46px; text-align:right; flex-shrink:0; }
+
+  .ofx .watch{ display:flex; gap:9px; background:var(--yellow-wash); border:1px solid var(--yellow-soft); border-radius:7px; padding:11px 13px; margin-top:14px; }
+  .ofx .watch svg{ flex-shrink:0; margin-top:1px; }
+  .ofx .watch .tx{ font-size:12.5px; color:var(--ink-mid); line-height:1.45; font-weight:500; }
+  .ofx .alt{ font-size:13px; color:var(--ink-mid); margin-top:12px; text-align:center; font-weight:500; }
+  .ofx .alt b{ color:var(--ink); font-weight:700; } .ofx .alt .lnk{ color:var(--yellow-deep); font-weight:700; cursor:pointer; border-bottom:1px solid var(--yellow-soft); }
+
+  .ofx .cta{ display:block; width:100%; background:var(--ink); color:var(--yellow); border:none; padding:17px; font-size:16px; font-weight:700; letter-spacing:.6px; border-radius:7px; margin-top:18px; transition:all .25s var(--e); }
+  .ofx .cta:hover{ background:#000; transform:translateY(-1px); box-shadow:0 8px 20px rgba(20,18,14,.25); }
+  .ofx .cta:active{ transform:none; }
+  .ofx .chartlink{ display:block; width:100%; text-align:center; background:none; border:none; margin-top:12px; font-size:13px; font-weight:700; letter-spacing:.3px; color:var(--ink-mid); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line); }
+  .ofx .chartlink:hover{ color:var(--ink); text-decoration-color:var(--stone); }
+
+  .ofx .xfit{ display:none; align-items:center; gap:11px; background:var(--yellow-wash); border:1px solid var(--yellow-soft); border-radius:7px; padding:11px 13px; margin-bottom:16px; }
+  .ofx .xfit.show{ display:flex; }
+  .ofx .xfit .tx{ font-size:13px; color:var(--ink-mid); line-height:1.4; flex:1; font-weight:500; } .ofx .xfit .tx b{ color:var(--ink); font-weight:700; }
+  .ofx .xfit button{ flex-shrink:0; background:var(--ink); color:var(--yellow); border:none; border-radius:5px; padding:9px 13px; font-size:11px; font-weight:700; letter-spacing:.5px; }
+
+  /* size chart drawer (full width, bottom) */
+  .ofx .chart{ border-top:1px solid var(--line); }
+  .ofx .chart summary{ list-style:none; cursor:pointer; padding:16px 34px; display:flex; align-items:center; justify-content:space-between; font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--ink-mid); background:var(--off); }
+  .ofx .chart summary::-webkit-details-marker{ display:none; }
+  .ofx .chart summary .ch{ transition:transform .3s; color:var(--stone); }
+  .ofx .chart[open] summary .ch{ transform:rotate(180deg); }
+  .ofx .chart .body{ padding:18px 34px 28px; background:var(--off); }
+  /* the card no longer clips (so the panel can stick) — re-round the bottom corners on the chart, which is the card's last child */
+  .ofx .chart:not([open]) summary{ border-bottom-left-radius:8px; border-bottom-right-radius:8px; }
+  .ofx .chart .body{ border-bottom-left-radius:8px; border-bottom-right-radius:8px; }
+  .ofx .ctabs{ display:flex; gap:7px; margin-bottom:14px; flex-wrap:wrap; }
+  .ofx .ctabs button{ background:var(--white); border:1.5px solid var(--line); color:var(--ink-mid); border-radius:100px; padding:7px 15px; font-size:12.5px; font-weight:700; letter-spacing:.4px; }
+  .ofx .ctabs button.on{ background:var(--ink); border-color:var(--ink); color:#fff; }
+  .ofx .ctabs button.on.u{ background:var(--yellow); border-color:var(--yellow); color:var(--ink); }
+  .ofx table{ width:100%; border-collapse:collapse; font-size:13px; background:var(--white); border-radius:7px; overflow:hidden; box-shadow:0 1px 0 var(--line); }
+  .ofx th,.ofx td{ padding:10px 6px; text-align:center; border-bottom:1px solid var(--line-2); }
+  .ofx th{ color:var(--stone); font-weight:700; font-size:11px; letter-spacing:.5px; text-transform:uppercase; }
+  .ofx td:first-child,.ofx th:first-child{ text-align:left; color:var(--ink); font-weight:700; padding-left:12px; }
+  .ofx tr:last-child td{ border-bottom:none; }
+  .ofx .cnote{ font-size:12.5px; color:var(--ink-2); margin-top:13px; line-height:1.5; font-weight:500; }
+  .ofx .cintro{ font-size:12px; color:var(--ink-2); margin:-2px 0 13px; line-height:1.5; }
+  .ofx .cintro b{ color:var(--ink); font-weight:700; }
+  .ofx .cmodel{ font-size:12.5px; color:var(--ink-2); margin-top:12px; line-height:1.5; font-weight:600; }
+  .ofx .cmodel b{ color:var(--ink); font-weight:700; }
+
+  /* mobile sticky bar */
+  .ofx .mbar{ display:none; }
+
+  @media(max-width:860px){
+    .ofx .head h1{ font-size:30px; } .ofx .head .since{ display:none; }
+  }
+  @media(max-width:430px){
+    .ofx .pane-in,.ofx .res-inner{ padding-left:20px; padding-right:20px; }
+    .ofx .chart summary,.ofx .chart .body{ padding-left:20px; padding-right:20px; }
+    .ofx .head{ padding-left:20px; padding-right:20px; }
+    .ofx .res-size{ font-size:76px; }
+    .ofx .builds{ grid-template-columns:1fr 1fr; }
+  }
+  @media(prefers-reduced-motion:reduce){ .ofx *{ animation:none!important; transition:none!important; } }
+  /* ---- standalone landing chrome (namespaced .lnd-*) ---- */
+  html{ background:#E7E4DD; }
+  .lnd-noscript{ margin:16px auto 0; max-width:520px; font-size:13px; font-weight:600; color:#7A5B00; background:var(--yellow-wash); border:1px solid var(--yellow-soft); border-radius:8px; padding:10px 14px; line-height:1.5; }
+  .ofx #ofx-root{ flex-direction:column; align-items:center; }
+  .lnd-hero{ width:600px; max-width:100%; text-align:center; padding:26px 10px 30px; animation:ofx-in .6s var(--e) both; }
+  .lnd-eyebrow{ font-size:11px; font-weight:700; letter-spacing:5px; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:14px; }
+  .lnd-h1{ font-family:var(--serif); font-weight:300; font-size:clamp(38px,7vw,54px); line-height:1.02; letter-spacing:-1px; color:var(--ink); }
+  .lnd-h1 em{ font-style:italic; font-weight:400; }
+  .lnd-sub{ font-size:15.5px; font-weight:500; color:var(--ink-mid); line-height:1.5; max-width:40ch; margin:9px auto 0; }
+  .lnd-start{ margin-top:20px; background:var(--ink); color:var(--yellow); border:none; border-radius:8px; padding:16px 38px; font:inherit; font-size:16px; font-weight:700; letter-spacing:.5px; cursor:pointer; transition:all .2s var(--e); }
+  .lnd-start:hover{ background:#000; transform:translateY(-1px); box-shadow:0 10px 24px rgba(20,18,14,.22); }
+  .lnd-chips{ display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:18px; }
+  .lnd-chips span{ font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--ink-2); background:var(--white); border:1px solid var(--line); border-radius:100px; padding:6px 13px; }
+  .lnd-awards{ width:600px; max-width:100%; text-align:center; padding:34px 10px 4px; }
+  .lnd-aweyebrow{ font-size:10.5px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--stone); margin-bottom:16px; }
+  .lnd-awrow{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+  .lnd-aw{ flex:1 1 160px; max-width:190px; background:var(--white); border:1px solid var(--line); border-radius:8px; padding:15px 12px; display:flex; flex-direction:column; gap:4px; }
+  .lnd-aw b{ font-size:10px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; color:var(--yellow-deep); }
+  .lnd-aw span{ font-family:var(--serif); font-size:17.5px; font-weight:600; color:var(--ink); line-height:1.15; }
+  .lnd-aw i{ font-style:normal; font-size:11px; font-weight:600; color:var(--stone); line-height:1.35; }
+  .lnd-foot{ width:600px; max-width:100%; text-align:center; padding:26px 10px 8px; border-top:1px solid var(--line); margin-top:28px; }
+  .lnd-brand{ font-size:12.5px; font-weight:700; letter-spacing:.4px; color:var(--ink-2); }
+  .lnd-note{ font-size:12px; font-weight:600; color:var(--stone); margin-top:5px; }
+  .lnd-hero{ padding:10px 10px 12px; }
+  .lnd-h1{ font-weight:400; }
+  .lnd-strip{ display:flex; gap:8px; justify-content:center; margin:11px auto 0; max-width:520px; }
+  .lnd-strip img{ width:calc(25% - 6px); aspect-ratio:1/1; height:auto; object-fit:cover; border-radius:9px; border:1px solid var(--line); background:var(--off); display:block; }
+  .lnd-awardline{ font-size:10.5px; font-weight:700; letter-spacing:.9px; text-transform:uppercase; color:var(--stone); margin-top:16px; line-height:1.8; }
+  .lnd-methodline{ font-size:12.5px; font-weight:600; color:var(--ink-2); background:var(--off); border:1px solid var(--line-2); border-radius:7px; padding:9px 12px; margin:0 0 14px; line-height:1.5; }
+  .lnd-methodline b{ color:var(--ink); font-weight:700; }
+  .lnd-methodlink{ background:none; border:none; padding:0; font:inherit; font-weight:700; color:var(--ink); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line); cursor:pointer; }
+  .lnd-methodlink:hover{ text-decoration-color:var(--stone); }
+  .ofx #ofx-root{ min-height:100svh; }
+  .lnd-sticky{ display:none; position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--white); border-top:1px solid var(--line); box-shadow:0 -8px 24px rgba(20,18,14,.10); padding:10px 14px calc(10px + env(safe-area-inset-bottom)); align-items:center; gap:12px; }
+  .lnd-sticky.on{ display:flex; }
+  .lnd-sticky .sk-l{ flex:1; min-width:0; line-height:1.15; }
+  .lnd-sticky .sk-fit{ display:block; font-size:10px; font-weight:800; letter-spacing:1.4px; text-transform:uppercase; color:var(--stone); }
+  .lnd-sticky .sk-size{ font-family:var(--serif); font-size:23px; font-weight:600; color:var(--ink); }
+  .lnd-sticky button{ flex-shrink:0; background:var(--ink); color:var(--yellow); border:none; border-radius:8px; padding:13px 20px; font:inherit; font-size:14px; font-weight:700; letter-spacing:.4px; cursor:pointer; }
+  @media(min-width:641px){ .lnd-sticky{ display:none !important; } }
+  @media(max-width:430px){ .lnd-hero{ padding-top:10px; } .lnd-strip{ gap:6px; } }
+  /* ---- social proof layer (lifted from otaa.com/pages/review) ---- */
+  .lnd-rating{ display:inline-flex; align-items:center; gap:9px; margin-top:11px; text-decoration:none; color:var(--ink); }
+  .lnd-rating-stars{ display:inline-flex; gap:2px; }
+  .lnd-rating-stars svg{ width:15px; height:15px; fill:var(--yellow-deep); }
+  .lnd-rating b{ font-size:15.5px; font-weight:800; letter-spacing:.2px; }
+  .lnd-rating-count{ font-size:12.5px; font-weight:700; color:var(--ink-2); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line); }
+  .lnd-rating:hover .lnd-rating-count{ color:var(--ink); text-decoration-color:var(--stone); }
+  .lnd-quotes{ width:600px; max-width:100%; text-align:center; padding:34px 10px 4px; }
+  .lnd-qeyebrow{ font-size:10.5px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:8px; }
+  .lnd-qhead{ font-family:var(--serif); font-weight:400; font-size:clamp(23px,4.4vw,29px); letter-spacing:-.3px; color:var(--ink); margin-bottom:18px; }
+  .lnd-qgrid{ display:flex; flex-direction:column; gap:12px; text-align:left; }
+  .lnd-qcard{ margin:0; background:var(--white); border:1px solid var(--line); border-radius:8px; padding:18px 20px 16px; }
+  .lnd-qcard-feat{ border-color:var(--yellow-soft); box-shadow:0 6px 22px rgba(20,18,14,.06); }
+  .lnd-qstars{ display:flex; gap:2px; margin-bottom:10px; }
+  .lnd-qstars svg{ width:13px; height:13px; fill:var(--yellow-deep); }
+  .lnd-qcard blockquote{ margin:0; font-family:var(--serif); font-size:17px; line-height:1.5; color:var(--ink); }
+  .lnd-qcard-feat blockquote{ font-size:18.5px; }
+  .lnd-qcard figcaption{ display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 10px; margin-top:12px; }
+  .lnd-qtag{ font-size:9.5px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase; color:var(--yellow-deep); flex-basis:100%; }
+  .lnd-qcard figcaption b{ font-size:13px; font-weight:700; color:var(--ink); }
+  .lnd-qcard figcaption i{ font-style:normal; font-size:12.5px; font-weight:500; color:var(--stone); }
+  .lnd-qverified{ display:inline-flex; align-items:center; gap:4px; font-size:9.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--green); margin-left:auto; }
+  .lnd-qverified svg{ width:12px; height:12px; fill:var(--green); }
+  .lnd-qcard-press{ background:var(--paper); }
+  .lnd-qsource{ font-size:10px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--ink); margin-bottom:9px; }
+  .lnd-qcard-press blockquote{ font-size:15.5px; color:var(--ink-mid); }
+  .lnd-qship{ font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--stone); margin-top:14px; line-height:1.8; }
+  .lnd-proof{ display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:11px; font-size:12px; font-weight:700; letter-spacing:.3px; color:var(--ink-2); }
+  .lnd-proof svg{ width:13px; height:13px; fill:var(--yellow-deep); flex-shrink:0; }
+  .lnd-featline{ font-size:10.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--stone); margin-top:16px; line-height:1.8; }
+  @media(max-width:430px){ .lnd-qverified{ margin-left:0; flex-basis:100%; } }
+  /* ---- top offer bar ---- */
+  .lnd-offerbar{ background:var(--ink); color:#F4EFE4; text-align:center; font-size:12px; font-weight:700; letter-spacing:.4px; padding:7px 12px; line-height:1.3; }
+  .lnd-offerbar span{ color:var(--yellow-deep); margin:0 4px; }
+  /* ---- three-pack tray ---- */
+  .ofx-bundle{ margin:0 0 16px; border:1px solid var(--yellow-soft); background:#FFFDF8; border-radius:12px; padding:13px 14px; box-shadow:0 6px 20px rgba(20,18,14,.05); transition:box-shadow .3s var(--e),border-color .3s var(--e); }
+  .ofx-bundle.ready{ border-color:var(--green); background:#FBFEFB; }
+  .ofx-bundle.pulse{ animation:bunpulse 1s var(--e); }
+  @keyframes bunpulse{ 0%{ box-shadow:0 0 0 0 rgba(224,168,0,.45); } 100%{ box-shadow:0 0 0 15px rgba(224,168,0,0); } }
+  .bun-top{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:11px; }
+  .bun-h{ font-family:var(--serif); font-size:18px; font-weight:500; color:var(--ink); letter-spacing:-.2px; }
+  .bun-off{ font-size:11px; font-weight:800; letter-spacing:.4px; color:var(--yellow-deep); text-transform:uppercase; white-space:nowrap; }
+  .bun-slots{ display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:11px; }
+  .bun-slot{ display:flex; flex-direction:column; align-items:flex-start; justify-content:center; min-height:48px; border-radius:8px; padding:7px 9px; text-align:left; font:inherit; }
+  .bun-slot.empty{ border:1px dashed var(--line-2); background:var(--paper); align-items:center; justify-content:center; }
+  .bun-slot-dash{ font-size:11px; font-weight:600; color:var(--stone); }
+  .bun-slot.filled{ position:relative; cursor:pointer; border:1px solid var(--ink); background:var(--white); color:var(--ink); -webkit-appearance:none; appearance:none; transition:border-color .16s var(--e); }
+  .bun-slot.filled:hover{ border-color:#B4483B; }
+  .bun-slot.filled:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+  .bun-slot-t{ font-size:11.5px; font-weight:700; line-height:1.15; padding-right:12px; }
+  .bun-slot-sz{ font-size:10.5px; font-weight:600; color:var(--ink-2); margin-top:2px; }
+  .bun-slot-x{ position:absolute; top:5px; right:7px; font-size:14px; line-height:1; color:var(--stone); }
+  .bun-slot.filled:hover .bun-slot-x{ color:#B4483B; }
+  .bun-status{ font-size:12.5px; font-weight:600; color:var(--ink-mid); text-align:center; margin-bottom:11px; line-height:1.4; }
+  .ofx-bundle.ready .bun-status{ color:var(--green); font-weight:700; }
+  .bun-cta{ -webkit-appearance:none; appearance:none; width:100%; border:0; border-radius:9px; padding:14px 12px; font:inherit; font-size:14px; font-weight:800; letter-spacing:.3px; cursor:pointer; background:var(--ink); color:var(--white); transition:background .2s var(--e),transform .08s var(--e); }
+  .bun-cta:hover:not([disabled]){ background:#000; }
+  .bun-cta:active:not([disabled]){ transform:translateY(1px); }
+  .bun-cta[disabled]{ background:var(--line-2); color:var(--stone); cursor:default; }
+  .ofx-bundle.ready .bun-cta{ background:var(--green); }
+  .ofx-bundle.ready .bun-cta:hover{ background:#25562C; }
+  .bun-reassure{ font-size:10.5px; font-weight:600; letter-spacing:.3px; color:var(--stone); text-align:center; margin-top:9px; }
+  /* quick-add bundle states */
+  .ofx .qadd.inbun{ background:var(--green); color:#fff; border-top-color:var(--green); }
+  .ofx .qadd.inbun:hover{ background:#25562C; color:#fff; }
+  .ofx .qadd.bunfull{ opacity:.45; pointer-events:none; }
+  /* result offer strip */
+  .r-bundleoffer{ -webkit-appearance:none; appearance:none; width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; border:1px solid var(--yellow-soft); background:#FFFDF7; border-radius:10px; padding:12px 14px; margin-bottom:11px; text-align:left; font:inherit; transition:border-color .2s var(--e),box-shadow .2s var(--e); }
+  .r-bundleoffer:hover{ border-color:var(--yellow-deep); box-shadow:0 4px 16px rgba(20,18,14,.06); }
+  .r-bundleoffer:focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+  .r-bo-l{ display:flex; flex-direction:column; }
+  .r-bo-l b{ font-size:14px; font-weight:800; color:var(--ink); letter-spacing:.2px; }
+  .r-bo-l i{ font-style:normal; font-size:12px; font-weight:600; color:var(--ink-mid); margin-top:2px; }
+  .r-bo-save{ flex:0 0 auto; font-size:11px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:#fff; background:var(--green); border-radius:100px; padding:6px 11px; }
+  /* risk-reversal stack */
+  .reassure-stack{ display:flex; flex-direction:column; gap:7px; margin-top:2px; }
+  .reassure-stack .reassure{ margin:0; }
+  /* independent-platform trust row */
+  .lnd-trustrow{ display:flex; align-items:stretch; justify-content:center; margin:16px auto 0; max-width:420px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--white); }
+  .lnd-trustrow a{ flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; padding:10px 6px; text-decoration:none; color:var(--ink); border-left:1px solid var(--line); transition:background .2s var(--e); }
+  .lnd-trustrow a:first-child{ border-left:0; }
+  .lnd-trustrow a:hover{ background:var(--paper); }
+  .lnd-trustrow b{ font-size:16px; font-weight:800; letter-spacing:.2px; }
+  .lnd-trustrow span{ font-size:9.5px; font-weight:600; letter-spacing:.3px; color:var(--stone); text-transform:uppercase; }
+  .lnd-microstat{ font-size:11px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--stone); text-align:center; margin-top:12px; }
+  @media(max-width:430px){ .bun-h{ font-size:16.5px; } .bun-slot-t{ font-size:11px; } .r-bo-l b{ font-size:13px; } }
+  /* ---- added features ---- */
+  .ofx .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  .ofx .headright{ display:flex; flex-direction:column; align-items:flex-end; gap:9px; }
+  .ofx .mkt{ display:inline-flex; border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+  .ofx .mkt button{ border:none; background:#fff; color:var(--stone); font:inherit; font-size:11px; font-weight:700; letter-spacing:1px; padding:4px 10px; cursor:pointer; transition:all .15s; }
+  .ofx .mkt button.on{ background:var(--ink); color:var(--yellow); }
+  .ofx .minihint{ font-size:11.5px; color:var(--stone); font-weight:500; margin-top:7px; line-height:1.4; }
+  .ofx .howto{ margin:0 0 13px; border:1px solid var(--line-2); border-radius:7px; background:var(--off); }
+  .ofx .howto>summary{ list-style:none; cursor:pointer; display:flex; align-items:center; gap:7px; padding:10px 12px; font-size:12px; font-weight:700; letter-spacing:.4px; color:var(--ink-mid); }
+  .ofx .howto>summary::-webkit-details-marker{ display:none; }
+  .ofx .howto>summary .ch{ margin-left:auto; transition:transform .2s var(--e); }
+  .ofx .howto[open]>summary .ch{ transform:rotate(180deg); }
+  .ofx .howbody{ padding:0 13px 12px; }
+  .ofx .howbody p{ font-size:12.5px; color:var(--ink-mid); font-weight:500; line-height:1.45; margin:7px 0; }
+  .ofx .howbody p b{ color:var(--ink); }
+  .ofx .howbody .howtip{ color:var(--stone); border-top:1px dashed var(--line); padding-top:8px; margin-top:9px; }
+  .ofx .firstrun{ font-size:12px; color:var(--yellow-deep); font-weight:600; margin:-3px 0 11px; line-height:1.4; }
+  .ofx .firstrun:empty{ display:none; }
+  .ofx .statnote{ font-size:12px; font-weight:600; color:var(--ink-mid); margin-top:8px; }
+  .ofx .statnote:empty{ display:none; }
+  .ofx .fabricnote{ font-size:12.5px; color:var(--stone); font-weight:500; margin-top:9px; line-height:1.4; }
+  .ofx .fabricnote:empty{ display:none; }
+  .ofx .reassure{ display:flex; align-items:center; gap:7px; justify-content:center; margin-top:14px; padding-top:13px; border-top:1px solid var(--line-2); font-size:12.5px; font-weight:600; color:var(--green); }
+  .ofx .reassure:empty{ display:none; }
+  .ofx .emailrow{ margin-top:11px; text-align:center; }
+  .ofx .emailtoggle{ background:none; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:12.5px; font-weight:700; color:var(--ink-mid); text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line); }
+  .ofx .emailtoggle:hover{ color:var(--ink); }
+  .ofx .emailform{ margin-top:11px; }
+  .ofx .emailin{ display:flex; gap:7px; }
+  .ofx .emailin input{ flex:1; min-width:0; border:1.5px solid var(--line); border-radius:7px; padding:11px 12px; font:inherit; font-size:14px; color:var(--ink); background:#fff; }
+  .ofx .emailin input:focus{ outline:none; border-color:var(--ink); box-shadow:0 0 0 3px var(--yellow-wash); }
+  .ofx .emailsend{ flex-shrink:0; border:none; background:var(--ink); color:var(--yellow); border-radius:7px; padding:0 17px; font:inherit; font-size:13px; font-weight:700; letter-spacing:.4px; cursor:pointer; }
+  .ofx .emailsend:disabled{ opacity:.5; }
+  .ofx .emailmsg{ font-size:12px; font-weight:600; margin-top:8px; }
+  .ofx .emailmsg:empty{ display:none; }
+  .ofx .emailmsg.ok{ color:var(--green); }
+  .ofx .emailmsg.err{ color:var(--red); }
+  /* ---- shirts you can wear ---- */
+  .ofx .shoplist{ border-top:1px solid var(--line); padding:24px clamp(18px,4vw,38px) 8px; }
+  .ofx .shophead{ display:flex; align-items:flex-end; justify-content:space-between; gap:14px; margin-bottom:17px; }
+  .ofx .shop-eyebrow{ font-family:var(--serif); font-size:clamp(21px,3.4vw,28px); font-weight:600; color:var(--ink); line-height:1.04; }
+  .ofx .shop-sub{ font-size:12.5px; font-weight:600; color:var(--stone); letter-spacing:.3px; margin-top:5px; }
+  .ofx .shopall{ flex-shrink:0; font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--ink); text-decoration:none; border-bottom:1.5px solid var(--yellow); padding-bottom:2px; white-space:nowrap; }
+  .ofx .shopall:hover{ color:var(--yellow-deep); }
+  .ofx .shopall:empty{ display:none; }
+  .ofx .shopgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:15px; }
+  .ofx .pcard{ display:flex; flex-direction:column; background:var(--white); border:1px solid var(--line-2); border-radius:11px; overflow:hidden; transition:transform .16s var(--e),box-shadow .16s var(--e),border-color .16s; }
+  .ofx .pcard:hover{ transform:translateY(-3px); box-shadow:0 10px 26px rgba(26,25,22,.12); border-color:var(--line); }
+  .ofx .plink{ display:flex; flex-direction:column; flex:1; text-decoration:none; color:inherit; }
+  .ofx .plink:focus-visible{ outline:2px solid var(--ink); outline-offset:-2px; }
+  .ofx .qadd{ -webkit-appearance:none; appearance:none; cursor:pointer; width:100%; border:0; border-top:1px solid var(--line-2); padding:11px 10px; font:inherit; font-size:12px; font-weight:700; letter-spacing:.2px; background:var(--white); color:var(--ink); display:flex; align-items:center; justify-content:center; gap:6px; white-space:nowrap; transition:background .16s var(--e),color .16s var(--e); }
+  .ofx .qadd:hover{ background:var(--ink); color:var(--yellow); }
+  .ofx .qadd:focus-visible{ outline:2px solid var(--ink); outline-offset:-3px; }
+  .ofx .qadd .bag{ width:13px; height:13px; flex:0 0 auto; }
+  .ofx .qadd b{ font-weight:800; letter-spacing:.3px; }
+  .ofx .qadd.added{ background:var(--green); color:#fff; border-top-color:var(--green); pointer-events:none; }
+  .ofx .pimg{ aspect-ratio:1/1; background:var(--off); overflow:hidden; }
+  .ofx .pimg img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .ofx .pbody{ padding:11px 12px 13px; display:flex; flex-direction:column; gap:7px; flex:1; }
+  .ofx .ptitle{ font-size:13px; font-weight:600; line-height:1.25; color:var(--ink); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.5em; }
+  .ofx .pchip{ font-size:10px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--stone); }
+  .ofx .pfoot{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:3px; }
+  .ofx .pprice{ font-size:13.5px; font-weight:700; color:var(--ink); }
+  .ofx .pbadge{ font-size:10px; font-weight:700; letter-spacing:.2px; padding:3px 7px; border-radius:20px; white-space:nowrap; }
+  .ofx .pbadge.in{ background:#E7F0E8; color:var(--green); }
+  .ofx .pbadge.low{ background:#FAF0DB; color:var(--amber); }
+  .ofx .pbadge.out{ background:var(--off); color:var(--ink-2); }
+  .ofx .shopempty{ padding:22px; text-align:center; font-size:13.5px; color:var(--ink-mid); background:var(--off); border-radius:11px; line-height:1.5; }
+  .ofx .shopempty:empty{ display:none; }
+  .ofx .shopempty .lnk{ color:var(--ink); font-weight:700; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+  .ofx .shopfilter{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin:-2px 0 16px; }
+  .ofx .occ{ display:flex; gap:7px; flex-wrap:wrap; }
+  .ofx .occ button{ font:inherit; font-size:12px; font-weight:600; color:var(--ink-mid); background:var(--white); border:1px solid var(--line); border-radius:20px; padding:6px 13px; cursor:pointer; transition:all .14s var(--e); white-space:nowrap; }
+  .ofx .occ button:hover{ border-color:var(--ink-2); }
+  .ofx .occ button.on{ background:var(--ink); color:var(--white); border-color:var(--ink); }
+  .ofx .ppills{ display:flex; gap:5px; flex-wrap:wrap; }
+  .ofx .ppills:empty{ display:none; }
+  .ofx .ppill{ font-size:9.5px; font-weight:800; letter-spacing:.3px; text-transform:uppercase; padding:3px 7px; border-radius:5px; white-space:nowrap; }
+  .ofx .ppill.buy{ background:var(--yellow-soft); color:#7A5B00; }
+  .ofx .ppill.fit{ background:#E7F0E8; color:var(--green); }
+  .ofx .ppill.cat{ background:var(--off); color:var(--ink-mid); }
+  @media(max-width:520px){ .ofx .shopgrid{ grid-template-columns:repeat(2,1fr); gap:11px; } .ofx .ptitle{ font-size:12.5px; } .ofx .shopfilter{ align-items:stretch; gap:10px; } .ofx .occ{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:3px; } .ofx .occ button{ flex:0 0 auto; } }
+  /* ---- result honesty + reassurance notes ---- */
+  .ofx .fitwhy{ font-size:12.5px; color:var(--ink-2); line-height:1.5; margin-top:7px; }
+  .ofx .fitwhy:empty{ display:none; }
+  .ofx .modelref{ display:flex; gap:6px; align-items:center; font-size:12px; color:var(--ink-2); margin-top:8px; }
+  .ofx .modelref:empty{ display:none; }
+  .ofx .modelref svg{ flex-shrink:0; color:var(--ink-2); }
+  .ofx .washnote{ display:flex; gap:7px; align-items:flex-start; font-size:12px; color:var(--ink-2); line-height:1.5; margin-top:13px; }
+  .ofx .washnote:empty{ display:none; }
+  .ofx .washnote svg{ flex-shrink:0; margin-top:1px; color:var(--green); }
+  .ofx .tip{ display:flex; gap:8px; align-items:flex-start; background:var(--yellow-wash); border:1px solid var(--yellow-soft); border-radius:9px; padding:9px 11px; margin-top:11px; font-size:12.5px; color:var(--ink-mid); line-height:1.45; }
+  .ofx .tip svg{ flex-shrink:0; margin-top:1px; color:var(--yellow-deep); }
+  .ofx .tip b{ color:var(--ink); font-weight:700; }
+  #r-edge:empty,#r-collarnote:empty{ display:none; }
+
+  /* =========================================================================
+     v8 PREMIUM POLISH  (inserted at the END of the main stylesheet so these
+     overrides come after ALL widget + landing rules and win the cascade)
+     ========================================================================= */
+
+  /* --- primary action buttons: gold fill + ink text (was ink + gold) --- */
+  .ofx .cta,
+  .ofx .lnd-start,
+  .lnd-sticky button,
+  .ofx .emailsend,
+  .bun-cta{
+    background:linear-gradient(180deg,#F7BE0E 0%,#E4A400 100%);
+    color:var(--ink);
+    box-shadow:0 1px 0 rgba(255,255,255,.45) inset, 0 6px 18px rgba(224,168,0,.28), 0 1px 2px rgba(20,18,14,.10);
+  }
+  .ofx .cta:hover,
+  .ofx .lnd-start:hover,
+  .lnd-sticky button:hover,
+  .ofx .emailsend:hover,
+  .bun-cta:hover:not([disabled]){
+    background:linear-gradient(180deg,#FAC626 0%,#E8A800 100%);
+    color:var(--ink);
+    transform:translateY(-1px);
+    box-shadow:0 1px 0 rgba(255,255,255,.55) inset, 0 11px 26px rgba(224,168,0,.36), 0 2px 5px rgba(20,18,14,.12);
+  }
+  .ofx .cta:active,
+  .ofx .lnd-start:active,
+  .lnd-sticky button:active,
+  .bun-cta:active:not([disabled]){
+    transform:translateY(0);
+    box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 0 4px 12px rgba(224,168,0,.26);
+  }
+  /* ready-state bundle CTA keeps the premium gold (higher-specificity green override removed) */
+  .ofx-bundle.ready .bun-cta{ background:linear-gradient(180deg,#F7BE0E 0%,#E4A400 100%); }
+  .ofx-bundle.ready .bun-cta:hover{ background:linear-gradient(180deg,#FAC626 0%,#E8A800 100%); }
+  /* disabled bundle CTA stays muted, a touch warmer */
+  .bun-cta[disabled]{ background:var(--off); color:var(--stone); box-shadow:none; }
+
+  /* --- selected shirt in the three-pack: solid gold (was green) --- */
+  .ofx .qadd.inbun{ background:var(--yellow); color:var(--ink); border-top-color:var(--yellow-deep); }
+  .ofx .qadd.inbun:hover{ background:var(--yellow-deep); color:var(--ink); }
+  /* default quick-add hover: warm gold wash (was ink fill) */
+  .ofx .qadd:hover{ background:var(--yellow-wash); color:var(--ink); }
+  /* transient "added" confirmations: warm deep-gold (was green) */
+  .ofx .cta.added,
+  .ofx .qadd.added{ background:var(--yellow-deep); color:var(--ink); border-color:var(--yellow-deep); border-top-color:var(--yellow-deep); }
+
+  /* --- save badge on the offer strip: deep gold (was green) --- */
+  .r-bo-save{ background:var(--yellow-deep); color:var(--ink); }
+
+  /* --- three-pack tray: warm ready state + a little more depth --- */
+  .ofx-bundle{ background:linear-gradient(180deg,#FFFCF4 0%,#FFFFFF 72%); box-shadow:0 8px 26px rgba(20,18,14,.06); }
+  .ofx-bundle.ready{ border-color:var(--yellow-deep); background:linear-gradient(180deg,#FFFBF0 0%,#FFFFFF 72%); }
+  .ofx-bundle.ready .bun-status{ color:var(--ink); font-weight:700; }
+  .bun-slot.filled{ box-shadow:0 2px 6px rgba(20,18,14,.05); }
+
+  /* --- classic-fit result accent: bronze, not green (keeps Slim vs Classic distinct) --- */
+  .ofx .res-inner[data-fit="classic"] .res-pill{ background:var(--amber); color:#fff; }
+  .ofx .res-inner[data-fit="classic"] .res-eyebrow{ color:var(--amber); }
+  .ofx .res-inner[data-fit="classic"] .ai-cue svg{ color:var(--amber); }
+
+  /* --- risk-reversal checks: gold check + readable ink text (was all green) --- */
+  .ofx .reassure{ color:var(--ink-mid); }
+  .ofx .reassure svg{ color:var(--yellow-deep); }
+  /* "in your size" tags: warm gold (was green tint) */
+  .ofx .pbadge.in{ background:var(--yellow-wash); color:var(--yellow-deep); }
+  .ofx .ppill.fit{ background:var(--yellow-wash); color:var(--yellow-deep); }
+
+  /* --- gold focus rings (accessible + on-brand) --- */
+  .ofx .cta:focus-visible,
+  .ofx .lnd-start:focus-visible,
+  .lnd-sticky button:focus-visible,
+  .bun-cta:focus-visible,
+  .ofx .emailsend:focus-visible,
+  .r-bundleoffer:focus-visible,
+  .bun-slot.filled:focus-visible,
+  .ofx .qadd:focus-visible{ outline:2px solid var(--yellow-deep); outline-offset:2px; }
+
+  /* --- hero: cascade children in on load (replaces the single block fade) --- */
+  .lnd-hero{ animation:none; }
+  @keyframes lndRise{ from{ opacity:0; transform:translateY(15px); } to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:no-preference){
+    .lnd-hero > .lnd-h1,
+    .lnd-hero > .lnd-rating,
+    .lnd-hero > .lnd-sub,
+    .lnd-hero > .lnd-strip,
+    .lnd-hero > .lnd-start{ animation:lndRise .62s var(--e) both; }
+    .lnd-hero > .lnd-rating{ animation-delay:.10s; }
+    .lnd-hero > .lnd-sub{ animation-delay:.17s; }
+    .lnd-hero > .lnd-strip{ animation-delay:.24s; }
+    .lnd-hero > .lnd-start{ animation-delay:.31s; }
+  }
+
+  /* --- reveal-on-scroll (block-level; enabled only when JS adds .rv-on) --- */
+  .rv-on .rv:not(.rv-in){ opacity:0; transform:translateY(22px); }
+  .rv-on .rv{ transition:opacity .75s var(--e), transform .75s var(--e); }
+
+  /* --- micro-interactions --- */
+  .ofx .card{ transition:box-shadow .3s var(--e); }
+  .lnd-qcard{ transition:transform .3s var(--e), box-shadow .3s var(--e), border-color .3s var(--e); }
+  .lnd-qcard:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(20,18,14,.08); border-color:var(--yellow-soft); }
+  .lnd-strip img{ transition:transform .55s var(--e); }
+  .lnd-strip:hover img{ transform:scale(1.03); }
+  .lnd-offerbar{ border-bottom:1px solid rgba(224,168,0,.28); }
+  .lnd-trustrow a{ transition:background .2s var(--e), color .2s var(--e); }
+  .r-bundleoffer{ transition:border-color .2s var(--e), box-shadow .2s var(--e), transform .2s var(--e); }
+  .r-bundleoffer:hover{ transform:translateY(-1px); }
+  /* respect reduced motion for all the transition polish */
+  @media (prefers-reduced-motion:reduce){
+    .lnd-qcard:hover,.lnd-strip:hover img,.r-bundleoffer:hover,.ofx .cta:hover,.ofx .lnd-start:hover,.lnd-sticky button:hover,.bun-cta:hover{ transform:none; }
+    .rv-on .rv:not(.rv-in){ opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+<div class="ofx">
+<div id="ofx-root">
+  <div class="lnd-offerbar" role="note">Trusted by <span>400,000+</span> customers across 70+ countries</div>
+  <section class="lnd-hero">
+    <h1 class="lnd-h1" id="lnd-h1">Stop guessing your shirt size.</h1>
+    <a class="lnd-rating" href="https://www.otaa.com/pages/review" target="_blank" rel="noopener" aria-label="4.75 star average from over 17,500 reviews">
+      <span class="lnd-rating-stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" style="opacity:.35"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg></span>
+      <b>4.75</b><span class="lnd-rating-count">17,500+ reviews</span>
+    </a>
+    <p class="lnd-sub" id="lnd-sub">Two quick steps — no tape needed. Your exact size in our wrinkle-free shirts, backed by free exchanges.</p>
+    <div class="lnd-strip" aria-hidden="true">
+      <img src="https://cdn.shopify.com/s/files/1/0182/8937/files/Carruthers_White_Dobby_Non-Iron_Shirt_1.jpg?v=1720688326&width=480" width="480" height="480" alt="" fetchpriority="high" />
+      <img src="https://cdn.shopify.com/s/files/1/0182/8937/files/GiambiLightBlueTwillNon-IronShirt1.jpg?v=1720626007&width=480" width="480" height="480" alt="" />
+      <img src="https://cdn.shopify.com/s/files/1/0182/8937/files/Bradford_Blue_Stripe_Dobby_Non-Iron_Shirt_1-507416.png?v=1723176086&width=480" width="480" height="480" alt="" loading="lazy" />
+      <img src="https://cdn.shopify.com/s/files/1/0182/8937/files/BrantleyBlackTwillNon-IronShirt1.jpg?v=1720626663&width=480" width="480" height="480" alt="" loading="lazy" />
+    </div>
+    <button class="lnd-start" id="lnd-start" type="button">Find my size</button>
+    <noscript><style>.ofx .chart{display:block!important}.ofx .wnav{display:none!important}</style><div class="lnd-noscript">This fit finder needs JavaScript, which your browser or preview has switched off. The full size chart at the bottom of the card still works.</div></noscript>
+  </section>
+  <div class="card">
+
+    <div class="head">
+      <div>
+        <div class="eyebrow">OTAA · Shirts</div>
+        <h1>Find your <em>fit</em></h1>
+      </div>
+      <div class="headright">
+        <div class="since">Two cuts. Your<br>true size.</div>
+        <div class="mkt" id="ofx-mkt" role="group" aria-label="Region"><button type="button" data-mk="AU" class="on">AU</button><button type="button" data-mk="US">US</button></div>
+      </div>
+    </div>
+
+    <div class="wprog" id="ofx-wprog" aria-hidden="true"><div class="seg"><i></i></div><div class="seg"><i></i></div><div class="seg"><i></i></div><span class="lbl">Step 1 / 3</span></div>
+    <div class="sr-only" id="ofx-wlive" aria-live="polite"></div>
+
+    <div class="grid">
+      <!-- ============ INPUT ============ -->
+      <div class="pane-in">
+
+        <div class="wstep" data-w="method" id="w-method">
+        <div class="step"><span class="n">1</span> How should we size you?</div>
+        <div class="modes" id="ofx-modes" role="tablist" aria-label="How to size you">
+          <button class="mode on" data-m="estimate" role="tab" aria-selected="true">
+            <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><circle cx="12" cy="6" r="2.6"/><path d="M12 9v8M7 21l5-4 5 4M8 13h8"/></svg></span>
+            <span class="tx"><span class="tt">Height &amp; weight</span><span class="ds">The quick way in — no tape needed</span></span>
+            <span class="badge b-quick">Quickest</span>
+          </button>
+          <button class="mode" data-m="anchor" role="tab" aria-selected="false">
+            <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M8 3l4 2 4-2 4 3-3 3v12H7V9L4 6z"/></svg></span>
+            <span class="tx"><span class="tt">A shirt you own</span><span class="ds">Match one that already fits you</span></span>
+            <span class="badge b-best">Best</span>
+          </button>
+          <button class="mode" data-m="measure" role="tab" aria-selected="false">
+            <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 8h18v8H3zM7 8v3M11 8v4M15 8v3M19 8v4"/></svg></span>
+            <span class="tx"><span class="tt">Your measurements</span><span class="ds">The most precise — needs a tape</span></span>
+            <span class="badge b-precise">Most precise</span>
+          </button>
+        </div>
+
+        <div class="wtip">Tap one to continue</div>
+        <button class="chartjump" id="w-chartjump" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9.5h18M3 14.5h18M9 4v16"/></svg>See the full size chart</button>
+        </div><!-- /method -->
+
+        <div class="wstep" data-w="details" id="w-details">
+        <!-- ANCHOR -->
+        <div class="pane" id="pane-anchor">
+          <div class="step s2"><span class="n">2</span> Your details</div>
+          <div class="field">
+            <div class="uline">
+              <div class="frow" style="flex:1"><span class="nm">Collar size <span class="sub">of a shirt that fits</span></span><span class="val" id="v-collar">16<small>in</small></span></div>
+              <div class="utog" id="u-collar"><button data-u="in" class="on">in</button><button data-u="cm">cm</button></div>
+            </div>
+            <input type="range" id="s-collar" min="13.5" max="20" value="16" step="0.25" aria-label="Collar size of a shirt that fits you" />
+            <div class="ticks"><span>13.5″</span><span>20″</span></div>
+            <div class="minihint">This is your usual dress-shirt size (e.g. 15½). It's printed on the shirt's care label — or lay a collar that fits flat and measure it end to end.</div>
+          </div>
+          <div class="field">
+            <div class="nm" style="margin-bottom:11px">How is it cut?</div>
+            <div class="seg withcue" id="ofx-cut" role="group" aria-label="Cut">
+              <button data-v="Slim"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L6 6.4 L7.5 8.2 L9.1 22 L18.9 22 L20.5 8.2 L22 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Slim<span class="s">trim</span></button>
+              <button data-v="Regular" class="on"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L4.5 6.4 L6 8.2 L6.4 22 L21.6 22 L22 8.2 L23.5 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Regular<span class="s">standard</span></button>
+              <button data-v="Relaxed"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L2.9 6.4 L4.4 8.2 L3.3 22 L24.7 22 L23.6 8.2 L25.1 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Relaxed<span class="s">roomy</span></button>
+            </div>
+          </div>
+          <div class="field">
+            <div class="nm" style="margin-bottom:11px">How does it fit you?</div>
+            <div class="seg" id="ofx-feel" role="group" aria-label="Fit">
+              <button data-v="tight">A bit tight</button>
+              <button data-v="spot" class="on">Spot on</button>
+              <button data-v="loose">A bit loose</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MEASURE -->
+        <div class="pane" id="pane-measure">
+          <div class="step s2"><span class="n">2</span> Your measurements</div>
+          <details class="howto" id="ofx-howto">
+            <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.3"/></svg>How to measure<span class="ch">⌄</span></summary>
+            <div class="howbody">
+              <p><b>Neck</b> — around the base where a collar sits, with one finger of room.</p>
+              <p><b>Chest</b> — the fullest part, under the arms, tape level across the back.</p>
+              <p><b>Waist</b> — at the navel, relaxed — not pulled in.</p>
+              <p class="howtip">Wear a thin shirt, keep the tape snug but not tight, and don't hold your breath.</p>
+            </div>
+          </details>
+          <div class="field" style="display:flex;justify-content:flex-end">
+            <div class="utog" id="u-measure"><button data-u="cm" class="on">cm</button><button data-u="in">in</button></div>
+          </div>
+          <div class="field">
+            <div class="frow"><span class="nm">Neck <span class="sub">around the base</span></span><span class="val" id="v-neck">39.5<small>cm</small></span></div>
+            <input type="range" id="s-neck" min="33" max="52" value="39.5" step="0.5" aria-label="Neck circumference" />
+            <div class="ticks"><span>33</span><span>52 cm</span></div>
+          </div>
+          <div class="field">
+            <div class="frow"><span class="nm">Chest <span class="sub">fullest part</span></span><span class="val" id="v-chest">100<small>cm</small></span></div>
+            <input type="range" id="s-chest" min="84" max="146" value="100" step="1" aria-label="Chest circumference" />
+            <div class="ticks"><span>84</span><span>146 cm</span></div>
+          </div>
+          <div class="field">
+            <div class="frow"><span class="nm">Waist <span class="sub">at the navel</span></span><span class="val" id="v-waist">88<small>cm</small></span></div>
+            <input type="range" id="s-waist" min="68" max="140" value="88" step="1" aria-label="Waist circumference" />
+            <div class="ticks"><span>68</span><span>140 cm</span></div>
+          </div>
+        </div>
+
+        <!-- ESTIMATE -->
+        <div class="pane show" id="pane-estimate">
+          <div class="step s2"><span class="n">2</span> About you</div>
+          <div class="field">
+            <div class="uline">
+              <div class="frow" style="flex:1"><span class="nm">Height</span><span class="val" id="v-height">178<small>cm</small></span></div>
+              <div class="utog" id="u-height"><button data-u="cm" class="on">cm</button><button data-u="ft">ft/in</button></div>
+            </div>
+            <input type="range" id="s-height" min="150" max="205" value="178" step="1" aria-label="Height" />
+            <div class="ticks"><span>150</span><span>205 cm</span></div>
+          </div>
+          <div class="field">
+            <div class="uline">
+              <div class="frow" style="flex:1"><span class="nm">Weight</span><span class="val" id="v-weight">80<small>kg</small></span></div>
+              <div class="utog" id="u-weight"><button data-u="kg" class="on">kg</button><button data-u="lb">lb</button></div>
+            </div>
+            <input type="range" id="s-weight" min="45" max="155" value="80" step="1" aria-label="Weight" />
+            <div class="ticks"><span>45</span><span>155 kg</span></div>
+            <div class="guard" id="ofx-guard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B23A2E" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.3"/></svg><span class="tx" id="guard-tx"></span></div>
+          </div>
+          <div class="field">
+            <div class="nm">Your build</div>
+            <div class="hint">Two men at the same height and weight can be shaped differently. This fine-tunes the waist and which cut suits you — it shapes the fit more than the size.</div>
+            <div class="builds" id="ofx-build" role="group" aria-label="Build">
+              <button class="build" data-v="Lean">
+                <span class="bod"><svg viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="13" r="6.6" fill="none" stroke="#1A1916" stroke-width="2.2"/><path d="M27,19.5 L26.8,23.5 Q30,25 33.2,23.5 L33,19.5" fill="none" stroke="#1A1916" stroke-width="2.2" stroke-linejoin="round"/><path d="M19.5,28 Q30,22.5 40.5,28 C40.5,37 39.5,45.5 39,66 Q30,70.5 21,66 C20.5,45.5 19.5,37 19.5,28 Z" fill="none" stroke="#1A1916" stroke-width="2.4" stroke-linejoin="round"/></svg></span>
+                <span class="bt">Lean / Slight</span>
+                <span class="bd"><i>Narrower shoulders and chest</i><i>Slimmer torso</i><i>Usually wears a close-fitting shirt</i></span>
+              </button>
+              <button class="build on" data-v="Average">
+                <span class="bod"><svg viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="13" r="6.6" fill="none" stroke="#1A1916" stroke-width="2.2"/><path d="M27,19.5 L26.8,23.5 Q30,25 33.2,23.5 L33,19.5" fill="none" stroke="#1A1916" stroke-width="2.2" stroke-linejoin="round"/><path d="M16.5,28 Q30,22.5 43.5,28 C43.5,37 42,45.5 40.5,66 Q30,70.5 19.5,66 C18,45.5 16.5,37 16.5,28 Z" fill="none" stroke="#1A1916" stroke-width="2.4" stroke-linejoin="round"/></svg></span>
+                <span class="bt">Average / Balanced</span>
+                <span class="bd"><i>Proportional shoulders, chest and waist</i><i>Neither especially slim nor broad</i><i>Most standard fits apply</i></span>
+              </button>
+              <button class="build" data-v="Athletic">
+                <span class="bod"><svg viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="13" r="6.6" fill="none" stroke="#1A1916" stroke-width="2.2"/><path d="M27,19.5 L26.8,23.5 Q30,25 33.2,23.5 L33,19.5" fill="none" stroke="#1A1916" stroke-width="2.2" stroke-linejoin="round"/><path d="M12.5,28 Q30,22.5 47.5,28 C49.0,37 44,45.5 40,66 Q30,70.5 20,66 C16,45.5 11.0,37 12.5,28 Z" fill="none" stroke="#1A1916" stroke-width="2.4" stroke-linejoin="round"/></svg></span>
+                <span class="bt">Athletic / Broad chest</span>
+                <span class="bd"><i>Broader shoulders or chest</i><i>More upper-body muscle</i><i>Wants room in the chest, not the waist</i></span>
+              </button>
+              <button class="build" data-v="Fuller">
+                <span class="bod"><svg viewBox="0 0 60 76" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="13" r="6.6" fill="none" stroke="#1A1916" stroke-width="2.2"/><path d="M27,19.5 L26.8,23.5 Q30,25 33.2,23.5 L33,19.5" fill="none" stroke="#1A1916" stroke-width="2.2" stroke-linejoin="round"/><path d="M17.5,28 Q30,22.5 42.5,28 C42.5,37 48.5,50.5 45.5,66 Q30,70.5 14.5,66 C11.5,50.5 17.5,37 17.5,28 Z" fill="none" stroke="#1A1916" stroke-width="2.4" stroke-linejoin="round"/></svg></span>
+                <span class="bt">Fuller / Fuller middle</span>
+                <span class="bd"><i>More weight around the midsection</i><i>Needs extra room through the waist</i><i>Comfort around the buttons matters</i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lnd-methodline">Sizing you from <b id="lnd-mword">height &amp; weight</b> — the quickest way. <button type="button" class="lnd-methodlink" id="lnd-methodlink">Use a tape or a shirt you own instead</button></div>
+        </div><!-- /details -->
+
+        <div class="wstep w-on" data-w="look" id="w-look">
+        <div class="step s3"><span class="n">3</span> Your preferred look</div>
+        <div class="field" style="border:none;padding-top:0" id="ofx-silfield">
+          <div class="nm" style="margin-bottom:11px">Silhouette</div>
+          <div class="seg withcue" id="ofx-sil" role="group" aria-label="Silhouette">
+            <button data-v="slim"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L6 6.4 L7.5 8.2 L9.1 22 L18.9 22 L20.5 8.2 L22 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Trimmer<span class="s">close</span></button>
+            <button data-v="classic"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L2.9 6.4 L4.4 8.2 L3.3 22 L24.7 22 L23.6 8.2 L25.1 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Roomier<span class="s">easy</span></button>
+            <button data-v="auto" class="on"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M14 4 L15.6 11 L22 13 L15.6 15 L14 22 L12.4 15 L6 13 L12.4 11 Z" fill="currentColor" stroke="none"/><path d="M21 5 l.7 2.4 L24 8 l-2.3 .6 L21 11 l-.7-2.4 L18 8 l2.3-.6 Z" fill="currentColor" stroke="none" opacity=".7"/></svg>Decide for me<span class="s">recommended</span></button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="nm" style="margin-bottom:11px">Closeness</div>
+          <div class="seg withcue" id="ofx-close" role="group" aria-label="Closeness">
+            <button data-v="Tight"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L6 6.4 L7.5 8.2 L9.1 22 L18.9 22 L20.5 8.2 L22 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Close<span class="s">fitted</span></button>
+            <button data-v="Tailored" class="on"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L4.5 6.4 L6 8.2 L6.4 22 L21.6 22 L22 8.2 L23.5 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Tailored<span class="s">some room</span></button>
+            <button data-v="Relaxed"><svg class="cue" viewBox="0 0 28 26" aria-hidden="true"><path d="M11.8 3.5 L2.9 6.4 L4.4 8.2 L3.3 22 L24.7 22 L23.6 8.2 L25.1 6.4 L16.2 3.5 C15.4 5.6 12.6 5.6 11.8 3.5 Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/><path d="M14 5.4 L14 21.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/></svg>Relaxed<span class="s">generous</span></button>
+          </div>
+        </div>
+        </div><!-- /look -->
+      </div>
+
+      <!-- ============ RESULT ============ -->
+      <div class="pane-res" data-w="result" id="w-result">
+        <div class="res-inner">
+          <div id="r-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+          <div class="res-scroll">
+            <div class="xfit" id="ofx-xfit">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1A1916" stroke-width="1.7"><path d="M16 3l5 5-5 5M21 8H9a5 5 0 00-5 5v3"/></svg>
+              <span class="tx" id="xfit-tx"></span><button id="xfit-btn">Switch</button>
+            </div>
+
+            <div class="res-eyebrow" id="r-eyebrow">Your recommended size</div>
+            <div class="firstrun" id="r-firstrun">Starting from an average build — change your details and this updates live.</div>
+            <div class="shirtwrap">
+              <svg id="ofx-shirt" viewBox="0 0 300 372" role="img" aria-label="Shirt fit illustration">
+                <g id="sh-sleeves" fill="#FFFFFF" stroke="#1A1916" stroke-width="2.3" stroke-linejoin="round"></g>
+                <g id="sh-cuffs" fill="#FFFFFF" stroke="#1A1916" stroke-width="2.3" stroke-linejoin="round"></g>
+                <g id="sh-body" fill="#FFFFFF" stroke="#1A1916" stroke-width="2.3" stroke-linejoin="round"></g>
+                <g id="sh-detail" fill="none" stroke="#1A1916" stroke-width="1.4"></g>
+                <g id="sh-collar" fill="#FFFFFF" stroke="#1A1916" stroke-width="2.3" stroke-linejoin="round"></g>
+                <g id="sh-btns"></g>
+              </svg>
+            </div>
+
+            <div class="res-head">
+              <span class="res-pill" id="r-pill">Slim Fit</span>
+              <div class="res-size" id="r-size">L</div>
+              <div class="res-sub" id="r-sub">EU 42 · collar 17.1″</div>
+              <!-- KARAM: this label's text is CONFIG.aiLabel (set "" to hide it entirely). -->
+              <div class="ai-cue" id="r-aicue"><svg viewBox="0 0 28 26" width="12" height="12" aria-hidden="true"><path d="M14 4 L15.6 11 L22 13 L15.6 15 L14 22 L12.4 15 L6 13 L12.4 11 Z" fill="currentColor"/><path d="M21 5 l.7 2.4 L24 8 l-2.3 .6 L21 11 l-.7-2.4 L18 8 l2.3-.6 Z" fill="currentColor" opacity=".7"/></svg><span id="r-aicue-tx">Powered by OTAA's fit engine</span></div>
+              <div class="statnote" id="r-statnote"></div>
+              <div class="sellpoints" id="r-sellpoints"></div>
+              <div class="sizestock" id="r-sizestock" style="display:none"></div>
+            </div>
+
+            <div class="conf">
+              <div class="segs" id="r-segs"><i></i><i></i><i></i></div>
+              <div>
+                <div class="lvl" id="r-confword">High confidence</div>
+                <div class="nt" id="r-confnote"></div>
+              </div>
+            </div>
+
+            <div class="reason" id="r-reason"></div>
+            <div class="fitwhy" id="r-fitwhy"></div>
+            <div class="modelref" id="r-modelref"></div>
+            <div class="fabricnote" id="r-fabricnote"></div>
+
+            <div class="fitmap">
+              <div class="fmlabel">How it sits on you</div>
+              <div id="r-fitmap"></div>
+            </div>
+            <div id="r-watch"></div>
+            <div id="r-edge"></div>
+            <div id="r-alt"></div>
+            <div id="r-collarnote"></div>
+            <div class="washnote" id="r-wash"></div>
+            <div class="reassure-stack">
+              <div class="reassure" id="r-reassure"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span id="r-reassure-tx"></span></div>
+              <div class="reassure"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Duties &amp; taxes included at checkout — the price you see is the price you pay.</span></div>
+              <div class="reassure"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>30-day returns. Exchange or store credit with a 10% bonus.</span></div>
+            </div>
+            <div class="emailrow">
+              <button class="emailtoggle" id="r-emailtoggle" type="button" aria-expanded="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6h18v12H3z"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>Email me my size</button>
+              <div class="emailform" id="r-emailform" hidden>
+                <div class="emailin"><input type="email" id="r-email" placeholder="you@email.com" autocomplete="email" aria-label="Your email address" /><button class="emailsend" id="r-emailsend" type="button">Send</button></div>
+                <div class="emailmsg" id="r-emailmsg" role="status" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="res-foot">
+            <div class="lnd-proof"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><span>4.75 average &nbsp;·&nbsp; 17,500+ reviews &nbsp;·&nbsp; 5.0 on Google</span></div>
+            <button type="button" class="r-bundleoffer" onclick="if(window.OTAAbundle)window.OTAAbundle.focus()"><span class="r-bo-l"><b>Make it a three-pack</b><i>Any 3 shirts — $285 · $95 each</i></span><span class="r-bo-save">Save $72</span></button>
+            <button class="cta" id="r-cta">Add Slim · L to bag</button>
+            <button class="chartlink" id="r-chartlink">See full size chart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wnav" id="ofx-wnav" style="display:none"><button class="back" id="w-back" type="button" hidden>Back</button><button class="next" id="w-next" type="button">Next</button></div>
+
+    <section class="shoplist" id="ofx-shoplist" aria-live="polite">
+      <div class="shophead">
+        <div>
+          <div class="shop-eyebrow">Shirts you can wear</div>
+          <div class="shop-sub" id="shop-sub">Based on your fit and size</div>
+        </div>
+        <a class="shopall" id="ofx-shopall" target="_blank" rel="noopener">View all</a>
+      </div>
+      <div class="ofx-bundle" id="ofx-bundle" aria-label="Three-pack builder" aria-live="polite"></div>
+      <div class="shopfilter" id="ofx-shopfilter">
+        <div class="occ" id="ofx-occ" role="group" aria-label="Filter by occasion">
+          <button type="button" data-o="all" class="on">All</button>
+          <button type="button" data-o="work">Work</button>
+          <button type="button" data-o="wedding">Weddings &amp; formal</button>
+          <button type="button" data-o="evening">Evening</button>
+          <button type="button" data-o="everyday">Everyday</button>
+        </div>
+      </div>
+      <div class="shopgrid" id="ofx-shopgrid"></div>
+      <div class="shopempty" id="ofx-shopempty" hidden></div>
+    </section>
+
+    <details class="chart" id="ofx-chart">
+      <summary>Full measurements <span class="ch">⌄</span></summary>
+      <div class="body">
+        <div class="ctabs" id="ofx-ctabs">
+          <button data-f="slim" class="on">Slim</button>
+          <button data-f="classic">Classic</button>
+          <button data-u="cm" class="on u" style="margin-left:auto">cm</button>
+          <button data-u="in" class="u">inches</button>
+        </div>
+        <p class="cintro">These are the shirt's <b>finished measurements</b> — the garment itself, not your body. The easiest way to use them: match against a shirt you already own that fits the way you like. Chest and waist are measured all the way around; collar is your neck size.</p>
+        <table id="ofx-ctable"></table>
+        <div class="cmodel" id="ofx-cmodel" hidden></div>
+        <div class="cnote" id="ofx-cnote"></div>
+      </div>
+    </details>
+  </div>
+
+  <section class="lnd-quotes" aria-label="Customer reviews">
+    <div class="lnd-qeyebrow">Reviews</div>
+    <h2 class="lnd-qhead">Trusted by 400,000+ customers.</h2>
+    <div class="lnd-qgrid">
+      <figure class="lnd-qcard lnd-qcard-feat">
+        <div class="lnd-qstars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg></div>
+        <blockquote>&ldquo;This beautiful Navy shirt really upped my sartorial game. The feel is of a soft fabric with the build quality of a tank. As a recovering bespoke shirt buyer, these easily rank with the best that Budds and Charvet make.&rdquo;</blockquote>
+        <figcaption><span class="lnd-qtag">Shirts</span><b>Harry P.</b><i>Australia</i>
+          <span class="lnd-qverified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>Verified Purchase</span>
+        </figcaption>
+      </figure>
+      <figure class="lnd-qcard">
+        <div class="lnd-qstars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg></div>
+        <blockquote>&ldquo;Wore it to a wedding. It looked better than a custom made one I bought.&rdquo;</blockquote>
+        <figcaption><span class="lnd-qtag">Shirts</span><b>Chris D.</b><i>Australia</i>
+          <span class="lnd-qverified"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>Verified Purchase</span>
+        </figcaption>
+      </figure>
+      <figure class="lnd-qcard lnd-qcard-press">
+        <div class="lnd-qsource">Inc. Magazine</div>
+        <blockquote>&ldquo;A menswear company created a futuristic shirt campaign and developed a cult following in the U.S., U.K., and Australia.&rdquo;</blockquote>
+      </figure>
+    </div>
+    <div class="lnd-trustrow" aria-label="Independent review platforms">
+      <a href="https://share.google/GqNhIQ9zHHPfb7XJ5" target="_blank" rel="noopener"><b>5.0</b><span>Google</span></a>
+      <a href="https://www.trustpilot.com/review/otaa.com" target="_blank" rel="noopener"><b>4.7</b><span>Trustpilot</span></a>
+      <a href="https://www.otaa.com/pages/review" target="_blank" rel="noopener"><b>4.75</b><span>17,500+ reviews</span></a>
+    </div>
+    <div class="lnd-microstat">90% five-star &nbsp;·&nbsp; 50+ film &amp; TV productions &nbsp;·&nbsp; 70+ countries</div>
+    <div class="lnd-qship">Ships from Melbourne &amp; Texas &nbsp;·&nbsp; Free shipping over $100 &nbsp;·&nbsp; Duties &amp; taxes included at checkout</div>
+  </section>
+
+  <section class="lnd-awards" aria-label="Recognition">
+    <div class="lnd-aweyebrow">Recognised</div>
+    <div class="lnd-awrow">
+      <div class="lnd-aw"><b>Winner</b><span>Best in Business</span><i>Inc. Magazine · 2025</i></div>
+      <div class="lnd-aw"><b>Winner</b><span>Best Launch Campaign</span><i>Glossy Fashion &amp; Luxury Awards · 2025</i></div>
+      <div class="lnd-aw"><b>Silver Winner</b><span>Best Brand — Fashion &amp; Apparel</span><i>Asia eCommerce Awards · 2025</i></div>
+    </div>
+    <div class="lnd-featline">As featured in &nbsp;GQ · Fox News · Financial Review · Daily Mail · HuffPost · SmartCompany</div>
+  </section>
+
+  <footer class="lnd-foot">
+    <div class="lnd-brand">OTAA — Ocean Ties Apparel Australia · Melbourne</div>
+    <div class="lnd-note">Free exchanges, always.</div>
+  </footer>
+</div>
+
+<!-- mobile sticky bar -->
+<div class="mbar" id="ofx-mbar" aria-hidden="false">
+  <div class="l"><span class="p" id="m-pill">Slim</span><span class="s" id="m-size">L</span><span class="c" id="m-conf">Best fit</span></div>
+  <button class="b" id="m-cta">Add to bag</button>
+</div>
+</div>
+
+<script>
+"use strict";
+(function(){
+/* =========================================================================
+   OTAA SIZE FINDER — ENGINE v2 (retuned 2026-07) — brand-free, returns-calibrated. Framework-free, scoped
+   to .ofx. No network calls. KARAM: wire via CONFIG. Do NOT call any LLM
+   from the browser — everything below runs locally.
+   ========================================================================= */
+  var CONFIG = {
+    market:"auto",               // "AU" cm-first / EU collar ; "US" inch-first / neck×sleeve ; "auto" = geolocate (resolves to AU or US from CONFIG.country, else the browser's locale/timezone; unknown → AU). The vast majority of OTAA traffic is AU/US, so auto nails almost everyone with no setup.
+    country:null,                // OPTIONAL ISO-3166 country of the visitor (e.g. "AU","US","GB"). Karam: for the most accurate "auto" market, pass Shopify's own geo — {{ localization.country.iso_code | json }} (Markets) — and the widget maps US→US, everything else→AU. Leave null to let the widget infer from the browser.
+    showMarketToggle:true,       // preview affordance in the header; set false on a live storefront (the locale already picks the market)
+    currentFit:null,           // PDP FIT LOCK. Set to the shirt's own fit ("slim" or "classic"): the finder commits to that cut — it states the fit, sizes the customer *within* it, drops the fit chooser, and shows only that fit's chart. Set null for the universal "find your fit" tool (both cuts, customer chooses). Karam: derive from the product's fit tag/metafield (e.g. {% if product.tags contains 'Classic Fit' %}"classic"{% else %}"slim"{% endif %}).
+    productTitle:null,  // shown in the header + size chart when the fit is locked, so the panel reads as "this shirt." Karam: set to {{ product.title }}. Ignored in universal mode.
+    fabric:null,                 // PDP sets the current shirt's cloth so ease is nudged: "stretch" (give → sits closer), "crisp" (neutral), "structured" (stiff → a touch more room). null = neutral.
+    variantMap:{ slim:{}, classic:{} },  // {fit}[size] -> Shopify variant id (drives size-level Add-to-bag). Demo holds the REAL Carruthers Slim variants; Karam builds this per product from Liquid (brief §6).
+    productBadges:[],  // SKU selling chips shown under the size when the fit is locked. Karam derives from tags: pfs:label-BEST SELLER -> "Best seller", pfs:label-NEW -> "New" (the new Classic range), weave tag -> "<weave> weave", French Cuff tag -> "French cuff", all-occasion/business -> "All-occasion". NOTE the care chip ("Non-iron"/"Easy-iron") must come from the TITLE, not tags — every new Classic shirt is tagged "easy care/easy iron" regardless of whether its title sells it as non-iron. [] hides the row.
+    productStock:null,  // per-size units for THIS shirt -> the "in your size" line (reassurance, or "Only N left" when low). Karam sets from each variant's inventory. null/omit hides it.
+    collection:{ slim:"https://www.otaa.com/collections/shirts", classic:"https://www.otaa.com/collections/shirts" }, // BOTH the "View all <fit> shirts" link AND the cross-fit nudge target. ACTION (Fameez/Karam): set the real Slim and Classic collection handles — on a Slim PDP the nudge sends a roomy-preferring shopper to collection.classic, and a Classic PDP sends a trim-preferring shopper to collection.slim.
+    shopBase:"https://www.otaa.com",        // storefront origin for product links (Karam: confirm)
+    maxProducts:12,              // how many shirts to surface in "Shirts you can wear"
+    quickAdd:true,               // one-tap "Add <their size> to bag" on each in-stock shirt in "Shirts you can wear" (size pre-locked to the recommendation). Needs each catalog item to carry variants:{S:id,...} (below); fires the SAME CONFIG.onAddToCart hook as the main button. false = hide the buttons.
+    bundle:{ size:3, each:95, total:285, single:119, save:72, code:"", cartBase:"https://www.otaa.com/cart/" },
+    // THREE-PACK OFFER: any 3 shirts = $285 ($95 each). On the LANDING, grid quick-adds STAGE
+    // picks into the three-pack tray (no navigation); the tray builds a real multi-variant
+    // Shopify cart permalink /cart/{v}:1,{v}:1,{v}:1 so checkout charges the bundle.
+    // KARAM: the displayed $285/$95 is honest ONLY if Shopify applies the matching discount.
+    // Set a Shopify AUTOMATIC discount "buy 3 shirts -> $95 each" (mix-and-match), OR create a
+    // discount code and set bundle.code:"CODE" (it is appended to the permalink as ?discount=).
+    // save is computed live from the shirts chosen (list total - 285); the header figure is 3x$119.
+    catalog:[{"handle":"carruthers-cream-twill-lucius-non-iron-shirt","title":"Carruthers White Lucious Non-Iron Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":true,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Carruthers_White_Dobby_Non-Iron_Shirt_1.jpg?v=1720688326","stock":{"S":159,"M":669,"L":604,"XL":510,"XXL":184,"XXXL":null},"sold":182,"repeat":39,"ret":0.0604,"occasion":["evening","wedding","work"],"variants":{"S":41096532951122,"M":41096532983890,"L":41096533016658,"XL":41096533049426,"XXL":41096533082194,"XXXL":41096533114962}},{"handle":"giambi-light-blue-twill-non-iron-shirt","title":"Giambi Light Blue Twill Non-Iron Shirt","price":119,"weave":"twill","iron":"N","cuff":null,"best":true,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/GiambiLightBlueTwillNon-IronShirt1.jpg?v=1720626007","stock":{"S":65,"M":247,"L":296,"XL":165,"XXL":68,"XXXL":null},"sold":22,"repeat":4,"ret":0.0909,"occasion":["wedding","work"],"variants":{"S":41096640299090,"M":41096640331858,"L":41096640364626,"XL":41096640397394,"XXL":41096640430162,"XXXL":41096640462930}},{"handle":"bradford-blue-stripe-lucius-non-iron-shirt","title":"Bradford Blue Stripe Lucious Non-Iron Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":true,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Bradford_Blue_Stripe_Dobby_Non-Iron_Shirt_1-507416.png?v=1723176086","stock":{"S":61,"M":241,"L":296,"XL":156,"XXL":56,"XXXL":null},"sold":21,"repeat":4,"ret":null,"occasion":["evening","work"],"variants":{"S":41096476295250,"M":41096476328018,"L":41096476360786,"XL":41096476393554,"XXL":41096476426322}},{"handle":"brantley-black-twill-non-iron-shirt","title":"Brantley Black Twill Non-Iron Shirt","price":119,"weave":"twill","iron":"N","cuff":null,"best":true,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/BrantleyBlackTwillNon-IronShirt1.jpg?v=1720626663","stock":{"S":47,"M":213,"L":269,"XL":151,"XXL":41,"XXXL":null},"sold":35,"repeat":4,"ret":0.0571,"occasion":["evening"],"variants":{"S":41096645804114,"M":41096645869650,"L":41096645902418,"XL":41096645935186,"XXL":41096645967954,"XXXL":41096646000722}},{"handle":"walters-white-twill-french-cuff-shirt","title":"Walters White Twill French Cuff Shirt","price":129,"weave":"twill","iron":"E","cuff":"F","best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Walters_White_Twill_Easy_Care_French_Cuff_Shirt_1.jpg?v=1720696697","stock":{"S":109,"M":433,"L":539,"XL":307,"XXL":110,"XXXL":null},"sold":53,"repeat":2,"ret":0.0566,"occasion":["evening","wedding","work"],"variants":{"S":41096692564050,"M":41096692596818,"L":41096692629586,"XL":41096692662354,"XXL":41096692695122}},{"handle":"brentley-blue-stripe-poplin-shirt","title":"Brentley Blue Stripe Poplin Shirt","price":129,"weave":"poplin","iron":"E","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Brentley_Blue_Stripe_Poplin_Easy_Care_Shirt_1.jpg?v=1720695298","stock":{"S":63,"M":218,"L":307,"XL":155,"XXL":54,"XXXL":null},"sold":60,"repeat":11,"ret":0.1,"occasion":["work"],"variants":{"S":41096672018514,"M":41096672051282,"L":41096672084050,"XL":41096672116818,"XXL":41096672149586}},{"handle":"winthorpe-gray-weave-lucious-shirt","title":"Winthorpe Gray Weave Lucious Shirt","price":119,"weave":"dobby","iron":"E","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Winthorpe_Gray_Weave_Dobby_Easy_Care_Shirt_1.jpg?v=1720695068","stock":{"S":19,"M":88,"L":124,"XL":112,"XXL":54,"XXXL":null},"sold":18,"repeat":2,"ret":0.1111,"occasion":["evening","work"],"variants":{"S":41096664055890,"M":41096664088658,"L":41096664121426,"XL":41096664154194,"XXL":41096664186962}},{"handle":"duke-blue-twill-shirt","title":"Duke Blue Twill Shirt","price":119,"weave":"twill","iron":"E","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Duke_Blue_Twill_Easy_Care_Shirt_1.jpg?v=1720695209","stock":{"S":23,"M":82,"L":85,"XL":97,"XXL":53,"XXXL":null},"sold":44,"repeat":13,"ret":0.1136,"occasion":["work"],"variants":{"S":41096667922514,"M":41096667955282,"L":41096667988050,"XL":41096668020818,"XXL":41096668053586}},{"handle":"riskin-light-blue-twill-lucius-non-iron-shirt","title":"Riskin Light Blue Lucious Non-Iron Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Riskin_Light_Blue_Dobby_Non-Iron_Shirt_1.jpg?v=1720688448","stock":{"S":15,"M":85,"L":88,"XL":102,"XXL":51,"XXXL":null},"sold":12,"repeat":5,"ret":0.0833,"occasion":["evening","wedding","work"],"variants":{"S":41096551891026,"M":41096551923794,"L":41096551956562,"XL":41096551989330,"XXL":41096552022098}},{"handle":"bachman-blue-stripe-poplin-shirt","title":"Bachman Blue Stripe Poplin Shirt","price":119,"weave":"poplin","iron":"E","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Bachman_Blue_Stripe_Poplin_Easy_Care_Shirt_1.jpg?v=1720695397","stock":{"S":20,"M":86,"L":88,"XL":88,"XXL":54,"XXXL":null},"sold":45,"repeat":11,"ret":0.0222,"occasion":["work"],"variants":{"S":41096674836562,"M":41096674869330,"L":41096674934866,"XL":41096674967634,"XXL":41096675000402,"XXXL":41096675033170}},{"handle":"hanna-blue-twill-non-iron-shirt","title":"Hanna Blue Twill Non-Iron Shirt","price":119,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Hanna_Blue_Twill_Non-Iron_Shirt_1.jpg?v=1720626119","stock":{"S":15,"M":71,"L":78,"XL":95,"XXL":52,"XXXL":null},"sold":17,"repeat":5,"ret":0.1765,"occasion":["work"],"variants":{"S":41096641740882,"M":41096641773650,"L":41096641806418,"XL":41096641839186,"XXL":41096641871954}},{"handle":"gekko-gingham-blue-lucius-non-iron-shirt","title":"Gekko Gingham Blue Twill Non-Iron Shirt","price":119,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Gekko_Gingham_Blue_Twill_Non-Iron_Shirt_1.jpg?v=1720693363","stock":{"S":17,"M":65,"L":81,"XL":90,"XXL":48,"XXXL":null},"sold":27,"repeat":4,"ret":0.037,"occasion":["everyday"],"variants":{"S":41096630534226,"M":41096630566994,"L":41096630599762,"XL":41096630632530,"XXL":41096630665298}},{"handle":"perry-purple-gingham-lucius-non-iron-shirt","title":"Perry Purple Gingham Twill Non-Iron Shirt","price":119,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Perry_Purple_Gingham_Twill_Non-Iron_Shirt_1.jpg?v=1720693485","stock":{"S":19,"M":63,"L":59,"XL":81,"XXL":45,"XXXL":null},"sold":19,"repeat":5,"ret":0.1579,"occasion":["evening","everyday"],"variants":{"S":41096633155666,"M":41096633188434,"L":41096633221202,"XL":41096633253970,"XXL":41096633286738}},{"handle":"lucious-lavender-twill-non-iron-shirt","title":"Lucious Lavender Twill Non-Iron Shirt","price":119,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Lucious_Lavender_Twill_Non-Iron_Shirt_1.jpg?v=1720626530","stock":{"S":7,"M":62,"L":58,"XL":87,"XXL":51,"XXXL":null},"sold":22,"repeat":8,"ret":0.0909,"occasion":["evening"],"variants":{"S":41096644264018,"M":41096644296786,"L":41096644329554,"XL":41096644362322,"XXL":41096644395090}},{"handle":"van-patten-gray-herringbone-lucius-non-iron-shirt","title":"Van Patten Gray Herringbone Lucious Non-Iron Shirt","price":119,"weave":"herringbone","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Van_Patten_Gray_Herringbone_Dobby_Non-Iron_Shirt_1.jpg?v=1720687841","stock":{"S":0,"M":47,"L":59,"XL":71,"XXL":41,"XXXL":null},"sold":18,"repeat":3,"ret":0.0556,"occasion":["evening","work"],"variants":{"S":41096481505362,"M":41096481538130,"L":41096481570898,"XL":41096481603666,"XXL":41096481636434}},{"handle":"pacelli-pink-oxford-shirt","title":"Pacelli Pink Oxford Shirt","price":119,"weave":"oxford","iron":"E","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/PacelliPinkOxfordEasyCareShirt1.jpg?v=1720627144","stock":{"S":12,"M":38,"L":46,"XL":58,"XXL":37,"XXXL":null},"sold":41,"repeat":13,"ret":0.0732,"occasion":["evening","everyday"],"variants":{"S":41096668971090,"M":41096669003858,"L":41096669036626,"XL":41096669069394,"XXL":41096669102162}},{"handle":"blue-dobby-non-iron-slim-fit-shirt","title":"Belfort Blue Lucious Non-Iron Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Belfort_Blue_Dobby_Non-Iron_Shirt_1-645344.png?v=1723175268","stock":{"S":14,"M":48,"L":20,"XL":60,"XXL":43,"XXXL":null},"sold":44,"repeat":15,"ret":0.0455,"occasion":["evening","work"],"variants":{"S":40975915679826,"M":40975915745362,"L":40975915810898,"XL":40975915876434,"XXL":40975915941970,"XXXL":40975920037970}},{"handle":"kimball-purple-twill-non-iron-shirt","title":"Kimball Purple Twill Non-Iron Shirt","price":179,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Kimball_Purple_Twill_Non-Iron_Shirt_1.jpg?v=1720625901","stock":{"S":9,"M":40,"L":42,"XL":52,"XXL":21,"XXXL":null},"sold":12,"repeat":5,"ret":0.3333,"occasion":["evening"],"variants":{"S":41096638824530,"M":41096638857298,"L":41096638890066,"XL":41096638922834,"XXL":41096638955602}},{"handle":"babcock-blue-stripe-poplin-shirt","title":"Babcock Blue Stripe Poplin Shirt","price":119,"weave":"poplin","iron":"E","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Babcock_Blue_Stripe_Poplin_Easy_Care_Shirt_1-433781.jpg?v=1726665680","stock":{"S":7,"M":45,"L":39,"XL":46,"XXL":24,"XXXL":null},"sold":10,"repeat":1,"ret":0.1,"occasion":["work"],"variants":{"S":41096684470354,"M":41096684503122,"L":41096684535890,"XL":41096684568658,"XXL":41096684601426}},{"handle":"bateman-blue-weave-lucius-non-iron-shirt","title":"Bateman Blue Weave Lucious Non-Iron Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Bateman_Blue_Weave_Dobby_Non-Iron_Shirt_1-866979.png?v=1723175165","stock":{"S":7,"M":33,"L":11,"XL":61,"XXL":35,"XXXL":null},"sold":21,"repeat":5,"ret":0.1905,"occasion":["evening","work"],"variants":{"S":41096467218514,"M":41096467251282,"L":41096467284050,"XL":41096467316818,"XXL":41096467349586}},{"handle":"lapaglia-blue-herringbone-lucius-non-iron-shirt","title":"Lapaglia Blue Herringbone Lucious Non-Iron Shirt","price":119,"weave":"herringbone","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Lapaglia_Blue_Herringbone_Dobby_Non-Iron_Shirt_1-235926.png?v=1723179238","stock":{"S":6,"M":13,"L":20,"XL":67,"XXL":42,"XXXL":null},"sold":33,"repeat":9,"ret":0.1515,"occasion":["evening","work"],"variants":{"S":41096478916690,"M":41096478949458,"L":41096478982226,"XL":41096479014994,"XXL":41096479047762}},{"handle":"mannheim-blue-stripe-lucius-non-iron-shirt","title":"Mannheim Blue Stripe Lucious Non-Iron Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":true,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Mannheim_Blue_Stripe_Dobby_Non-Iron_Shirt_1-617148.jpg?v=1723179449","stock":{"S":9,"M":36,"L":6,"XL":53,"XXL":21,"XXXL":null},"sold":33,"repeat":6,"ret":0.1212,"occasion":["evening","work"],"variants":{"S":41096570536018,"M":41096570568786,"L":41096570601554,"XL":41096570634322,"XXL":41096570667090}},{"handle":"newhouse-navy-poplin-non-iron-shirt","title":"Newhouse Navy Poplin Non-Iron Shirt","price":129,"weave":"poplin","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Newhouse_Navy_Poplin_Easy_Care_Shirt_1.jpg?v=1720694946","stock":{"S":3,"M":19,"L":5,"XL":51,"XXL":23,"XXXL":null},"sold":53,"repeat":13,"ret":0.0943,"occasion":["evening","work"],"variants":{"S":41096650358866,"M":41096650391634,"L":41096650424402,"XL":41096650457170,"XXL":41096650489938}},{"handle":"poloni-purple-lucius-non-iron-shirt","title":"Poloni Purple Twill Non-Iron Shirt","price":149,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Poloni_Purple_Twill_Non-Iron_Shirt_1.jpg?v=1720693002","stock":{"S":3,"M":0,"L":13,"XL":28,"XXL":13,"XXXL":null},"sold":17,"repeat":4,"ret":null,"occasion":["evening"],"variants":{"S":41096627322962,"M":41096627355730,"L":41096627388498,"XL":41096627421266,"XXL":41096627454034}},{"handle":"draco-blue-pinstripe-oxford-non-iron-shirt","title":"Draco Blue Pinstripe Twill Non-Iron Shirt","price":149,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Draco_Blue_Pinstripe_Twill_Non-Iron_Shirt_1.jpg?v=1720693656","stock":{"S":1,"M":1,"L":8,"XL":23,"XXL":27,"XXXL":null},"sold":15,"repeat":3,"ret":0.0667,"occasion":["work"],"variants":{"S":41096647966802,"M":41096647999570,"L":41096648032338,"XL":41096648065106,"XXL":41096648097874}},{"handle":"beverly-blue-oxford-french-cuff-shirt","title":"Beverly Blue Oxford French Cuff Shirt","price":129,"weave":"oxford","iron":"E","cuff":"F","best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Beverly_Blue_Oxford_Easy_Care_French_Cuff_Shirt_1.jpg?v=1720697179","stock":{"S":0,"M":0,"L":1,"XL":30,"XXL":17,"XXXL":null},"sold":17,"repeat":4,"ret":0.0588,"occasion":["evening","everyday","wedding","work"],"variants":{"S":41096694956114,"M":41096694988882,"L":41096695021650,"XL":41096695054418,"XXL":41096695087186}},{"handle":"washington-white-and-blue-twill-non-iron-shirt","title":"Washington White and Blue Twill Non-Iron Shirt","price":179,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Washington_White_and_Blue_Twill_Non-Iron_Shirt_1.jpg?v=1720625523","stock":{"S":7,"M":9,"L":0,"XL":10,"XXL":15,"XXXL":null},"sold":14,"repeat":1,"ret":null,"occasion":["wedding","work"],"variants":{"S":41096637317202,"M":41096637349970,"L":41096637382738,"XL":41096637415506,"XXL":41096637448274}},{"handle":"bacci-blue-stripe-poplin-shirt","title":"Bacci Blue Stripe Poplin Shirt","price":129,"weave":"poplin","iron":"E","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Bacci_Blue_Stripe_Poplin_Easy_Care_Shirt_1.jpg?v=1720696402","stock":{"S":0,"M":2,"L":0,"XL":4,"XXL":6,"XXXL":null},"sold":9,"repeat":4,"ret":null,"occasion":["work"],"variants":{"S":41096675754066,"M":41096675786834,"L":41096675819602,"XL":41096675852370,"XXL":41096675885138}},{"handle":"henry-light-blue-twill-non-iron-shirt","title":"Henry Light Blue Twill Non-Iron Shirt","price":179,"weave":"twill","iron":"N","cuff":null,"best":false,"fit":"slim","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/Henry_Light_Blue_Twill_Non-Iron_Shirt_1.jpg?v=1720626282","stock":{"S":0,"M":0,"L":0,"XL":0,"XXL":4,"XXXL":null},"sold":null,"repeat":null,"ret":null,"occasion":["wedding","work"],"variants":{"S":41096642986066,"M":41096643018834,"L":41096643051602,"XL":41096643084370,"XXL":41096643117138}},{"handle":"windsor-royal-white-non-iron-dobby-shirt","title":"Windsor Royal White Non-Iron Dobby Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8699.jpg?v=1781523452","stock":{"S":55,"M":219,"L":272,"XL":165,"XXL":60,"XXXL":28},"sold":null,"repeat":null,"ret":null,"occasion":["evening","wedding","work"],"variants":{"S":42447312486482,"M":42447312519250,"L":42447312552018,"XL":42447312584786,"XXL":42447312617554,"XXXL":42447312650322}},{"handle":"beaufort-riviera-french-cuff-non-iron-dobby-shirt","title":"Beaufort Riviera French Cuff Non-Iron Dobby Shirt","price":129,"weave":"dobby","iron":"N","cuff":"F","best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8697.jpg?v=1781522351","stock":{"S":41,"M":164,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["evening","wedding","work"],"variants":{"S":42447311536210,"M":42447311568978,"L":42447311601746,"XL":42447311634514,"XXL":42447311667282,"XXXL":42447311700050}},{"handle":"beaumont-riviera-stripe-non-iron-dobby-shirt","title":"Beaumont Riviera Stripe Non-Iron Dobby Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8683.jpg?v=1781517323","stock":{"S":41,"M":164,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["work","everyday"],"variants":{"S":42447279980626,"M":42447280013394,"L":42447280046162,"XL":42447280078930,"XXL":42447280111698,"XXXL":42447280144466}},{"handle":"bellamy-cornflower-heather-easy-iron-twill-shirt","title":"Bellamy Cornflower Heather Easy-Iron Twill Shirt","price":119,"weave":"twill","iron":"E","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8691.jpg?v=1781521310","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["work","everyday"],"variants":{"S":42447310028882,"M":42447310061650,"L":42447310094418,"XL":42447310127186,"XXL":42447310159954,"XXXL":42447310192722}},{"handle":"blackwood-charcoal-heather-easy-iron-twill-shirt","title":"Blackwood Charcoal Heather Easy-Iron Twill Shirt","price":119,"weave":"twill","iron":"E","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8701.jpg?v=1781521533","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["evening","work"],"variants":{"S":42447310389330,"M":42447310422098,"L":42447310454866,"XL":42447310487634,"XXL":42447310520402,"XXXL":42447310553170}},{"handle":"carlisle-espresso-non-iron-oxford-shirt","title":"Carlisle Espresso Non-Iron Oxford Shirt","price":119,"weave":"oxford","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8703_f4f722d1-e604-4e80-a19b-682444182792.jpg?v=1781521908","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["everyday","work"],"variants":{"S":42447311339602,"M":42447311372370,"L":42447311405138,"XL":42447311437906,"XXL":42447311470674,"XXXL":42447311503442}},{"handle":"hawthorne-khaki-easy-iron-twill-shirt","title":"Hawthorne Khaki Easy-Iron Twill Shirt","price":119,"weave":"twill","iron":"E","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8707.jpg?v=1781507688","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["everyday","work"],"variants":{"S":42447214379090,"M":42447214411858,"L":42447214444626,"XL":42447214477394,"XXL":42447214510162,"XXXL":42447214542930}},{"handle":"pelham-admiral-heather-easy-iron-twill-shirt","title":"Pelham Admiral Heather Easy-Iron Twill Shirt","price":119,"weave":"twill","iron":"E","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8693.jpg?v=1781520936","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["evening","wedding","work"],"variants":{"S":42447309733970,"M":42447309766738,"L":42447309799506,"XL":42447309832274,"XXL":42447309865042,"XXXL":42447309897810}},{"handle":"pemberton-onyx-stripe-easy-iron-twill-shirt","title":"Pemberton Onyx Stripe Easy-Iron Twill Shirt","price":119,"weave":"twill","iron":"E","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8685.jpg?v=1781514928","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["evening","work"],"variants":{"S":42447244558418,"M":42447244591186,"L":42447244623954,"XL":42447244656722,"XXL":42447244689490,"XXXL":42447244722258}},{"handle":"pendleton-non-iron-dobby-shirt","title":"Pendleton Non-Iron Dobby Shirt","price":119,"weave":"dobby","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8689.jpg?v=1781509255","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["everyday","evening"],"variants":{"S":42447221096530,"M":42447221129298,"L":42447221162066,"XL":42447221194834,"XXL":42447221227602,"XXXL":42447221260370}},{"handle":"the-mayfair-sage-twill-shirt","title":"Sherwood Sage Easy-Iron Twill Shirt","price":119,"weave":"twill","iron":"E","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8687.jpg?v=1781244632","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["everyday","evening"],"variants":{"S":42443863785554,"M":42443863818322,"L":42443863851090,"XL":42443863883858,"XXL":42443863916626,"XXXL":42443863949394}},{"handle":"whitmore-ebony-stripe-easy-iron-poplin-shirt","title":"Whitmore Ebony Stripe Easy-Iron Poplin Shirt","price":119,"weave":"poplin","iron":"E","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8695.jpg?v=1781510378","stock":{"S":41,"M":164,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["evening","work"],"variants":{"S":42447222243410,"M":42447222276178,"L":42447222308946,"XL":42447222341714,"XXL":42447222374482,"XXXL":42447222407250}},{"handle":"marlowe-ivory-stripe-non-iron-poplin-shirt","title":"Marlowe Ivory Stripe Non-Iron Poplin Shirt","price":119,"weave":"poplin","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8709.jpg?v=1781519340","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["work","everyday"],"variants":{"S":42447300526162,"M":42447300558930,"L":42447300591698,"XL":42447300624466,"XXL":42447300657234,"XXXL":42447300690002}},{"handle":"paxton-sapphire-stripe-non-iron-poplin-shirt","title":"Paxton Sapphire Stripe Non-Iron Poplin Shirt","price":119,"weave":"poplin","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8679.jpg?v=1781518731","stock":{"S":41,"M":164,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["work","everyday"],"variants":{"S":42447296200786,"M":42447296233554,"L":42447296266322,"XL":42447296299090,"XXL":42447296331858,"XXXL":42447296364626}},{"handle":"hartwell-cognac-stripe-non-iron-poplin-shirt","title":"Hartwell Cognac Stripe Non-Iron Poplin Shirt","price":119,"weave":"poplin","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8677.jpg?v=1781244086","stock":{"S":41,"M":164,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["work","evening"],"variants":{"S":42447295348818,"M":42447295381586,"L":42447295414354,"XL":42447295447122,"XXL":42447295479890,"XXXL":42447295512658}},{"handle":"redford-crimson-stripe-non-iron-poplin-shirt","title":"Redford Crimson Stripe Non-Iron Poplin Shirt","price":119,"weave":"poplin","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8681_0fc47ccb-d307-4ec0-a6d3-17df600ac411.jpg?v=1781517881","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["evening","work"],"variants":{"S":42447293743186,"M":42447293775954,"L":42447293808722,"XL":42447293841490,"XXL":42447293874258,"XXXL":42447293907026}},{"handle":"henley-emerald-stripe-non-iron-poplin-shirt","title":"Henley Emerald Stripe Non-Iron Poplin Shirt","price":119,"weave":"poplin","iron":"N","cuff":null,"best":false,"fit":"classic","image":"https://cdn.shopify.com/s/files/1/0182/8937/files/6Z2A8705.jpg?v=1781515420","stock":{"S":41,"M":165,"L":204,"XL":124,"XXL":45,"XXXL":21},"sold":null,"repeat":null,"ret":null,"occasion":["work","evening"],"variants":{"S":42447257698386,"M":42447257731154,"L":42447257763922,"XL":42447257796690,"XXL":42447257829458,"XXXL":42447257862226}}],                  // LIVE shirts the finder recommends into. CLASSIC RANGE (2026-07-05, STAGED): 12 Classic Fit shirts (tag 'classic fit') wired from live Shopify — real per-size variant ids, stock, price, image. STILL DRAFT: PDPs 404 and cart-permalinks fail until published; publish before driving traffic. 5 pasted 'Stripe Poplin' shirts lack the 'classic fit' tag and are excluded — tag them to sync. Ratings omitted on purpose: the Yotpo review metafields are grouped/duplicated (every new product reports the same 4.8/84), not the product's own. Demo seeds a real Shopify snapshot; on the storefront Karam injects this from Shopify (collection JSON / Storefront API) so stock + price stay current. Shape: {handle,title,price,weave,iron,cuff,best,fit,image,stock:{S..XXXL},variants:{S..XXXL}} — variants holds the per-size Shopify variant id and powers the one-tap quick-add (build from the same Liquid source as variantMap). Omit it and the card just links out.
+    onProductClick:function(p,size){ if(typeof window!=="undefined"&&window.dataLayer){ window.dataLayer.push({event:"otaa_fit_product_click",handle:p.handle,size:size,fit:p.fit}); } },
+    washNote:"Pre-shrunk cotton — built to hold its size and shape, wash after wash.", // honest reassurance under the result; "" hides it. (We have lab wash-test data for the dobby; only strengthen this claim where it's substantiated across the range.)
+    currentWeave:null,           // PDP only: this shirt's cloth ("oxford"|"twill"|"poplin"|"dobby"|"herringbone") -> adds a small fit-of-the-cloth note (display only, no sizing change). null = none
+    modelSize:null,              // PDP only: the size the model in the product photos is wearing ("S"/"M"/"L"/"XL"/"XXL"/"XXXL") -> shows a "model is wearing a <size>" caption in the size chart. null = hidden. Karam: the SS26 Classic range is all shot on a Medium -> "M"; set per product since the Slim photos may differ.
+    fitReference:null,           // optional on-body line. function(fitKey,size) -> e.g. "Our model is 185cm / 84kg and wears L". Return "" for none. We will NOT invent measurements — fill this from your shoot data.
+    savedProfile:null,           // Karam: pass a stored fit profile to prefill (see onProfileChange for the shape)
+    aiLabel:"Powered by OTAA's fit engine",                  // small cue under the size; set "" to hide
+    exchangeNote:"Free shipping over $100. Not quite right? Free exchanges, always.", // reassurance at the CTA; free-shipping claim verbatim from otaa.com/pages/review FAQ; set "" to hide
+    statNote:"",                 // optional outcome stat by the size, e.g. "9 in 10 keep their first size" — leave "" until you have the real, sourced number
+    onAddToCart:function(fit,size,variantId,payload){ console.log("[OTAA fit] add to bag",fit,size,variantId,payload);
+      // LANDING: a real purchase path with zero theme dependency — Shopify's GET add endpoint
+      // puts the item in the LIVE otaa.com cart and lands the customer on /cart, with the ad's
+      // utm/fbclid carried over so attribution survives. KARAM: if this page is hosted on
+      // otaa.com itself, you may swap to an AJAX /cart/add.js POST + cart drawer for an
+      // on-page add; this cross-domain default works either way.
+      if(typeof window!=="undefined"&&variantId){ var _u=withUtm("https://www.otaa.com/cart/add?id="+variantId+"&quantity=1"); window.__lastNav=_u; window.location.href=_u; } },
+    onSwitchFit:function(fit){ console.log("[OTAA fit] switch",fit); alert("Go to the "+fit+" product page"); },
+    onEmailSize:function(email,payload){ console.log("[OTAA fit] email",email,payload); return Promise.resolve(); }, // wire to Klaviyo; return a Promise — resolve to show "Sent"
+    onEvent:function(name,data){ if(typeof window!=="undefined"&&window.dataLayer){ window.dataLayer.push(Object.assign({event:"otaa_fit_"+name},data)); }
+      if(typeof fbq==="function"){ try{
+        if(name==="size_result"){ fbq("trackCustom","SizeResult",{fit:(data&&data.fit)||"",size:(data&&data.size)||"",confidence:(data&&data.confidence)||""}); }
+        else if(name==="email_size"){ fbq("track","Lead",{content_name:"size_email",content_category:(data&&data.fit)||""}); }
+        else if(name==="add_to_cart"&&data&&data.variantId){ fbq("track","AddToCart",{content_ids:[String(data.variantId)],content_type:"product",value:(typeof data.price==="number"?data.price:undefined),currency:"AUD"}); }
+        else if(name==="bundle_add_to_cart"&&data){ fbq("track","AddToCart",{content_ids:(data.ids||[]),content_type:"product",value:(typeof data.value==="number"?data.value:undefined),currency:"AUD",num_items:(data.num_items||undefined)}); }
+      }catch(e){} } }, // funnel events → GA4/dataLayer + Meta pixel (fires only if fbq exists on the page — Karam owns the base pixel snippet)
+    onProfileChange:function(profile){ /* persist for cross-PDP prefill (customer metafield / cart attribute). profile = {mode,height,weight,build,sil,close,collar,cut,feel,neck,chest,waist,units} */ }
+  };
+
+  /* ----------------------------------------------------------------------
+     MASTER USAGE — one file, dropped on every shirt PDP. Per product, Karam
+     sets only: currentFit (from the "Fit" option — "Slim Fit"->"slim",
+     "Classic Fit"->"classic"), productTitle, variantMap[fit], productStock,
+     productBadges and collection. Everything else (the engine, both fit
+     charts, the cross-fit nudge) is shared and needs no per-PDP change.
+
+     Slim and Classic are SEPARATE products (Carruthers/SH-006-SF vs
+     Windsor/SH-046-CF), so the cross-fit nudge points at the OTHER fit's
+     collection, not a variant swap. The new Classic range reuses the exact
+     S–XXXL / EU 38–48 grid, so variantMap/productStock key by S,M,L,XL,XXL,
+     XXXL unchanged. The nudge only fires on a positive preference signal
+     (Relaxed/Fuller -> Classic; Close/Lean -> Slim); a default visitor on
+     either PDP is sized in that PDP's cut with no nudge.
+
+     Example — a Classic PDP (Windsor Royal White, real values):
+       currentFit:"classic",
+       productTitle:"Windsor Royal White Non-Iron Dobby Shirt",
+       variantMap:{ slim:{}, classic:{ S:42447312486482, M:42447312519250,
+         L:42447312552018, XL:42447312584786, XXL:42447312617554,
+         XXXL:42447312650322 } },
+       productStock:{ S:55, M:220, L:272, XL:165, XXL:60, XXXL:28 },
+       productBadges:["New","Non-iron","Dobby weave","All-occasion"],
+       collection:{ slim:"<slim handle>", classic:"<classic handle>" }
+     ---------------------------------------------------------------------- */
+
+  var FITS = {
+    slim:{ name:"Slim", key:"slim", roomy:false,
+      prior:[2.40,0.10,0.0,0.0,0.05,0.10],
+      sizes:[
+        {label:"S",eu:38,collar:39.4,chest:101,waist:92,shoulder:44,sleeve:65},
+        {label:"M",eu:40,collar:41.4,chest:107,waist:98,shoulder:46,sleeve:66},
+        {label:"L",eu:42,collar:43.4,chest:113,waist:104,shoulder:48,sleeve:66},
+        {label:"XL",eu:44,collar:45.4,chest:119,waist:112,shoulder:50,sleeve:67},
+        {label:"XXL",eu:46,collar:47.4,chest:125,waist:120,shoulder:52,sleeve:67},
+        {label:"XXXL",eu:48,collar:49.4,chest:131,waist:128,shoulder:54,sleeve:68}
+      ]},
+    classic:{ name:"Classic", key:"classic", roomy:true,
+      prior:[2.40,0.10,0.0,0.0,0.05,0.10],
+      sizes:[  // supplier GO# bulk spec (Classic Fit), 6 sizes S-XXXL, garment finished cm; updated 2026-06-03
+        {label:"S",eu:38,collar:39.4,chest:108,waist:101,shoulder:46,sleeve:65},
+        {label:"M",eu:40,collar:41.4,chest:114,waist:107,shoulder:48,sleeve:66},
+        {label:"L",eu:42,collar:43.4,chest:120,waist:113,shoulder:50,sleeve:66},
+        {label:"XL",eu:44,collar:45.4,chest:126,waist:121,shoulder:52,sleeve:67},
+        {label:"XXL",eu:46,collar:47.4,chest:132,waist:129,shoulder:54,sleeve:67},
+        {label:"XXXL",eu:48,collar:49.4,chest:138,waist:137,shoulder:56,sleeve:68}
+      ]}
+  };
+  // Commercial calibration. Manufacturer spec stays PRIMARY; the items below are only guardrails:
+  //  - prior[] penalises the small sizes (S returns 24-27% vs ~13-14% mid-range; S is ~7% of sales),
+  //    so a near-tie rounds away from S unless the body clearly fits it. S=2.40 ~= 1.6cm of chest.
+  //  - CAL continuous up-lean is OFF (0.0). The boundary round-up (rankFit) carries the "size up"
+  //    bias, applied ONLY at a genuine boundary and always explained -- no vague global fudge factor.
+  //  - BAND is the boundary width: if the top two adjacent sizes are within BAND points we call it
+  //    "between sizes", hold the LARGER size, and surface the size-down option.
+  var BAND=2.0;
+  // Classic is the GENEROUS cut. The spec puts Classic ~6-8cm more chest than Slim at the same
+  // label, so to map a body onto a sensible Classic letter (never collapsing onto S) Classic is
+  // scored wanting this much MORE chest ease than Slim at the same closeness.
+  var CLASSIC_ROOM=4.0;
+  var CAL={ enabled:true, slimUp:0.0, classicUp:0.0 };
+  var GEN={ slim:{c16:106,slope:5.0,ease:11}, regular:{c16:113,slope:5.2,ease:16}, relaxed:{c16:120,slope:5.4,ease:21} };
+
+  var state={ mode:"estimate", collar:16,collarUnit:"in",cut:"Regular",feel:"spot",
+    neck:39.5,chest:100,waist:88,measureUnit:"cm",
+    height:178,weight:80,heightUnit:"cm",weightUnit:"kg",build:"Average", sil:"auto",close:"Tailored", fabric:null,
+    lockFit:null,                // when "slim"/"classic", the engine commits to that cut (PDP mode). Set by the DOM init from CONFIG.currentFit; null = the engine chooses the cut.
+    occasion:"all" };
+
+  function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+
+  /* ---- BODY ESTIMATE -------------------------------------------------------
+     Three ways in, best first. measure = your tape (quality .90). anchor = a
+     shirt you own, brand-free via collar+cut+feel (.72). estimate = height,
+     weight, build (.60) -- build is DAMPED on the chest (it can't swing size)
+     and instead does its real work on the WAIST + the Slim/Classic steer.    */
+  function estimateBody(s){
+    s=s||state; var b={};
+    if(s.mode==="measure"){
+      b.chest=s.chest; b.neck=s.neck; b.waist=s.waist; b.shoulder=s.chest*0.435; b.sleeve=66; b.quality=0.90; b.note="from your measurements";
+    } else if(s.mode==="anchor"){
+      var sp=GEN[s.cut.toLowerCase()]||GEN.regular, ci=s.collar; // collar is ALWAYS stored in inches (slider is inch-native); the in/cm toggle is display-only, like the measure fields
+      var gc=sp.c16+sp.slope*(ci-16), fa=s.feel==="tight"?3:s.feel==="loose"?-3:0;
+      b.chest=gc-sp.ease+fa; b.neck=ci*2.54-2.0+(s.feel==="tight"?1.0:s.feel==="loose"?-1.0:0);
+      b.waist=b.chest-12; b.shoulder=b.chest*0.435; b.sleeve=66; b.quality=0.72; b.note="from a shirt you already own";
+    } else {
+      var h=s.height,w=s.weight, hm=h/100, bmi=w/(hm*hm);
+      var bc={Lean:-1.0,Average:0,Athletic:1.0,Fuller:0.9}[s.build];   // DAMPED hard: 2.0cm chest spread (~1/3 size)
+      var bn={Lean:-0.3,Average:0,Athletic:0.4,Fuller:0.3}[s.build];
+      var dr={Lean:13,Average:11,Athletic:18,Fuller:5}[s.build];        // base drop; narrows with BMI (below)
+      var sa={Lean:-0.5,Average:0,Athletic:1.2,Fuller:-0.2}[s.build];
+      // v2 allometric core: chest circumference tracks sqrt(mass per unit height), anchored so
+      // 178cm/78kg still maps to 99cm — the calibrated centre is untouched. Height is now SIGNED:
+      // shorter+heavier frames gain chest (the old model under-sized them — the #1 "too small"
+      // return driver) and taller+leaner frames lose it (the old model over-sized them). Tall
+      // men's LENGTH need now flows through the sleeve term in scoring, not through fake chest.
+      b.chest=99*Math.sqrt((w/hm)/43.82)+bc;
+      b.neck=b.chest*0.375+1.0+bn;
+      // v2: the chest-waist drop closes as BMI rises — weight accrues centrally, so heavier
+      // frames need relatively more waist room than flat per-build drops allowed.
+      b.waist=b.chest-clamp(dr-0.55*Math.max(0,bmi-25),-4,24);
+      b.shoulder=b.chest*0.435+sa;
+      b.sleeve=66+0.18*(h-178);
+      // v2: a height-based size floor. The grid carries no body-length column, but each size's
+      // sleeve implies a height range — at 184cm+ an S runs short regardless of girth, at 192cm+
+      // an M does. Applied only here, where height is known; a tape or an owned shirt overrides.
+      b.hFloor=h>=192?2:h>=184?1:0;
+      b.quality=0.60; b.note="estimated from height, weight and build";
+    }
+    b.neck=clamp(b.neck,32,54);b.chest=clamp(b.chest,80,150);b.waist=clamp(b.waist,64,145);b.shoulder=clamp(b.shoulder,38,58);
+    return b;
+  }
+  function targets(s){
+    s=s||state;
+    var c={Tight:8.5,Tailored:11,Relaxed:15}[s.close];                  // DAMPED: 6.5cm chest spread (~1 size) not 12
+    // fabric: a stretch cloth gives, so it sits well with less ease (size closer); a stiff/structured cloth
+    // wants a touch more room. crisp / none is neutral. Small bounded nudge, set per product via CONFIG.fabric.
+    var fab={stretch:-1.5,crisp:0,structured:1.5}[s.fabric]||0;
+    return {chest:c+fab,waist:c-2+fab,collarMin:1.5,sleeve:0.5,shoulder:(s.close==="Tight"?2.5:s.close==="Relaxed"?5:3.5)};
+  }
+  /* ---- FIT SCORING ---------------------------------------------------------
+     For each size, error = how far GARMENT measure sits from (body + wanted
+     ease). Collar is a near-hard floor (it must close), chest is the main
+     driver, waist a soft check. prior[] adds the commercial guardrail.        */
+  function scoreSize(fit,body,t,i){
+    var sz=fit.sizes[i], cE=sz.collar-body.neck, chE=sz.chest-body.chest, wE=sz.waist-body.waist;
+    var pc=cE<t.collarMin?(t.collarMin-cE)*6.0:(cE>6?(cE-6)*0.5:0),
+        pch=(chE-t.chest<0?(t.chest-chE)*1.5:(chE-t.chest)*1.0),   // v2 asymmetric: tight is a hard fail, roomy is wearable
+        pw=wE<t.waist-2?(t.waist-2-wE)*1.2:Math.max(0,(wE-(t.waist+4)))*0.5;
+    // v2: shoulder + sleeve now enter the score, asymmetrically — a tailor can take fabric in
+    // but can't add it, so under-length/under-width is penalised and generous is tolerated.
+    // Both terms are zero for most bodies; they correct the tails (very tall, very broad).
+    var shE=sz.shoulder-body.shoulder,
+        psh=shE<t.shoulder-2.5?(t.shoulder-2.5-shE)*0.8:Math.max(0,shE-(t.shoulder+3))*0.2;
+    var slE=sz.sleeve-body.sleeve,
+        psl=slE<-0.8?(-0.8-slE)*0.9:0;
+    // v2: the commercial guardrail shrinks as input quality rises — with a tape on the body we
+    // trust the small size; with a height/weight estimate we keep the full hedge away from S.
+    var pr=(fit.prior[i]||0)*(1.6-(body.quality||0.6));
+    // v2: height floor — sizes below the height-implied minimum are penalised (length, not girth)
+    var pfl=(body.hFloor&&i<body.hFloor)?(body.hFloor-i)*6.0:0;
+    var total=pc+pch+pw+psh+psl+pr+pfl;
+    return {i:i,sz:sz,cE:cE,chE:chE,wE:wE,shE:shE,slE:slE,pc:pc,pch:pch,pw:pw,psh:psh,psl:psl,prior:pr,total:total};
+  }
+  function rankFit(fit,body,t){
+    var room=fit.roomy?CLASSIC_ROOM:0;   // the generous cut is worn with more ease
+    var up=CAL.enabled?(fit.roomy?CAL.classicUp:CAL.slimUp):0;
+    var tt={chest:t.chest+room+up,waist:t.waist+room+Math.max(0,up-0.5),collarMin:t.collarMin,sleeve:t.sleeve,shoulder:t.shoulder};
+    var all=fit.sizes.map(function(_,i){return scoreSize(fit,body,tt,i);});
+    var sorted=all.slice().sort(function(a,b){return a.total-b.total;});
+    // v2: the "between sizes" zone scales with input certainty — a tape measurement earns a
+    // decisive call (narrow band); a height/weight estimate deserves a wider, honest boundary.
+    var bandEff=body.quality>=0.85?0.9:body.quality>=0.7?1.2:1.5;   // recalibrated to the v2 asymmetric gradient
+    var raw=sorted[0], second=sorted[1], pick=raw, between=false, smaller=null, larger=null;
+    if(second && Math.abs(second.i-raw.i)===1 && (second.total-raw.total)<bandEff){
+      between=true;
+      var lo=raw.i<second.i?raw:second, hi=raw.i<second.i?second:raw;
+      smaller=lo; larger=hi; pick=hi;   // round UP at a genuine boundary ('too small' dominates returns ~6.4:1)
+    }
+    // back-compat aliases (older callers used .best / .rawBest)
+    return {raw:raw,rawBest:raw,best:pick,second:second,pick:pick,between:between,smaller:smaller,larger:larger,all:all,up:up,band:bandEff};
+  }
+  // The customer's natural cut from a POSITIVE preference signal — used only for the PDP cross-fit nudge.
+  // Symmetric and conservative: returns "" (no lean) unless something genuinely points one way, so a
+  // Classic PDP never nudges every default visitor toward Slim, and a Slim PDP never nudges toward Classic
+  // without a real roomy signal. The free-mode cut choice below is deliberately left untouched.
+  function fitSignal(s){
+    s=s||state;
+    if(s.sil==="slim")    return "slim";
+    if(s.sil==="classic") return "classic";
+    var roomy=(s.build==="Fuller")||(s.close==="Relaxed")||(s.mode==="anchor"&&s.cut==="Relaxed");
+    var trim =(s.build==="Lean") ||(s.close==="Tight")  ||(s.mode==="anchor"&&s.cut==="Slim");
+    if(roomy&&!trim) return "classic";
+    if(trim&&!roomy) return "slim";
+    return "";
+  }
+  function chooseFit(body,t,s){
+    s=s||state;
+    // PDP fit lock: the shirt's own cut is fixed -> size WITHIN it (this drives the chart + add-to-bag),
+    // but still read the customer's natural cut so the result can honestly nudge to the other fit's collection.
+    if(s.lockFit==="slim"||s.lockFit==="classic"){
+      var lk=s.lockFit, sig=fitSignal(s), nat=(sig&&sig!==lk)?sig:lk;
+      return {fit:FITS[lk], r:rankFit(FITS[lk],body,t), other:null, otherR:null, locked:true,
+              natural:nat, naturalR:(nat!==lk?rankFit(FITS[nat],body,t):null)};
+    }
+    // FIT IS A STYLE CHOICE, NOT A SCORE RACE. Deciding the cut by comparing scores across two
+    // OFFSET size grids made the cut flip on a 1-2kg change (Slim L <-> Classic S). The cut is
+    // now decided ONLY by what the customer signalled -- a discrete, body-independent rule that
+    // cannot flip on a small measurement change. The SIZE is then chosen inside the chosen cut.
+    var slimR=rankFit(FITS.slim,body,t), classicR=rankFit(FITS.classic,body,t);
+    var pickClassic;
+    if(s.sil==="slim")         pickClassic=false;     // Trimmer  -> Slim
+    else if(s.sil==="classic") pickClassic=true;      // Roomier  -> Classic
+    else {                                            // Decide for me:
+      // default Slim (signature, body-following cut); switch to Classic only on a genuine roomy
+      // signal -- a fuller build, a relaxed closeness, or a relaxed "shirt you own".
+      pickClassic=(s.build==="Fuller")||(s.close==="Relaxed")||(s.mode==="anchor"&&s.cut==="Relaxed");
+    }
+    if(pickClassic) return {fit:FITS.classic,r:classicR,other:FITS.slim,otherR:slimR};
+    return {fit:FITS.slim,r:slimR,other:FITS.classic,otherR:classicR};
+  }
+  function vChest(e,t){ if(e<t-4)return["Tight",-1];if(e<t-2)return["Snug",-.5];if(e>t+3.5)return["Roomy",.9];return["True",0]; }
+  function vCollar(e,m){ if(e<m-1)return["Tight",-1];if(e<m)return["Snug",-.5];if(e>6)return["Roomy",.9];return["True",0]; }
+  function vWaist(e,t){ if(e<t-4)return["Tight",-1];if(e<t-2)return["Snug",-.5];if(e>t+7)return["Roomy",.9];return["True",0]; }
+  function vShoulder(g,body,t){ var e=g-body.shoulder; if(e<t-2)return["Snug",-.5];if(e<t-1)return["Snug",-.4];if(e>t+2.5)return["Roomy",.8];return["True",0]; }
+  function vSleeve(g,body){ var e=g-body.sleeve; if(e<-2)return["Short",-1];if(e<-0.8)return["Snug",-.4];if(e>2.5)return["Long",.8];return["True",0]; }
+  function mk(nm,v){ return {nm:nm,verdict:v[0],score:v[1]}; }
+
+  function recommend(s){
+    s=s||state;
+    var body=estimateBody(s), t=targets(s);
+    var ch=chooseFit(body,t,s), R=ch.r, fit=ch.fit;
+    var room=(fit.roomy?CLASSIC_ROOM:0)+(CAL.enabled?(fit.roomy?CAL.classicUp:CAL.slimUp):0);
+    var tChest=t.chest+room, tWaist=t.waist+room;   // what THIS cut should sit at on the body
+    var disp=R.pick;              // displayed size (rounded up at a boundary)
+    var raw=R.raw;                // best-by-score (drives the 'why' + characterisation)
+    var chestOnly=R.all.slice().sort(function(a,b){return Math.abs(a.chE-tChest)-Math.abs(b.chE-tChest);})[0];
+    var driver=(raw.cE<t.collarMin+0.4||raw.i>chestOnly.i)?"collar":"chest";
+    // confidence -- apply the between-floor AFTER the penalties, then round to 2dp (no float drift)
+    var fit_map=[mk("Collar",vCollar(disp.cE,t.collarMin)),mk("Chest",vChest(disp.chE,tChest)),mk("Waist",vWaist(disp.wE,tWaist)),mk("Shoulder",vShoulder(disp.sz.shoulder,body,t.shoulder)),mk("Sleeve",vSleeve(disp.sz.sleeve,body))];
+    var collarTight=fit_map[0].verdict==="Tight", chestTight=fit_map[1].verdict==="Tight";
+    var atTop=(disp.i===fit.sizes.length-1)&&chestTight;   // body is beyond our largest size in this cut
+    // confidence -- apply the between-floor AFTER the penalties, then round to 2dp (no float drift)
+    var conf=body.quality, margin=R.second?(R.second.total-raw.total):4, bandE=R.band||BAND;
+    if(!R.between){ if(margin>bandE*0.7) conf+=0.05; else if(margin<bandE*0.25) conf-=0.10; }
+    if(raw.cE>4.5||raw.cE<t.collarMin) conf-=0.05;
+    if(R.between){ conf=clamp(conf,0.55,0.72); }   // a known boundary is, by definition, a Medium call
+    if(atTop){ conf=Math.min(conf,0.70); }          // beyond our largest size is, at best, a Medium call -- never a "strong match"
+    conf=Math.round(clamp(conf,0.25,0.97)*100)/100;
+    var band=conf>=0.78?"High":conf>=0.55?"Medium":"Low";
+    var S=disp.sz.label, fname=fit.name, reason;
+    if(atTop){
+      reason=fname+", size "+S+". "+S+" is the largest "+fname.toLowerCase()+" we make — for your measurements it will sit close through the chest"+(collarTight?" and neck.":".");
+    } else if(collarTight){
+      reason=fname+", size "+S+". This is the closest fit at your collar, so it sits snug at the neck"+(fit.roomy?", with the classic cut keeping room through the body.":".");
+    } else if(driver==="collar"){
+      reason=fit.roomy?fname+", size "+S+". Your collar sets it — it sits clean at the neck, and the classic cut gives the body its room.":fname+", size "+S+". Sized to your collar so it sits right at the neck, with a close line through the body.";
+    } else {
+      reason=fit.roomy?fname+", size "+S+". Sized to your chest with the room a classic cut should have, collar sitting comfortably.":fname+", size "+S+". Sized through the chest for a clean line, collar sitting comfortably.";
+    }
+    if(!fit.roomy && !R.between && !collarTight && !chestTight) reason+=" Our slim runs trim, so we've kept you comfortable rather than tight.";
+    // between-size messaging -- this is the up-lean, made explicit (the format you asked for)
+    var watch=null;
+    if(R.between){
+      var sm=R.smaller.sz.label, lg=R.larger.sz.label;
+      reason=fname+", size "+lg+". You sit right between "+sm+" and "+lg+" — we've gone with "+lg+" so it sits clean through the "+driver+" rather than tight.";
+      watch=(s.close==="Tight")?("You asked for a close fit — "+sm+" gets you there; we've listed "+lg+" as the safer pick."):("Prefer it sharper? Size down to "+sm+" for a closer line through the chest and waist.");
+    }
+    if(raw.cE>4.8) watch=(watch?watch+" ":"")+"The collar sits a touch loose for your neck — that's your neck-to-chest ratio, not the size.";
+    if(fit_map[4].verdict==="Short") watch=(watch?watch+" ":"")+"Sleeves may run a little short for your height.";
+    // CONFIDENCE COPY -- decisive by default, honest at a boundary (your point 7).
+    var basis = s.mode==="measure" ? "your measurements" : s.mode==="anchor" ? "the shirt you described" : "your height, weight and build";
+    var confTitle, cnote, mTag;
+    if(R.between){
+      confTitle="You're between sizes"; mTag="Between sizes";
+      cnote="You sit right on the "+R.smaller.sz.label+"/"+R.larger.sz.label+" line, from "+basis+". We've taken "+disp.sz.label+" as the safer pick — size down for a sharper line.";
+    } else if(band==="High"){
+      confTitle="Recommended with confidence"; mTag="Strong match";
+      cnote="Based on "+basis+", this is a strong match.";
+    } else if(band==="Medium"){
+      confTitle="Recommended"; mTag="Best fit";
+      cnote="Based on "+basis+", this is our best fit for you.";
+    } else {
+      confTitle="Your best estimate"; mTag="Best estimate";
+      cnote="A quick estimate from "+basis+" — adding a shirt you own would sharpen it.";
+    }
+    var alt=null;
+    if(s.sil==="auto"&&ch.otherR){
+      // the other cut's ACTUAL recommended size for this body (scored with that cut's own ease),
+      // so "switch cut" lands on a real, sensible size -- presented purpose-first in the UI.
+      alt={fit:ch.other.name,fitKey:ch.other.key,size:ch.otherR.pick.sz.label,
+           when:ch.other.roomy?"for a fuller, more relaxed cut":"for a sharper, trimmer cut"};
+    }
+    return {fit:fit,fitKey:fit.key,naturalKey:(ch.natural||fit.key),naturalSize:(ch.naturalR?ch.naturalR.pick.sz.label:null),sizeRow:disp.sz,confidence:band,confFrac:conf,confTitle:confTitle,mTag:mTag,reason:reason,confNote:cnote,fit_map:fit_map,alt:alt,watch:watch,body:body,between:R.between,driver:driver,
+      fabricNote:(s.fabric==="stretch"?"This cloth has some give — sized to sit close.":s.fabric==="structured"?"Structured cotton — sized with a little more room.":"")};
+  }
+
+  if(typeof module!=="undefined"){ module.exports={recommend:recommend,estimateBody:estimateBody,FITS:FITS,CAL:CAL,_state:state}; }
+  if(typeof document==="undefined") return;
+
+  /* ---- geolocate the market (AU cm / US inch) with NO network call ---- */
+  function detectMarket(){
+    var c=(CONFIG.country||"").toString().trim().toUpperCase();                       // 1) Shopify geo passed by the theme wins
+    if(!c){ try{ var loc=(navigator.languages&&navigator.languages[0])||navigator.language||""; var p=loc.split("-"); if(p.length>1) c=p[p.length-1].toUpperCase(); }catch(e){} }   // 2) browser locale region (en-US, en-AU)
+    if(!c){ try{ var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||""); if(/^Australia\//.test(tz)) c="AU"; else if(/^America\//.test(tz)) c="US"; }catch(e){} }            // 3) timezone hint
+    return (c==="US"||c==="USA") ? "US" : "AU";                                       // US → inches; everyone else (AU/NZ/UK/EU/…) → cm
+  }
+  if(CONFIG.market==="auto") CONFIG.market=detectMarket();
+
+/* =========================================================================
+   SHIRT (verified geometry — full sleeves, ink line / white fill; JS tween)
+   ========================================================================= */
+  var SH={cx:150,bandTopY:44,neckY:74,shTipY:94,chestY:158,waistY:258,hemSideY:328,hemMidY:350,cuffY:304,cuffH:18,neckHalf:23};
+  function shirtPaths(p){
+    var cx=SH.cx,nH=SH.neckHalf,bandTopY=SH.bandTopY,neckY=SH.neckY,shTipY=SH.shTipY,
+        chestY=SH.chestY,waistY=SH.waistY,hemSideY=SH.hemSideY,hemMidY=SH.hemMidY,cuffY=SH.cuffY,cuffH=SH.cuffH;
+    var chestHalf=p.chestHalf,waistHalf=p.waistHalf,shoulderHalf=p.shoulderHalf,
+        cuffCx=p.cuffCx,cuffHalf=p.cuffHalf,bulge=p.bulge,armInset=p.armInset, hemHalf=waistHalf+6;
+    var body="M "+(cx-shoulderHalf)+" "+shTipY+" L "+(cx-nH)+" "+neckY+" Q "+cx+" "+(neckY+14)+" "+(cx+nH)+" "+neckY+
+      " L "+(cx+shoulderHalf)+" "+shTipY+" L "+(cx+chestHalf)+" "+chestY+
+      " C "+(cx+chestHalf)+" "+(chestY+46)+" "+(cx+waistHalf+3)+" "+(waistY-28)+" "+(cx+waistHalf)+" "+waistY+
+      " L "+(cx+hemHalf)+" "+hemSideY+" Q "+(cx+hemHalf-5)+" "+hemMidY+" "+cx+" "+hemMidY+
+      " Q "+(cx-hemHalf+5)+" "+hemMidY+" "+(cx-hemHalf)+" "+hemSideY+" L "+(cx-waistHalf)+" "+waistY+
+      " C "+(cx-waistHalf-3)+" "+(waistY-28)+" "+(cx-chestHalf)+" "+(chestY+46)+" "+(cx-chestHalf)+" "+chestY+" L "+(cx-shoulderHalf)+" "+shTipY+" Z";
+    function sleeve(sd){ var sx=cx+sd*shoulderHalf, co=cx+sd*(cuffCx+cuffHalf), ci=cx+sd*(cuffCx-cuffHalf),
+        arm=cx+sd*(chestHalf-armInset), armY=chestY+2, bg=cx+sd*bulge;
+      return "M "+sx+" "+shTipY+" C "+bg+" "+(shTipY+62)+" "+co+" "+(cuffY-70)+" "+co+" "+cuffY+" L "+ci+" "+cuffY+" C "+ci+" "+(cuffY-60)+" "+arm+" "+(armY+72)+" "+arm+" "+armY+" Z"; }
+    function cuff(sd){ var co=cx+sd*(cuffCx+cuffHalf), ci=cx+sd*(cuffCx-cuffHalf), x1=Math.min(co,ci),x2=Math.max(co,ci);
+      return "M "+x1+" "+cuffY+" L "+x2+" "+cuffY+" L "+x2+" "+(cuffY+cuffH)+" L "+x1+" "+(cuffY+cuffH)+" Z"; }
+    var yoke="M "+(cx-shoulderHalf+12)+" "+(shTipY+3)+" Q "+cx+" "+(neckY+22)+" "+(cx+shoulderHalf-12)+" "+(shTipY+3);
+    var band="M "+(cx-nH-2)+" "+(neckY-1)+" Q "+cx+" "+bandTopY+" "+(cx+nH+2)+" "+(neckY-1)+" Q "+cx+" "+(bandTopY+10)+" "+(cx-nH-2)+" "+(neckY-1)+" Z";
+    function leaf(sd){ return "M "+(cx+sd*3)+" "+(neckY+7)+" L "+(cx+sd*(nH-1))+" "+(neckY-3)+" L "+(cx+sd*(nH+13))+" "+(neckY+8)+" L "+(cx+sd*(nH+3))+" "+(neckY+36)+" Z"; }
+    var placket="M "+(cx-7)+" "+(neckY+12)+" L "+(cx-7)+" "+(hemMidY-16)+" M "+(cx+7)+" "+(neckY+12)+" L "+(cx+7)+" "+(hemMidY-16);
+    return {body:body,lsl:sleeve(-1),rsl:sleeve(1),lcuff:cuff(-1),rcuff:cuff(1),yoke:yoke,band:band,lpt:leaf(-1),rpt:leaf(1),placket:placket};
+  }
+  function shirtTargets(fit,sizeIdx){
+    var n=fit.sizes.length,k=(sizeIdx-(n-1)/2);
+    if(fit.roomy) return {chestHalf:92+k*1.7,waistHalf:82+k*1.7,shoulderHalf:90+k*1.1,cuffCx:98+k*0.7,cuffHalf:21+k*0.15,bulge:116+k*1.0,armInset:0};
+    return {chestHalf:74+k*1.7,waistHalf:66+k*1.7,shoulderHalf:82+k*1.0,cuffCx:92+k*0.6,cuffHalf:19+k*0.15,bulge:108+k*0.9,armInset:2};
+  }
+  var shCur={chestHalf:74,waistHalf:66,shoulderHalf:82,cuffCx:92,cuffHalf:19,bulge:108,armInset:2}, shRaf=null;
+  var reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  function applyShirt(p){
+    var g=function(id){return document.getElementById(id);}, P=shirtPaths(p);
+    g("sh-sleeves").innerHTML='<path d="'+P.lsl+'"/><path d="'+P.rsl+'"/>';
+    g("sh-cuffs").innerHTML='<path d="'+P.lcuff+'"/><path d="'+P.rcuff+'"/>';
+    g("sh-body").innerHTML='<path d="'+P.body+'"/>';
+    g("sh-detail").innerHTML='<path d="'+P.yoke+'" opacity="0.42"/><path d="'+P.placket+'" opacity="0.6"/>';
+    g("sh-collar").innerHTML='<path d="'+P.band+'"/><path d="'+P.lpt+'"/><path d="'+P.rpt+'"/>';
+    var b=""; for(var y=SH.neckY+34;y<SH.hemMidY-26;y+=27){ b+='<circle cx="'+SH.cx+'" cy="'+y+'" r="2.5" fill="#1A1916"/>'; } g("sh-btns").innerHTML=b;
+  }
+  function tweenShirt(fit,sizeIdx){
+    var tgt=shirtTargets(fit,sizeIdx); if(shRaf) cancelAnimationFrame(shRaf);
+    if(reduceMotion){ shCur=tgt; applyShirt(tgt); return; }
+    var from={}; for(var k in shCur) from[k]=shCur[k];
+    var t0=performance.now(),dur=460;
+    function frame(now){ var pr=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-pr,3),c={}; for(var k in tgt) c[k]=from[k]+(tgt[k]-from[k])*e; shCur=c; applyShirt(c); if(pr<1) shRaf=requestAnimationFrame(frame); }
+    shRaf=requestAnimationFrame(frame);
+  }
+
+/* =========================================================================
+   RENDER + WIRING
+   ========================================================================= */
+  var VC={Tight:"var(--ink-2)",Snug:"var(--ink-2)",True:"var(--green)",Roomy:"var(--ink-2)",Short:"var(--ink-2)",Long:"var(--ink-2)"};
+  var lastRec=null, $=function(id){return document.getElementById(id);};
+  var resInner=document.querySelector(".ofx .res-inner");
+  var touched=false;
+  function markTouched(){ if(touched)return; touched=true; var f=$("r-firstrun"); if(f) f.textContent=""; }
+  function profileOf(){ return {mode:state.mode,height:state.height,weight:state.weight,build:state.build,sil:state.sil,close:state.close,fabric:state.fabric,collar:state.collar,cut:state.cut,feel:state.feel,neck:state.neck,chest:state.chest,waist:state.waist,heightUnit:state.heightUnit,weightUnit:state.weightUnit,collarUnit:state.collarUnit,measureUnit:state.measureUnit,market:CONFIG.market}; }
+  function recPayload(){ var r=lastRec||{}; return {fit:r.fit&&r.fit.name,fitKey:r.fitKey,size:r.sizeRow&&r.sizeRow.label,eu:r.sizeRow&&r.sizeRow.eu,confidence:r.confidence,confFrac:r.confFrac,between:!!r.between,inputs:profileOf()}; }
+  var _settle=null;
+  function notifySettled(){ if(_settle)clearTimeout(_settle); _settle=setTimeout(function(){ var p=recPayload(); if(CONFIG.onEvent)CONFIG.onEvent("size_result",p); if(CONFIG.onProfileChange)CONFIG.onProfileChange(p.inputs); },650); }
+
+  // ---- shirts you can wear ----
+  var WEAVE={twill:"Twill",poplin:"Poplin",oxford:"Oxford",dobby:"Dobby",herringbone:"Herringbone"};
+  function withUtm(url){ try{ if(!url) return url; var qs=(typeof location!=="undefined"&&location.search)?location.search:""; if(!qs) return url;
+    var keep=qs.slice(1).split("&").filter(function(p){ return /^(utm_[a-z0-9_]+|fbclid|gclid)=/i.test(p); });
+    if(!keep.length) return url; return url+(url.indexOf("?")>=0?"&":"?")+keep.join("&"); }catch(e){ return url; } }   // ad-attribution pass-through: utm_* / fbclid / gclid survive the hop to otaa.com
+  function cdnW(url,w){ try{ if(!url||url.indexOf("cdn.shopify.com")<0) return url; return url+(url.indexOf("?")>=0?"&":"?")+"width="+w; }catch(e){ return url; } }   // right-sized images from the Shopify CDN
+  function productUrl(p){ var base=(CONFIG.shopBase||"").replace(/\/$/,""); return withUtm(p.url || (base+"/products/"+p.handle)); }
+  /* ---- THREE-PACK BUNDLE (operationalised clarity offer) --------------------------
+     Any 3 shirts = $285 ($95 each). Grid quick-adds stage picks here with no navigation;
+     the tray assembles a real multi-variant Shopify cart permalink so checkout charges the
+     bundle. Single-buy is untouched: each card still links to its PDP. Exposed as
+     window.OTAAbundle so the result strip, sticky bar and tests can drive it. */
+  var BUN={picks:[]};
+  function bunN(){ return (CONFIG.bundle&&CONFIG.bundle.size)||3; }
+  function bunShort(t){ t=String(t||"").replace(/\s+(Non-Iron|Easy-Care|Easy-Iron|Lucious|Shirt)\b/gi,"").replace(/\s+/g," ").trim(); return t.length>20?t.slice(0,19)+"\u2026":t; }
+  function bunHas(h,sz){ for(var i=0;i<BUN.picks.length;i++){ if(BUN.picks[i].h===h&&BUN.picks[i].sz===sz) return true; } return false; }
+  function bunIndex(h,sz){ for(var i=0;i<BUN.picks.length;i++){ if(BUN.picks[i].h===h&&BUN.picks[i].sz===sz) return i; } return -1; }
+  function bunListTotal(){ var s=0; for(var i=0;i<BUN.picks.length;i++){ s+=(BUN.picks[i].price||0); } return s; }
+  function bunSaved(){ var s=bunListTotal()-((CONFIG.bundle&&CONFIG.bundle.total)||0); return s>0?s:0; }
+  function bunSyncSticky(){ if(typeof window!=="undefined"&&window.__ofxSyncSticky){ try{ window.__ofxSyncSticky(); }catch(e){} } }
+  function bunToggle(h,sz,vid,p){
+    var i=bunIndex(h,sz), N=bunN();
+    if(i>-1){ BUN.picks.splice(i,1); if(CONFIG.onEvent)CONFIG.onEvent("bundle_remove",{handle:h,size:sz,count:BUN.picks.length}); }
+    else{ if(BUN.picks.length>=N){ bunPulse(); return {full:true}; }
+      BUN.picks.push({h:h,sz:sz,vid:vid,title:(p&&p.title)||"",price:(p&&p.price)||0});
+      if(CONFIG.onEvent)CONFIG.onEvent("bundle_add",{handle:h,size:sz,count:BUN.picks.length});
+      if(BUN.picks.length===N&&CONFIG.onEvent)CONFIG.onEvent("bundle_complete",{value:(CONFIG.bundle&&CONFIG.bundle.total),ids:BUN.picks.map(function(x){return String(x.vid);})}); }
+    bunRender(); bunSync(); bunSyncSticky(); return {ok:true};
+  }
+  function bunRemove(i){ if(i<0||i>=BUN.picks.length)return; var r=BUN.picks[i]; BUN.picks.splice(i,1); if(CONFIG.onEvent)CONFIG.onEvent("bundle_remove",{handle:r.h,size:r.sz,count:BUN.picks.length}); bunRender(); bunSync(); bunSyncSticky(); }
+  function bunClear(){ BUN.picks=[]; bunRender(); bunSync(); bunSyncSticky(); }
+  function bunLink(){ var seg=BUN.picks.map(function(x){return x.vid+":1";}).join(","); var u=((CONFIG.bundle&&CONFIG.bundle.cartBase)||"https://www.otaa.com/cart/")+seg; if(CONFIG.bundle&&CONFIG.bundle.code)u+="?discount="+encodeURIComponent(CONFIG.bundle.code); return withUtm(u); }
+  function bunCheckout(){ if(BUN.picks.length<bunN())return; var u=bunLink(); if(typeof window!=="undefined")window.__lastNav=u; if(CONFIG.onEvent)CONFIG.onEvent("bundle_add_to_cart",{value:(CONFIG.bundle&&CONFIG.bundle.total),ids:BUN.picks.map(function(x){return String(x.vid);}),num_items:BUN.picks.length}); if(typeof window!=="undefined")window.location.href=u; }
+  function bunPulse(){ var b=$("ofx-bundle"); if(b){ b.classList.remove("pulse"); void b.offsetWidth; b.classList.add("pulse"); } }
+  function bunFocus(){ var s=$("ofx-shoplist"); if(s&&s.scrollIntoView)s.scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"start"}); bunPulse(); }
+  function bunSlots(){ var N=bunN(), h="";
+    for(var i=0;i<N;i++){ var p=BUN.picks[i];
+      if(p){ h+='<button type="button" class="bun-slot filled" data-bunremove="'+i+'" aria-label="Remove '+bunShort(p.title).replace(/"/g,"")+' from three-pack"><span class="bun-slot-t">'+bunShort(p.title)+'</span><span class="bun-slot-sz">Size '+p.sz+'</span><span class="bun-slot-x" aria-hidden="true">\u00d7</span></button>'; }
+      else{ h+='<span class="bun-slot empty"><span class="bun-slot-dash">Add a shirt</span></span>'; } }
+    return h; }
+  function bunRender(){ var b=$("ofx-bundle"); if(!b)return;
+    var N=bunN(), n=BUN.picks.length, ready=n>=N, each=(CONFIG.bundle&&CONFIG.bundle.each)||95, total=(CONFIG.bundle&&CONFIG.bundle.total)||285, save=(CONFIG.bundle&&CONFIG.bundle.save)||72;
+    var status = n===0 ? ("Add any "+N+" shirts below \u2014 $"+each+" each, $"+total+" for three.")
+      : ready ? ("Three-pack ready. $"+total+(bunSaved()>0?(" \u2014 you save $"+bunSaved()+".") : "."))
+      : n===(N-1) ? ("One more unlocks $"+each+" each.")
+      : (n+" of "+N+" in. Add "+(N-n)+" more for $"+each+" each.");
+    var cta = ready ? ('<button type="button" class="bun-cta" data-buncheckout="1">Add three-pack to bag \u2014 $'+total+'</button>')
+      : ('<button type="button" class="bun-cta" disabled aria-disabled="true">Add '+(N-n)+' more for $'+each+' each</button>');
+    b.innerHTML =
+      '<div class="bun-top"><div class="bun-h">Build a three-pack</div><div class="bun-off">$'+each+' each \u00b7 save up to $'+save+'</div></div>'+
+      '<div class="bun-slots">'+bunSlots()+'</div>'+
+      '<div class="bun-status">'+status+'</div>'+cta+
+      '<div class="bun-reassure">Free shipping over $100 \u00b7 Free exchanges \u00b7 Duties included</div>';
+    b.classList.toggle("ready",ready); b.classList.toggle("has",n>0);
+  }
+  function bunSync(){ var N=bunN(), full=BUN.picks.length>=N, btns=document.querySelectorAll(".qadd");
+    for(var i=0;i<btns.length;i++){ var el=btns[i], h=el.getAttribute("data-h"), sz=el.getAttribute("data-sz"), inb=bunHas(h,sz);
+      el.classList.toggle("inbun",inb); el.classList.toggle("bunfull",full&&!inb);
+      var lab=el.querySelector(".qadd-lab"); if(lab)lab.textContent=inb?"In 3-pack":(full?"3-pack full":"Add to 3-pack"); } }
+  if(typeof window!=="undefined"){ window.OTAAbundle={has:bunHas,toggle:bunToggle,remove:bunRemove,clear:bunClear,checkout:bunCheckout,render:bunRender,sync:bunSync,focus:bunFocus,pulse:bunPulse,link:bunLink,size:((CONFIG.bundle&&CONFIG.bundle.size)||3),total:((CONFIG.bundle&&CONFIG.bundle.total)||285),state:BUN}; }
+  (function(){ var b=$("ofx-bundle"); if(!b)return; bunRender();
+    b.addEventListener("click",function(e){
+      var rm=e.target.closest?e.target.closest("[data-bunremove]"):null; if(rm){ e.preventDefault(); bunRemove(parseInt(rm.getAttribute("data-bunremove"),10)); return; }
+      var co=e.target.closest?e.target.closest("[data-buncheckout]"):null; if(co){ e.preventDefault(); bunCheckout(); return; } }); })();
+
+  function occOf(p){
+    if(p.occasion&&p.occasion.length) return p.occasion;
+    var t=String(p.title).toLowerCase(), w=p.weave, cuff=p.cuff, o=[];
+    var white=t.indexOf("white")>=0, lightblue=t.indexOf("light blue")>=0;
+    var rich=/(navy|black|purple|lavender|pink)/.test(t), gingham=/(gingham|check)/.test(t), stripe=/(stripe|pinstripe)/.test(t);
+    if((white||lightblue||t.indexOf("blue")>=0||/(navy|gray|grey)/.test(t))&&!gingham) o.push("work");
+    if(white||cuff==="F"||(lightblue&&/(poplin|twill|dobby)/.test(w)&&!stripe&&!gingham)) o.push("wedding");
+    if(cuff==="F"||rich||/(dobby|herringbone)/.test(w)) o.push("evening");
+    if(w==="oxford"||gingham||t.indexOf("pink")>=0) o.push("everyday");
+    return o.length?o:["work"];
+  }
+  var _badges=null;
+  function perfBadges(){
+    if(_badges) return _badges;
+    var cat=(CONFIG.catalog||[]);
+    var sold=cat.slice().filter(function(p){return p.sold!=null;}).sort(function(a,b){return b.sold-a.sold;});
+    var top=sold.length?sold[0].handle:null, bought={}; sold.slice(0,5).forEach(function(p){bought[p.handle]=1;});
+    var trueSet={}; cat.forEach(function(p){ if(p.ret!=null&&p.ret<=0.045&&(p.sold||0)>=20) trueSet[p.handle]=1; });
+    _badges={top:top,bought:bought,trueToSize:trueSet};
+    return _badges;
+  }
+  // a "what it's for" callout, specific to the shirt's colour / cut / weave
+  function charPill(p){
+    if(p.tag) return p.tag;                       // curated per-shirt label from the catalog (Boardroom-ready, Black-tie ready, ...); legacy items fall back to the title logic below
+    var t=String(p.title).toLowerCase(), w=p.weave, cuff=p.cuff;
+    var stripe=/(stripe|pinstripe)/.test(t), gingham=/(gingham|check)/.test(t);
+    if(cuff==="F") return "Black-tie ready";
+    if(t.indexOf("white")>=0 && !stripe && !gingham && t.indexOf("and blue")<0) return "Goes with everything";
+    if(w==="oxford"||gingham) return "Smart-casual";
+    if(/(black|purple|lavender)/.test(t)) return "Statement colour";
+    if(t.indexOf("navy")>=0) return "Boardroom navy";
+    if(stripe) return "Business stripe";
+    if(t.indexOf("blue")>=0) return "Boardroom blue";
+    if(/(gray|grey)/.test(t)) return "Versatile neutral";
+    return "";
+  }
+  function pillsFor(p){
+    var b=perfBadges(), out=[];
+    if(b.top===p.handle) out.push(["buy","#1 best seller"]);            // proof (one, the strongest it earns)
+    else if(b.trueToSize[p.handle]) out.push(["fit","True to size"]);
+    else if(b.bought[p.handle]) out.push(["buy","Bestseller"]);
+    var c=charPill(p); if(c) out.push(["cat",c]);                       // what it's for (one)
+    return out.slice(0,2);
+  }
+  function productsFor(fitKey,size,occasion,sort){
+    occasion=occasion||"all"; sort=sort||"popular";
+    var all=(CONFIG.catalog||[]).filter(function(p){return p.fit===fitKey;});
+    function q(p){ return p.stock?p.stock[size]:undefined; }
+    function ok(p){ var v=q(p); return v==null?true:v>0; }   // unknown (e.g. XXXL not in snapshot) -> treat as available
+    function matchOcc(p){ return occasion==="all" || occOf(p).indexOf(occasion)>=0; }
+    function key(p){ return sort==="price"?(p.price||0) : sort==="trust"?(p.ret==null?9:p.ret) : -(p.sold||0); } // popular = most sold (negated for asc compare)
+    var ranked=all.slice().sort(function(a,b){
+      var ma=matchOcc(a)?1:0, mb=matchOcc(b)?1:0; if(ma!==mb)return mb-ma;   // on-occasion first (soft filter -> never an empty grid)
+      var oa=ok(a)?1:0, ob=ok(b)?1:0; if(oa!==ob)return ob-oa;              // then in-your-size
+      var ka=key(a), kb=key(b); if(ka!==kb)return ka-kb;                    // then the chosen sort
+      if(!!b.best!==!!a.best)return (b.best?1:0)-(a.best?1:0);
+      return (q(b)||0)-(q(a)||0);
+    });
+    return {all:ranked, fitCount:all.length, inSize:all.filter(ok).length, occCount:all.filter(matchOcc).length};
+  }
+  function altSizes(p,size){ var out=[],o=["S","M","L","XL","XXL","XXXL"],i,v; for(i=0;i<o.length;i++){ if(o[i]!==size){ v=p.stock?p.stock[o[i]]:0; if(v&&v>0)out.push(o[i]); } } return out; }
+  function paintShop(fit,size){
+    var grid=$("ofx-shopgrid"), sub=$("shop-sub"), empty=$("ofx-shopempty"), all=$("ofx-shopall"), bar=$("ofx-shopfilter");
+    var occ=state.occasion||"all";
+    var r=productsFor(fit.key,size,occ,"popular"), max=CONFIG.maxProducts||12;
+    /* v13: the cap curates SLIM (ranked on real sales data). Classic has no sales history yet,
+       so a "top 12" would be arbitrary exclusion — show the full range until data exists to rank. */
+    if(fit.key==="classic") max=r.all.length;
+    var col=CONFIG.collection&&CONFIG.collection[fit.key];
+    if(all){ if(col){ all.href=withUtm(col); all.textContent="View all "+fit.name+" shirts"; } else { all.textContent=""; } }
+    if($("ofx-occ")) Array.prototype.forEach.call($("ofx-occ").querySelectorAll("button"),function(x){x.classList.toggle("on",x.dataset.o===occ);});
+    if(!grid) return r;
+    if(r.fitCount===0){
+      grid.innerHTML=""; if(bar) bar.style.display="none";
+      empty.innerHTML="The "+fit.name+" range isn't live yet — <span class='lnk' data-shopswitch='"+(fit.key==="classic"?"slim":"classic")+"'>see our "+(fit.key==="classic"?"Slim":"Classic")+" shirts</span> instead.";
+      empty.hidden=false; if(sub) sub.textContent=fit.name+" · "+size; return r;
+    }
+    if(bar) bar.style.display="";
+    empty.hidden=true; empty.innerHTML="";
+    var OCCL={work:"work",wedding:"weddings & formal",evening:"evening",everyday:"everyday"};
+    if(sub){
+      sub.textContent = (occ!=="all")
+        ? (fit.name+" · size "+size+" · "+r.occCount+(r.occCount===1?" shirt":" shirts")+" for "+OCCL[occ])
+        : (fit.name+" · size "+size+" · "+r.inSize+(r.inSize===1?" shirt":" shirts")+" in your size");
+    }
+    grid.innerHTML=r.all.slice(0,max).map(function(p){
+      var v=p.stock?p.stock[size]:undefined, badge,cls;
+      if(v==null){ cls="in"; badge="View"; }
+      else if(v===0){ cls="out"; var alt=altSizes(p,size); badge=alt.length?("In "+alt.slice(0,3).join(", ")):"Sold out"; }
+      else if(v<=5){ cls="low"; badge="Only "+v+" left"; }
+      else { cls="in"; badge="Your size ✓"; }
+      var chip=(p.iron==="N"?"Non-iron":"Easy-iron")+" · "+(WEAVE[p.weave]||"Cotton")+(p.cuff==="F"?" · French cuff":"");
+      var pills=pillsFor(p).map(function(x){return '<span class="ppill '+x[0]+'">'+x[1]+'</span>';}).join("");
+      var addable=(v!=null&&v>0&&CONFIG.quickAdd!==false&&p.variants&&p.variants[size]);
+      var _inb=!!(typeof window!=="undefined"&&window.OTAAbundle&&window.OTAAbundle.has(p.handle,size));
+      var _bfull=(!_inb)&&!!(typeof window!=="undefined"&&window.OTAAbundle&&window.OTAAbundle.state&&window.OTAAbundle.state.picks.length>=((CONFIG.bundle&&CONFIG.bundle.size)||3));
+      var _qlab=_inb?"In 3-pack":(_bfull?"3-pack full":"Add to 3-pack");
+      var qbtn=addable?'<button class="qadd'+(_inb?' inbun':(_bfull?' bunfull':''))+'" type="button" data-h="'+p.handle+'" data-sz="'+size+'" aria-label="Add size '+size+' of '+String(p.title).replace(/"/g,"")+' to your three-pack"><svg class="bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.4 8h11.2l-1 11.6H7.4L6.4 8Z"/><path d="M9.2 8a2.8 2.8 0 0 1 5.6 0"/></svg><span class="qadd-lab">'+_qlab+'</span></button>':'';
+      return '<div class="pcard" data-h="'+p.handle+'">'+
+        '<a class="plink" href="'+productUrl(p)+'" target="_blank" rel="noopener">'+
+        '<div class="pimg"><img src="'+cdnW(p.image,480)+'" width="480" height="480" alt="'+String(p.title).replace(/"/g,"")+'" loading="lazy"></div>'+
+        '<div class="pbody"><div class="ppills">'+pills+'</div><div class="ptitle">'+p.title+'</div><div class="pchip">'+chip+'</div>'+
+        '<div class="pfoot"><span class="pprice">$'+p.price+'</span><span class="pbadge '+cls+'">'+badge+'</span></div></div>'+
+        '</a>'+qbtn+'</div>';
+    }).join("");
+    return r;
+  }
+
+  function fitWhy(r){
+    var slim=!r.fit.roomy, est=state.mode==="estimate", b=state.build;
+    if(slim) return (est&&b==="Athletic")?"Slim suits your athletic build — room through the chest, clean through the waist."
+           :(est&&b==="Fuller")?"A trim, modern line — Classic would give more room through the middle if you'd prefer."
+           :"Slim runs trim — a close, tailored line through the body.";
+    return (est&&b==="Athletic")?"Classic gives easy room through the body — go Slim if you want it sharper."
+         :"Classic is the roomier cut — comfortable through the chest and waist, never boxy.";
+  }
+
+  function render(){
+    var r=recommend(state); lastRec=r;
+    $("r-pill").textContent=r.fit.name+" Fit";
+    $("r-size").textContent=r.sizeRow.label;
+    var ci=(r.sizeRow.eu/2.54).toFixed(1);   // displayed NECK = wearable neck = EU size in cm (matches the PDP, e.g. L = 42cm = 16.5"). The collarstand band length (collar field, = neck +1.4cm overlap) is used only for fit-matching, never shown.
+    $("r-sub").textContent = CONFIG.market==="US" ? ("Neck "+ci+"″ · sleeve "+(r.sizeRow.sleeve/2.54).toFixed(0)+"″") : ("EU "+r.sizeRow.eu+" · collar "+ci+"″ · sleeve "+Math.round(r.sizeRow.sleeve)+"cm");
+    var ss=$("r-sizestock");
+    if(ss){ var stk=CONFIG.productStock, q=(state.lockFit&&stk)?stk[r.sizeRow.label]:null;
+      if(q==null){ ss.style.display="none"; }
+      else { var low=q<=8; ss.className="sizestock"+(low?" low":""); ss.style.display="";
+        ss.innerHTML='<span class="dot"></span>'+(low?("Only "+q+" left in your "+r.sizeRow.label):("In stock in your "+r.sizeRow.label)); } }
+    $("r-reason").textContent=r.reason;
+    var on=r.confidence==="High"?3:r.confidence==="Medium"?2:1, segs=$("r-segs").children;
+    for(var i=0;i<3;i++) segs[i].className=i<on?"on":"";
+    $("r-confword").textContent=r.confTitle;
+    $("r-confnote").textContent=r.confNote;
+    if(resInner) resInner.setAttribute("data-fit", r.fitKey);   // Slim vs Classic visual treatment
+    $("r-fitmap").innerHTML=r.fit_map.map(function(m){ var pos=clamp((m.score+1)/2,0,1),w=22,left=pos*(100-w),col=VC[m.verdict];
+      return '<div class="fmrow"><span class="fn">'+m.nm+'</span><span class="track"><span class="mid"></span><span class="fill" style="left:'+left+'%;width:'+w+'%;background:'+col+'"></span></span><span class="vd" style="color:'+col+'">'+m.verdict+'</span></div>'; }).join("");
+    $("r-watch").innerHTML=r.watch?'<div class="watch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8860A" stroke-width="1.7"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.3"/></svg><span class="tx">'+r.watch+'</span></div>':"";
+    $("r-alt").innerHTML=(r.alt&&r.alt.size)?'<div class="alt">Prefer '+r.alt.when.replace(/^for /,"")+'? <span class="lnk" data-altfit="'+r.alt.fitKey+'">Switch to '+r.alt.fit+' '+r.alt.size+'</span></div>':"";
+    $("r-fabricnote").textContent=r.fabricNote||"";
+    // --- honesty + reassurance notes (read real engine values; no sizing change) ---
+    $("r-fitwhy").textContent=fitWhy(r);
+    var mref=(typeof CONFIG.fitReference==="function")?(CONFIG.fitReference(r.fitKey,r.sizeRow.label)||""):"";
+    $("r-modelref").innerHTML=mref?('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="7" r="3.2"/><path d="M5 21c0-4 3.4-6 7-6s7 2 7 6"/></svg><span>'+mref+'</span>'):"";
+    // collar vs body trade-off — the #1 formal-shirt fit failure
+    var sizes=r.fit.sizes, idx=sizes.indexOf(r.sizeRow), isTop=idx===sizes.length-1, collarTight=r.fit_map[0].verdict==="Tight", cnote="";
+    if(r.driver==="collar" && idx>0){
+      if(collarTight && !isTop){
+        // neck runs full for the chest, and the chest held the size down — the collar will be snug, and the FIX is to size up
+        cnote='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21V9M8 13l4 4 4-4"/><circle cx="12" cy="5.5" r="2.5"/></svg><span>Your neck runs full for your chest, so '+r.sizeRow.label+' sits snug at the collar. If you button to the top for a tie, the size up gives the neck room — a touch looser through the body.</span>';
+      } else if(!collarTight){
+        // collar drove the size up and now closes comfortably — the option is to size DOWN for a trimmer, open-necked look
+        cnote='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21V9M8 13l4 4 4-4"/><circle cx="12" cy="5.5" r="2.5"/></svg><span>Sized to your neck rather than your chest, so it closes cleanly for a tie. Prefer it trimmer and wear it open-necked? The size below would suit.</span>';
+      }
+      // collar tight AND already the largest size: no note here — the edge-of-range note below covers it
+    }
+    $("r-collarnote").className=cnote?"tip":""; $("r-collarnote").innerHTML=cnote;
+    // edge-of-range honesty
+    var big=sizes[sizes.length-1], small=sizes[0], chestV=r.fit_map[1].verdict, edge="";
+    if(r.sizeRow===big && (chestV==="Tight" || r.body.chest>big.chest+3)) edge="You're at the top of our range — "+big.label+" is the largest we make, so expect a closer, snugger fit through the chest"+(r.fit_map[0].verdict==="Tight"?" and collar.":".");
+    else if(r.sizeRow===small && r.body.chest<small.chest-8) edge=small.label+" is our smallest — it may sit a touch loose; a quick tailor's nip gives a sharp finish.";
+    $("r-edge").innerHTML=edge?('<div class="watch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8860A" stroke-width="1.7"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.3"/></svg><span class="tx">'+edge+'</span></div>'):"";
+    // wash-tested + cloth note (real)
+    var wv=CONFIG.currentWeave, wvNote={oxford:"This oxford is a fuller, textured weave — it sits a touch roomier.",twill:"Smooth twill — crisp and true to size.",poplin:"Fine poplin — light, crisp and true to size.",dobby:"OTAA's dobby weave — silky, structured cotton that holds its shape.",herringbone:"Herringbone — a substantial, structured weave, true to size."}[wv]||"";
+    var washTx=[wvNote,(CONFIG.washNote||"")].filter(Boolean).join(" ");
+    $("r-wash").innerHTML=washTx?('<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>'+washTx+'</span>'):"";
+    // paint "shirts you can wear", then drive the CTA off it
+    var shop=paintShop(r.fit, r.sizeRow.label);
+    var _vid=(CONFIG.variantMap[r.fitKey]||{})[r.sizeRow.label]||null;
+    if(_vid){ $("r-cta").textContent="Add "+r.fit.name+" · "+r.sizeRow.label+" to bag"; $("m-cta").textContent="Add to bag"; }
+    else { var n=shop.inSize||shop.fitCount; var t=n?("See your "+n+" shirt"+(n===1?"":"s")):"Browse shirts"; $("r-cta").textContent=t; $("m-cta").textContent=t; }
+    $("m-pill").textContent=r.fit.name; $("m-size").textContent=r.sizeRow.label; $("m-conf").textContent=r.mTag;
+    var _lv=$("r-live"); if(_lv) _lv.textContent=r.fit.name+" fit, size "+r.sizeRow.label+". "+r.confTitle+". "+r.reason;
+    var mb=$("ofx-mbar"); if(mb) mb.setAttribute("data-fit", r.fitKey);
+    var _nat=r.naturalKey;
+    if(CONFIG.currentFit&&_nat&&_nat!==CONFIG.currentFit){ $("ofx-xfit").classList.add("show");
+      var _room=(_nat==="classic");
+      $("xfit-tx").innerHTML="This is our <b>"+(CONFIG.currentFit==="slim"?"Slim":"Classic")+"</b> cut. "+(_room?"From your answers, our <b>Classic</b> fit will sit more comfortably through the body":"If you prefer a sharper line, our <b>Slim</b> fit sits closer to the body")+(r.naturalSize?" \u2014 you\u2019d take an "+r.naturalSize+" there":"")+".";
+      $("xfit-btn").textContent="View the "+FITS[_nat].name+" range"; }
+    else $("ofx-xfit").classList.remove("show");
+    tweenShirt(r.fit, r.fit.sizes.indexOf(r.sizeRow));
+    notifySettled();
+  }
+
+  function segGroup(id,key){ var box=$(id); if(!box) return;
+    Array.prototype.forEach.call(box.querySelectorAll("button"),function(b){ b.onclick=function(){
+      Array.prototype.forEach.call(box.querySelectorAll("button"),function(x){x.classList.remove("on");});
+      b.classList.add("on"); state[key]=b.dataset.v; markTouched(); render(); }; }); }
+  segGroup("ofx-cut","cut"); segGroup("ofx-feel","feel"); segGroup("ofx-build","build"); segGroup("ofx-sil","sil"); segGroup("ofx-close","close");
+
+  Array.prototype.forEach.call($("ofx-modes").querySelectorAll(".mode"),function(b){ b.onclick=function(){
+    Array.prototype.forEach.call($("ofx-modes").querySelectorAll(".mode"),function(x){x.classList.remove("on");x.setAttribute("aria-selected","false");});
+    b.classList.add("on"); b.setAttribute("aria-selected","true"); state.mode=b.dataset.m;
+    $("pane-anchor").classList.toggle("show",state.mode==="anchor");
+    $("pane-measure").classList.toggle("show",state.mode==="measure");
+    $("pane-estimate").classList.toggle("show",state.mode==="estimate"); markTouched(); if(CONFIG.onEvent)CONFIG.onEvent("mode",{mode:state.mode}); render(); }; });
+
+  function ftin(cm){ var t=Math.round(cm/2.54),f=Math.floor(t/12),i=t%12; return f+"′"+i+"″"; }
+  function fmt(){
+    $("v-height").innerHTML=state.heightUnit==="cm"?state.height+"<small>cm</small>":ftin(state.height);
+    $("v-weight").innerHTML=state.weightUnit==="kg"?state.weight+"<small>kg</small>":Math.round(state.weight*2.2046)+"<small>lb</small>";
+    $("v-collar").innerHTML=state.collarUnit==="in"?state.collar+"<small>in</small>":(state.collar*2.54).toFixed(1)+"<small>cm</small>";
+    $("v-neck").innerHTML=state.measureUnit==="cm"?state.neck+"<small>cm</small>":(state.neck/2.54).toFixed(1)+"<small>in</small>";
+    $("v-chest").innerHTML=state.measureUnit==="cm"?state.chest+"<small>cm</small>":(state.chest/2.54).toFixed(1)+"<small>in</small>";
+    $("v-waist").innerHTML=state.measureUnit==="cm"?state.waist+"<small>cm</small>":(state.waist/2.54).toFixed(1)+"<small>in</small>";
+  }
+  function bind(id,key,after){ var el=$(id); el.oninput=function(){ state[key]=parseFloat(el.value); if(after)after(); markTouched(); fmt(); render(); }; }
+  bind("s-height","height",guard); bind("s-weight","weight",guard);
+  bind("s-collar","collar"); bind("s-neck","neck"); bind("s-chest","chest"); bind("s-waist","waist");
+  function unit(id,fn){ Array.prototype.forEach.call($(id).querySelectorAll("button"),function(b){ b.onclick=function(){ Array.prototype.forEach.call($(id).querySelectorAll("button"),function(x){x.classList.remove("on");}); b.classList.add("on"); fn(b.dataset.u); fmt(); }; }); }
+  unit("u-height",function(u){state.heightUnit=u;}); unit("u-weight",function(u){state.weightUnit=u;});
+  unit("u-collar",function(u){state.collarUnit=u;}); unit("u-measure",function(u){state.measureUnit=u;});
+  function guard(){ var bmi=state.weight/Math.pow(state.height/100,2),g=$("ofx-guard");
+    if(bmi<16||bmi>45){ g.classList.add("show"); $("guard-tx").textContent=bmi>45?"These look unusual together — double-check height and weight. We'll still estimate, but a shirt you own will be far more reliable.":"These look unusual together — double-check height and weight. We'll still estimate, but your measurements will be far more reliable."; }
+    else g.classList.remove("show"); }
+
+  $("r-alt").addEventListener("click",function(e){ var t=e.target; if(t.dataset&&t.dataset.altfit){ state.sil=t.dataset.altfit; markTouched(); if(CONFIG.onEvent)CONFIG.onEvent("switch_fit",{fit:t.dataset.altfit,from:"alt"}); render(); Array.prototype.forEach.call($("ofx-sil").querySelectorAll("button"),function(x){x.classList.toggle("on",x.dataset.v===state.sil);}); } });
+  function addToBag(){ if(!lastRec)return;
+    var v=(CONFIG.variantMap[lastRec.fitKey]||{})[lastRec.sizeRow.label]||null, p=recPayload();
+    if(!v){ var has=productsFor(lastRec.fitKey,lastRec.sizeRow.label).fitCount>0, col=CONFIG.collection&&CONFIG.collection[lastRec.fitKey];
+      if(!has && col){ if(CONFIG.onEvent)CONFIG.onEvent("shop_fit",p); if(typeof window!=="undefined")window.location.href=withUtm(col); return; }
+      if(CONFIG.onEvent)CONFIG.onEvent("see_shirts",p); var s=$("ofx-shoplist"); if(s&&s.scrollIntoView)s.scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"start"}); return; }
+    if(CONFIG.onEvent)CONFIG.onEvent("add_to_cart",p);
+    CONFIG.onAddToCart(lastRec.fit.name,lastRec.sizeRow.label,v,p);
+    var lbl=lastRec.sizeRow.label;
+    ["r-cta","m-cta"].forEach(function(id){ var c=$(id); if(!c)return; if(!c.dataset.orig)c.dataset.orig=c.textContent; c.textContent="Added "+lbl+" ✓"; c.classList.add("added"); });
+    if(window._ofxAdded)clearTimeout(window._ofxAdded);
+    window._ofxAdded=setTimeout(function(){ ["r-cta","m-cta"].forEach(function(id){ var c=$(id); if(!c)return; if(c.dataset.orig){c.textContent=c.dataset.orig; c.removeAttribute("data-orig");} c.classList.remove("added"); }); },2200); }
+  $("r-cta").onclick=addToBag; $("m-cta").onclick=addToBag;
+  // product-card click -> analytics (link still navigates)
+  $("ofx-shopgrid").addEventListener("click",function(e){
+    var add=e.target.closest?e.target.closest(".qadd"):null;
+    if(add){ e.preventDefault();
+      var ah=add.getAttribute("data-h"),asz=add.getAttribute("data-sz"),ap=(CONFIG.catalog||[]).filter(function(x){return x.handle===ah;})[0];
+      var vid=ap&&ap.variants?ap.variants[asz]:null; if(!ap||!vid)return;
+      if(typeof window!=="undefined"&&window.OTAAbundle){ window.OTAAbundle.toggle(ah,asz,vid,ap); }
+      return; }
+    var a=e.target.closest?e.target.closest(".pcard"):null; if(!a)return; var h=a.getAttribute("data-h"),p=(CONFIG.catalog||[]).filter(function(x){return x.handle===h;})[0]; if(p&&CONFIG.onProductClick)CONFIG.onProductClick(p,lastRec?lastRec.sizeRow.label:null); });
+  $("ofx-shopempty").addEventListener("click",function(e){ var t=e.target; if(t.dataset&&t.dataset.shopswitch){ state.sil=t.dataset.shopswitch; markTouched(); render(); var box=$("ofx-sil"); if(box)Array.prototype.forEach.call(box.querySelectorAll("button"),function(x){x.classList.toggle("on",x.dataset.v===state.sil);}); } });
+  function bindShopCtl(id,stateKey,dataKey,ev){ var box=$(id); if(!box)return;
+    box.addEventListener("click",function(e){ var b=e.target.closest?e.target.closest("button"):null; if(!b||!box.contains(b))return;
+      var v=b.dataset[dataKey]; if(!v||state[stateKey]===v)return; state[stateKey]=v;
+      if(lastRec) paintShop(lastRec.fit,lastRec.sizeRow.label);
+      if(CONFIG.onEvent) CONFIG.onEvent(ev, dataKey==="o"?{occasion:v}:{sort:v}); }); }
+  bindShopCtl("ofx-occ","occasion","o","shop_occasion");
+  $("xfit-btn").onclick=function(){ if(!lastRec)return; var _nat=lastRec.naturalKey, _cur=CONFIG.currentFit;
+    if(_cur&&_nat&&_nat!==_cur){ var _col=CONFIG.collection&&CONFIG.collection[_nat];
+      if(CONFIG.onEvent)CONFIG.onEvent("shop_fit",{fit:_nat,from:"xfit_banner",size:(lastRec.naturalSize||null)});
+      if(_col&&typeof window!=="undefined"){ window.location.href=withUtm(_col); return; } }
+    if(CONFIG.onEvent)CONFIG.onEvent("switch_fit",{fit:(_nat||lastRec.fitKey),from:"banner"}); if(CONFIG.onSwitchFit)CONFIG.onSwitchFit(_nat||lastRec.fitKey); };
+  $("r-chartlink").onclick=function(){ var c=$("ofx-chart"); c.open=true; if(CONFIG.onEvent)CONFIG.onEvent("chart_open",{}); c.scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"center"}); };
+  (function(){ var j=$("w-chartjump"), c=$("ofx-chart"), root=document.querySelector(".ofx"); if(!j||!c) return;
+    j.onclick=function(){ if(root) root.classList.add("show-chart"); c.open=true; if(CONFIG.onEvent)CONFIG.onEvent("chart_open",{from:"method"}); try{ c.scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"start"}); }catch(e){} }; })();
+
+  var chartFit="slim",chartUnit="cm";
+  function buildChart(){ var fit=FITS[chartFit],cv=function(x){return chartUnit==="cm"?Math.round(x):(x/2.54).toFixed(1);};
+    var rows=[["Collar","eu"],["Chest","chest"],["Waist","waist"],["Shoulder","shoulder"],["Sleeve","sleeve"]];   // Collar row = wearable NECK size (EU = neck in cm; matches the PDP). The other rows are the shirt's finished garment measurements. (Fit-matching still uses the collarstand band internally.)
+    var h="<thead><tr><th>"+(chartUnit==="cm"?"cm":"in")+"</th>"; fit.sizes.forEach(function(s){h+="<th>"+s.label+"</th>";}); h+="</tr></thead><tbody>";
+    rows.forEach(function(row){ h+="<tr><td>"+row[0]+"</td>"; fit.sizes.forEach(function(s){h+="<td>"+cv(s[row[1]])+"</td>";}); h+="</tr>"; }); h+="</tbody>"; $("ofx-ctable").innerHTML=h;
+    $("ofx-cnote").textContent=fit.roomy?"Classic runs roomier through the chest and waist — about one size more generous than Slim at the same letter.":"Slim runs trim and sits close to the body. When you're between sizes we lean you up, so it sits clean rather than tight.";
+    (function(){ var el=$("ofx-cmodel"); if(!el) return; var ms=CONFIG.modelSize;
+      if(!ms){ el.hidden=true; el.innerHTML=""; return; }
+      var W={S:"Small",M:"Medium",L:"Large",XL:"Extra-Large",XXL:"2XL",XXXL:"3XL"}[ms]||ms, art=/^[AEIOU]/i.test(W)?"an":"a";
+      el.hidden=false; el.innerHTML="The model in the product photos is wearing "+art+" <b>"+W+" ("+ms+")</b>."; })();
+  }
+  Array.prototype.forEach.call($("ofx-ctabs").querySelectorAll("button[data-f]"),function(b){ b.onclick=function(){ Array.prototype.forEach.call($("ofx-ctabs").querySelectorAll("button[data-f]"),function(x){x.classList.remove("on");}); b.classList.add("on"); chartFit=b.dataset.f; buildChart(); }; });
+  Array.prototype.forEach.call($("ofx-ctabs").querySelectorAll("button[data-u]"),function(b){ b.onclick=function(){ Array.prototype.forEach.call($("ofx-ctabs").querySelectorAll("button[data-u]"),function(x){x.classList.remove("on");}); b.classList.add("on"); chartUnit=b.dataset.u; buildChart(); }; });
+
+  // ---- market units (AU cm / US inch) ----
+  function applyMarketUnits(){
+    var us=CONFIG.market==="US";
+    state.measureUnit=us?"in":"cm"; state.collarUnit="in"; chartUnit=us?"in":"cm";
+    var mu=$("u-measure"); if(mu) Array.prototype.forEach.call(mu.querySelectorAll("button"),function(x){x.classList.toggle("on",x.dataset.u===state.measureUnit);});
+    var uc=$("u-collar"); if(uc) Array.prototype.forEach.call(uc.querySelectorAll("button"),function(x){x.classList.toggle("on",x.dataset.u===state.collarUnit);});
+    var cb=$("ofx-ctabs"); if(cb) Array.prototype.forEach.call(cb.querySelectorAll('button[data-u]'),function(x){x.classList.toggle("on",x.dataset.u===chartUnit);});
+    buildChart();
+  }
+
+  // ---- prefill from a saved profile (returning customer; Karam passes CONFIG.savedProfile) ----
+  function reflectSeg(id,val){ var box=$(id); if(!box)return; Array.prototype.forEach.call(box.querySelectorAll("button"),function(x){x.classList.toggle("on",x.dataset.v===String(val));}); }
+  function reflectMode(m){ Array.prototype.forEach.call($("ofx-modes").querySelectorAll(".mode"),function(x){var on=x.dataset.m===m; x.classList.toggle("on",on); x.setAttribute("aria-selected",on?"true":"false");}); $("pane-anchor").classList.toggle("show",m==="anchor"); $("pane-measure").classList.toggle("show",m==="measure"); $("pane-estimate").classList.toggle("show",m==="estimate"); }
+  function applyProfile(p){ if(!p)return;
+    ["mode","build","sil","close","cut","feel","fabric","heightUnit","weightUnit","collarUnit","measureUnit"].forEach(function(k){ if(p[k]!=null) state[k]=p[k]; });
+    ["height","weight","collar","neck","chest","waist"].forEach(function(k){ if(p[k]!=null){ state[k]=p[k]; var el=$("s-"+k); if(el) el.value=p[k]; } });
+    if(p.mode) reflectMode(state.mode);
+    reflectSeg("ofx-build",state.build); reflectSeg("ofx-sil",state.sil); reflectSeg("ofx-close",state.close); reflectSeg("ofx-cut",state.cut); reflectSeg("ofx-feel",state.feel);
+    [["u-height","heightUnit"],["u-weight","weightUnit"],["u-collar","collarUnit"],["u-measure","measureUnit"]].forEach(function(u){ var box=$(u[0]); if(box) Array.prototype.forEach.call(box.querySelectorAll("button"),function(x){x.classList.toggle("on",x.dataset.u===state[u[1]]);}); });
+  }
+
+  // ---- email me my size (UI + validation; CONFIG.onEmailSize does the Klaviyo send) ----
+  (function(){ var tog=$("r-emailtoggle"), form=$("r-emailform"), inp=$("r-email"), snd=$("r-emailsend"), msg=$("r-emailmsg"); if(!tog) return;
+    tog.onclick=function(){ if(form.hasAttribute("hidden")){ form.removeAttribute("hidden"); tog.setAttribute("aria-expanded","true"); if(inp.focus)inp.focus(); } else { form.setAttribute("hidden",""); tog.setAttribute("aria-expanded","false"); } };
+    function valid(e){ return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e); }
+    function send(){ var e=(inp.value||"").trim(); msg.className="emailmsg"; if(!valid(e)){ msg.textContent="Enter a valid email."; msg.classList.add("err"); return; }
+      snd.disabled=true; msg.textContent="Sending…"; var p=recPayload(); p.email=e;
+      Promise.resolve(CONFIG.onEmailSize(e,p)).then(function(){ msg.textContent="Sent — check your inbox."; msg.classList.add("ok"); if(CONFIG.onEvent)CONFIG.onEvent("email_size",{size:p.size,fit:p.fitKey}); inp.value=""; },
+        function(){ msg.textContent="Couldn't send just now — try again."; msg.classList.add("err"); }).then(function(){ snd.disabled=false; }); }
+    snd.onclick=send; inp.addEventListener("keydown",function(ev){ if(ev.key==="Enter") send(); });
+  })();
+
+  // ---- region preview toggle (set CONFIG.showMarketToggle=false on a live storefront — the locale picks the market) ----
+  (function(){ var box=$("ofx-mkt"); if(!box) return;
+    if(!CONFIG.showMarketToggle){ box.style.display="none"; return; }
+    Array.prototype.forEach.call(box.querySelectorAll("button"),function(b){ b.classList.toggle("on",b.dataset.mk===CONFIG.market); b.onclick=function(){
+      Array.prototype.forEach.call(box.querySelectorAll("button"),function(x){x.classList.remove("on");}); b.classList.add("on");
+      CONFIG.market=b.dataset.mk; applyMarketUnits(); fmt(); render(); if(CONFIG.onEvent)CONFIG.onEvent("market",{market:CONFIG.market}); }; });
+  })();
+
+  // ---- CONFIG-driven static copy (AI label, exchange reassurance, optional stat) ----
+  (function(){ var at=$("r-aicue-tx"), ac=$("r-aicue"); if(at) at.textContent=CONFIG.aiLabel||""; if(ac&&!CONFIG.aiLabel) ac.style.display="none";
+    var rt=$("r-reassure-tx"), rb=$("r-reassure"); if(rt) rt.textContent=CONFIG.exchangeNote||""; if(rb&&!CONFIG.exchangeNote) rb.style.display="none";
+    var sn=$("r-statnote"); if(sn) sn.textContent=CONFIG.statNote||""; })();
+
+  // ---- PDP fit lock: commit the whole panel to the shirt's own cut ----
+  function applyFitLock(){
+    var lf=(CONFIG.currentFit==="slim"||CONFIG.currentFit==="classic")?CONFIG.currentFit:null;
+    state.lockFit=lf;
+    if(!lf) return;                                              // universal mode — leave the fit chooser in place
+    var nm=FITS[lf].name, title=CONFIG.productTitle||"";
+    var head=document.querySelector(".ofx .head"); if(head) head.classList.add("locked");
+    var eb=document.querySelector(".ofx .head .eyebrow"); if(eb) eb.textContent="Find your size";
+    var h1=document.querySelector(".ofx .head h1");      if(h1) h1.textContent=(title||(nm+" Shirt"));
+    if(h1 && !document.getElementById("ofx-fitline")){ var fl=document.createElement("div"); fl.id="ofx-fitline"; fl.className="fitline"; fl.textContent=nm+" fit"; h1.parentNode.insertBefore(fl, h1.nextSibling); }
+    var since=document.querySelector(".ofx .head .since"); if(since) since.textContent="";
+    var silF=$("ofx-silfield"); if(silF) silF.style.display="none";   // silhouette is a fit choice — fixed by the product here
+    state.sil="auto";
+    chartFit=lf;                                                     // size chart shows this cut only
+    var tabs=$("ofx-ctabs"); if(tabs) Array.prototype.forEach.call(tabs.querySelectorAll("button[data-f]"),function(b){ b.style.display="none"; });
+    var sum=document.querySelector(".ofx .chart summary"); if(sum) sum.innerHTML=nm+' fit — full measurements <span class="ch">⌄</span>';
+    var ci=document.querySelector(".ofx .cintro"); if(ci) ci.innerHTML='<b>'+(title?title+" — ":"")+nm+' fit.</b> These are the shirt\u2019s finished measurements — the garment itself, not your body. The easiest way to use them: match against a shirt you already own that fits the way you like.';
+    var sp=$("r-sellpoints"); if(sp){ sp.innerHTML=""; (CONFIG.productBadges||[]).forEach(function(b){ var s=document.createElement("span"); s.className="sp"; s.textContent=b; sp.appendChild(s); }); }
+  }
+  applyFitLock();
+  state.fabric = CONFIG.fabric || null;
+  applyMarketUnits();
+  if(CONFIG.savedProfile){ applyProfile(CONFIG.savedProfile); markTouched(); }
+  fmt(); buildChart(); guard(); render();
+
+  /* ---- guided wizard: one question per screen (mobile-first) ---- */
+  (function(){
+    var order=["look","details","result"];   // v3 cold-traffic order: easiest question first; the method chooser is an interstitial behind a link
+    var titles={method:"How should we size you?",details:"Your details",look:"Your preferred look",result:"Your recommended size"};
+    var reg={ method:$("w-method"), details:$("w-details"), look:$("w-look"), result:$("w-result") };
+    var prog=$("ofx-wprog"), live=$("ofx-wlive"), backBtn=$("w-back"), nextBtn=$("w-next"), navBar=$("ofx-wnav");
+    var rootEl=document.querySelector(".ofx");
+    var cur=0;
+    function show(i){
+      cur=Math.max(0,Math.min(order.length-1,i));
+      order.forEach(function(k,idx){ var el=reg[k]; if(el) el.classList.toggle("w-on", idx===cur); });
+      var onResult=(order[cur]==="result");
+      if(rootEl) rootEl.classList.toggle("show-shop", onResult);
+      if(onResult){ try{ render(); }catch(e){} }
+      if(prog){ var segs=prog.querySelectorAll(".seg");
+        Array.prototype.forEach.call(segs,function(s,idx){ s.classList.toggle("done", idx<cur); s.classList.toggle("now", idx===cur); });
+        var lbl=prog.querySelector(".lbl"); if(lbl) lbl.textContent="Step "+(cur+1)+" / "+order.length; }
+      if(backBtn){ backBtn.hidden=(cur===0); backBtn.textContent=(onResult?"Edit answers":"Back"); }
+      if(nextBtn){ if(onResult){ nextBtn.hidden=true; } else { nextBtn.hidden=false; nextBtn.textContent=(order[cur+1]==="result"?"See my size":"Next"); } }
+      if(navBar) navBar.style.display=(order[cur]==="method"?"none":"");   /* only the method chooser advances by tap */
+      if(live) live.textContent="Step "+(cur+1)+" of "+order.length+": "+titles[order[cur]];
+      /* v9: answer in place on mobile. Don't scroll on Next/Back — steps swap within the
+         card, so the position stays put. Only realign to the CARD (never the page top) if a
+         tall step has scrolled the question out of view above the viewport. */
+      try{ var _cd=document.querySelector(".ofx .card");
+        if(_cd&&_cd.getBoundingClientRect){ var _r=_cd.getBoundingClientRect();
+          if(_r.top < -8 && _cd.scrollIntoView){ _cd.scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"start"}); } } }catch(e){}
+      try{ var el2=reg[order[cur]], hd=el2&&el2.querySelector(".step,.res-eyebrow,h1,h2,h3"); if(hd){ hd.setAttribute("tabindex","-1"); hd.focus({preventScroll:true}); } }catch(e){}
+    }
+    function next(){ if(order[cur]!=="result") show(cur+1); }
+    function back(){ if(cur>0) show(cur-1); }
+    if(nextBtn) nextBtn.addEventListener("click",next);
+    if(backBtn) backBtn.addEventListener("click",back);
+    var modes=$("ofx-modes");
+    if(modes) modes.addEventListener("click",function(e){ var t=e.target, b=t&&(t.closest?t.closest("button[data-m]"):null); if(b) setTimeout(function(){ show(1); },0); });
+    window._ofxWizard={ show:show, next:next, back:back, go:function(name){ var i=order.indexOf(name); if(i>=0) show(i); } };
+    show(0);
+  })();
+})();
+</script>
+<script>
+(function(){
+  var $=function(id){ return document.getElementById(id); };
+  function fb(){ if(typeof fbq==="function"){ try{ fbq.apply(null,arguments); }catch(e){} } }
+  function dl(ev,data){ window.dataLayer=window.dataLayer||[]; window.dataLayer.push(Object.assign({event:ev},data||{})); } // self-init: events queue even if GTM loads later
+
+  // message-match variants: ?h=2/3/4 swaps the hook so each ad angle lands on its own headline.
+  // 1 (default) pain-generic · 2 product (wrinkle-free) · 3 proof (reviews) · 4 pain-specific (M/L)
+  var LPV={"2":{h:"The wrinkle-free shirt. In your exact size.",s:"Two quick steps across our Slim and Classic cuts — no tape, backed by free exchanges."},
+           "3":{h:"17,500+ reviews. One minute to your size.",s:"Two quick steps — no tape needed. We'll match you to your exact OTAA size, backed by free exchanges."},
+           "4":{h:"Between M and L? Settle it.",s:"Two quick steps — no tape needed. Your exact size in both OTAA cuts, backed by free exchanges."}};
+  var lpv=(function(){ try{ return new URLSearchParams(location.search).get("h")||"1"; }catch(e){ return "1"; } })();
+  if(LPV[lpv]){ var _h=$("lnd-h1"),_s=$("lnd-sub"); if(_h)_h.textContent=LPV[lpv].h; if(_s)_s.textContent=LPV[lpv].s; }
+  dl("otaa_fit_lp_variant",{variant:lpv});
+
+  // seed the funnel for Meta optimisation + retargeting
+  fb("track","ViewContent",{content_name:"size_finder",content_category:"fit_tool",lp_variant:lpv});
+
+  // broken-image hygiene: a strip image that fails is removed; an empty strip removes itself
+  var stp=document.querySelector(".lnd-strip");
+  if(stp){ Array.prototype.forEach.call(stp.querySelectorAll("img"),function(im){
+    im.addEventListener("error",function(){ if(im.parentNode) im.parentNode.removeChild(im);
+      if(!stp.querySelector("img") && stp.parentNode) stp.parentNode.removeChild(stp); }); }); }
+
+  // hero CTA -> first question
+  var b=$("lnd-start");
+  if(b) b.addEventListener("click",function(){ var c=document.querySelector(".ofx .card");
+    if(c&&c.scrollIntoView){ try{ c.scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){ c.scrollIntoView(); } }
+    var m=document.querySelector("#ofx-sil button"); if(m&&m.focus) setTimeout(function(){ try{ m.focus({preventScroll:true}); }catch(e){ m.focus(); } },350); });
+
+  // QuizStart: first genuine interaction with the wizard (fires once)
+  var started=false, card=document.querySelector(".ofx .card");
+  function startOnce(e){ if(started) return; var t=e.target; if(!t||!t.closest||!t.closest("[data-w]")) return;
+    started=true; dl("otaa_fit_quiz_start",{lp_variant:lpv}); fb("trackCustom","QuizStart",{lp_variant:lpv}); }
+  if(card){ card.addEventListener("click",startOnce,true); card.addEventListener("input",startOnce,true); }
+
+  // method chooser: an interstitial behind the link on the details step
+  var link=$("lnd-methodlink"), mword=$("lnd-mword"),
+      wm=$("w-method"), wd=$("w-details"), nav=$("ofx-wnav");
+  if(link) link.addEventListener("click",function(){
+    if(wd) wd.classList.remove("w-on"); if(wm) wm.classList.add("w-on"); if(nav) nav.style.display="none";
+    dl("otaa_fit_method_open",{});
+  });
+  var modes=$("ofx-modes");
+  if(modes) modes.addEventListener("click",function(e){
+    var mb=e.target&&e.target.closest?e.target.closest("button[data-m]"):null; if(!mb) return;
+    setTimeout(function(){ if(wm) wm.classList.remove("w-on"); if(nav) nav.style.display="";
+      var W={estimate:"height & weight",anchor:"a shirt you own",measure:"your measurements"};
+      if(mword) mword.textContent=W[mb.dataset.m]||W.estimate;
+      if(link) link.textContent="Switch method";
+    },10);
+  });
+
+  // mobile sticky money path on the result step
+  var sk=document.createElement("div"); sk.className="lnd-sticky"; sk.id="lnd-sticky";
+  sk.innerHTML='<div class="sk-l"><span class="sk-fit" id="lnd-sk-fit">Your size</span><span class="sk-size" id="lnd-sk-size">\u2014</span></div><button type="button" id="lnd-sk-btn">See your shirts</button>';
+  var host=document.querySelector(".ofx"); if(host) host.appendChild(sk);
+  var skBtn=$("lnd-sk-btn");
+  if(skBtn) skBtn.addEventListener("click",function(){ if(skBtn.getAttribute("data-skmode")==="bundle"&&window.OTAAbundle){ window.OTAAbundle.checkout(); return; } var c=$("r-cta"); if(c) c.click(); });
+  function syncSticky(){
+    var on=!!document.querySelector('[data-w="result"].w-on');
+    if(!on){ sk.classList.remove("on"); return; }
+    var bReady=!!(window.OTAAbundle&&window.OTAAbundle.state&&window.OTAAbundle.state.picks.length>=((window.OTAAbundle&&window.OTAAbundle.size)||3));
+    var p=$("r-pill"), s=$("r-size"), c=$("r-cta");
+    var f=$("lnd-sk-fit"), z=$("lnd-sk-size"), bt=$("lnd-sk-btn");
+    if(bReady){ if(f)f.textContent="Three-pack"; if(z)z.textContent="$"+((window.OTAAbundle&&window.OTAAbundle.total)||285); if(bt){ bt.textContent="Add to bag"; bt.setAttribute("data-skmode","bundle"); } }
+    else{ if(f&&p) f.textContent=p.textContent; if(z&&s) z.textContent=s.textContent; if(bt){ bt.textContent=(c&&/^Add /.test(c.textContent))?"Add to bag":"See your shirts"; bt.setAttribute("data-skmode","size"); } }
+    sk.classList.add("on");
+  }
+  if(typeof window!=="undefined") window.__ofxSyncSticky=syncSticky;
+  ["w-next","w-back"].forEach(function(id){ var el=$(id); if(el) el.addEventListener("click",function(){ setTimeout(function(){ syncSticky();
+    var lb=document.querySelector("#ofx-wprog .lbl"); dl("otaa_fit_step",{step:lb?lb.textContent:"",lp_variant:lpv}); },30); }); });
+  var wr=$("w-result"); if(wr) wr.addEventListener("click",function(){ setTimeout(syncSticky,120); });   // alt-switch etc. re-render the size
+  if(window._ofxWizard&&window._ofxWizard.show){ var _s=window._ofxWizard.show; window._ofxWizard.show=function(i){ _s(i); setTimeout(syncSticky,30); }; }
+})();
+</script>
+<script>
+/* v8 additive scroll reveals — no-ops without IntersectionObserver (server/JSDOM) or under
+   reduced motion; content stays visible either way. Toggles classes only; no engine selector touched. */
+(function(){
+  if(typeof window==="undefined"||!("IntersectionObserver" in window)) return;
+  var mq=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)");
+  if(mq&&mq.matches) return;
+  var els=document.querySelectorAll(".lnd-quotes,.lnd-awards,.lnd-foot");
+  if(!els.length) return;
+  document.documentElement.classList.add("rv-on");
+  for(var i=0;i<els.length;i++) els[i].classList.add("rv");
+  var io=new IntersectionObserver(function(en){ for(var k=0;k<en.length;k++){ if(en[k].isIntersecting){ en[k].target.classList.add("rv-in"); io.unobserve(en[k].target); } } },{threshold:.1,rootMargin:"0px 0px -6% 0px"});
+  for(var j=0;j<els.length;j++) io.observe(els[j]);
+})();
+</script>
+</body>
+</html>
