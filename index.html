@@ -1,501 +1,673 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>OTAA Shirt Meta Economics Dashboard</title>
+<!doctype html>
+<html lang="en" class=""><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OTAA Meta Scaling Calculator</title>
 <style>
-  :root{
-    --black:#0b0b0b;
-    --ink:#171717;
-    --yellow:#ffc400;
-    --yellow-soft:#fff4bf;
-    --white:#ffffff;
-    --paper:#f5f5f2;
-    --line:#deded8;
-    --muted:#6f6f69;
-    --green:#178a52;
-    --green-soft:#e8f6ee;
-    --orange:#d97706;
-    --orange-soft:#fff4e5;
-    --red:#c7382f;
-    --red-soft:#fdebea;
-    --blue:#2368c4;
-    --blue-soft:#eaf2fd;
-    --shadow:0 16px 45px rgba(0,0,0,.10);
-  }
+:root{
+  --black:#0b0b0b;--ink:#171717;--yellow:#ffc400;--yellow-soft:#fff4bf;
+  --white:#fff;--paper:#f5f5f2;--line:#e2e2db;--muted:#6f6f69;
+  --green:#12855a;--green-soft:#e7f6ee;--amber:#c67c11;--amber-soft:#fdf1de;
+  --red:#c33227;--red-soft:#fbeae8;--blue:#2c66c9;--blue-soft:#ecf2fd;
+  --shadow:0 14px 40px rgba(0,0,0,.09);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.4}
+.shell{max-width:1520px;margin:0 auto;padding:20px}
+.hero{background:var(--black);color:#fff;border-radius:22px;padding:22px 26px;display:flex;justify-content:space-between;gap:22px;align-items:center;box-shadow:var(--shadow);flex-wrap:wrap}
+.eyebrow{display:inline-block;background:var(--yellow);color:#000;font-weight:900;font-size:11px;letter-spacing:.12em;padding:6px 11px;border-radius:999px}
+h1{font-size:clamp(24px,3.2vw,40px);margin:10px 0 4px;line-height:1.03}
+.hero p{margin:0;color:#c9c9c4;max-width:780px;font-size:13.5px}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap}
+button{appearance:none;border:none;cursor:pointer;font:inherit;font-weight:800;border-radius:11px;padding:11px 15px;transition:.14s}
+button:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--yellow);color:#000}
+.btn-dark{background:#262626;color:#fff;border:1px solid #444}
+.btn-light{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:352px minmax(0,1fr);gap:18px;margin-top:18px}
+.mbar{display:none}
+.mbar .seg{gap:6px;flex:1 1 40%}
+.mbar #mbCur{flex:0 1 auto}
+.mbar .seg button{padding:11px 8px;font-size:13px;font-weight:800}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 6px 20px rgba(0,0,0,.045)}
+.controls{padding:18px;position:sticky;top:12px;align-self:start;max-height:calc(100vh - 24px);overflow:auto}
+.controls h2{margin:0 0 4px;font-size:16px}
+.controls .tiny{color:var(--muted);font-size:11.5px;margin:0 0 12px}
+.section{border-top:1px solid var(--line);padding-top:13px;margin-top:13px}
+.section:first-of-type{border-top:none;margin-top:0;padding-top:0}
+.lab{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;font-weight:800;margin-bottom:6px}
+.hint{color:var(--muted);font-size:11px;font-weight:600}
+.seg{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.seg.three{grid-template-columns:repeat(3,1fr)}
+.seg button{background:#eeeee9;color:#4b4b46;padding:9px 6px;font-size:12.5px;border:1px solid transparent}
+.seg button.active{background:#111;color:#fff}
+.field{margin-top:11px}
+.iwrap{display:grid;grid-template-columns:1fr 92px;gap:9px;align-items:center}
+input[type=range]{width:100%;accent-color:#111}
+input[type=number]{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px;font:inherit;font-weight:800;background:#fbfbf8;color:var(--ink)}
+.unit{font-size:10.5px;color:var(--muted);margin-top:3px}
+details{border-top:1px solid var(--line);margin-top:13px;padding-top:11px}
+summary{font-weight:900;cursor:pointer;font-size:13px}
+.main{display:flex;flex-direction:column;gap:18px}
+.pad{padding:20px}
+.toprow{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.title{font-size:22px;font-weight:950;margin:0}
+.sub{color:var(--muted);font-size:13px;margin:3px 0 0}
+.pill{font-size:12px;font-weight:900;padding:7px 11px;border-radius:999px}
+.pill.g{background:var(--green-soft);color:var(--green)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.kpi{border:1px solid var(--line);border-radius:15px;padding:15px}
+.kpi.black{background:#111;color:#fff;border-color:#111}
+.kpi.yellow{background:var(--yellow-soft);border-color:#efd873}
+.kpi.green{background:var(--green-soft);border-color:#bfe6cf}
+.kpi.blue{background:var(--blue-soft);border-color:#c3d8f6}
+.kl{font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.black .kl{color:#bbb}
+.kv{font-size:clamp(22px,2.6vw,33px);font-weight:950;margin-top:3px;line-height:1.05}
+.ks{font-size:11.5px;color:var(--muted);margin-top:4px}
+.black .ks{color:#bbb}
+.two{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.subh{font-size:17px;font-weight:950;margin:0 0 4px}
+.desc{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.row{display:grid;grid-template-columns:1.5fr .8fr .9fr;gap:8px;padding:9px 0;border-bottom:1px solid #efefe9;align-items:center}
+.row:last-child{border-bottom:none}
+.rn{font-size:12.5px;font-weight:700}
+.rv{text-align:right;font-weight:900;font-size:13px}
+.rvp{display:block;font-weight:700;font-size:10px;color:var(--muted);margin-top:1px}
+.fc{display:grid;grid-template-columns:42px 1fr;gap:10px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;margin-bottom:9px;background:#fff;align-items:center}
+.fc .fe{font-size:23px;text-align:center}
+.fc .fh{font-size:13.5px;font-weight:900}
+.fc p{margin:3px 0 0;font-size:12px;color:#585852;line-height:1.5}
+.fcrules{background:#111;color:#ddd;border-radius:12px;padding:12px 15px;font-size:12px;line-height:1.75;margin-top:6px}
+.fcfresh{margin-top:9px;padding:10px 13px;background:#eef4ee;border:1px solid #cfe0cf;border-radius:10px;font-size:11.5px;line-height:1.55;color:#2f4f2f}
+.ltmix{padding:11px 13px;background:#f4f0ff;border:1px solid #ddd0f5;border-radius:10px;font-size:12px;line-height:1.55;color:#3a2f52;margin-bottom:10px}
+.ltgoals{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:10px}
+.ltg{border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.ltg.g1{background:#eef7f0} .ltg.g2{background:#fff8e6} .ltg.g3{background:#eaf1fb}
+.ltg .lgh{font-size:11.5px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
+.ltg .lgv{font-size:20px;font-weight:900;margin:4px 0 3px}
+.ltg .lgs{font-size:11px;color:#585852;line-height:1.5}
+@media(max-width:640px){.ltgoals{grid-template-columns:1fr}}
+.rnote{text-align:right;color:var(--muted);font-size:11px}
+.rv.neg{color:var(--red)}
+.rv.pos{color:var(--green)}
+.stack{height:30px;border-radius:8px;overflow:hidden;display:flex;background:#eee;margin:14px 0 8px}
+.stack>div{height:100%;min-width:1px;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden}
+.s-rev{background:#8a6fc0}.s-pay{background:#5c7fb5}.s-cogs{background:#c98a3a}.s-ful{background:#d0653f}.s-fix{background:#7a7a72}.s-prof{background:#12855a}
+.legend{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.li{font-size:10.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.dot{width:9px;height:9px;border-radius:2px;flex:0 0 auto}
+.dial-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.zone-big{font-family:Georgia,serif;font-size:24px;font-weight:400}
+.zbar{position:relative;height:26px;border-radius:7px;overflow:hidden;display:flex;border:1px solid var(--line)}
+.zbar .z1{background:var(--green);opacity:.82}.zbar .z2{background:var(--amber);opacity:.8}.zbar .z3{background:var(--red);opacity:.72}
+.znums{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
+.guards{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:6px}
+.guard{border:1px solid var(--line);border-radius:13px;padding:12px}
+.guard b{display:block;font-size:15px;margin:2px 0}
+.guard small{color:var(--muted);font-size:10.5px}
+.guard.red{background:var(--red-soft);border-color:#f0c3bd}
+.guard.amber{background:var(--amber-soft);border-color:#eed6a6}
+.guard.green{background:var(--green-soft);border-color:#bfe6cf}
+.guard.dgreen{background:#d7efe0;border-color:#a8dcbf}
+.lev-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch}
+.chart{border:1px solid var(--line);border-radius:14px;padding:14px 10px 8px;background:#fcfcfa}
+.cols{display:flex;gap:12px;align-items:stretch;height:210px;position:relative}
+.zline{position:absolute;left:0;right:0;border-top:1px dashed #c9c9c2;font-size:9px;color:var(--muted)}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.colbar{position:absolute;width:56%;border-radius:5px}
+.col .cap{position:absolute;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:900;white-space:nowrap}
+.collab{position:absolute;bottom:-34px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-weight:700;line-height:1.25}
+.mer{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.mercard{border:1px solid var(--line);border-radius:13px;padding:13px;background:#fff}
+.mercard .kl{margin-bottom:3px}.mercard b{font-size:21px}
+.planner{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.mini{border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}
+.mini span{font-size:10.5px;color:var(--muted);font-weight:800}
+.mini b{display:block;font-size:19px;margin-top:3px}
+.foot{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:10px}
+.foot b{color:var(--ink)}
+.src{background:#fafaf7;border:1px dashed var(--line);border-radius:12px;padding:14px;font-size:11.5px;color:var(--muted);line-height:1.85}
+.badge{display:inline-block;font-size:9.5px;font-weight:900;padding:1px 6px;border-radius:999px;vertical-align:1px;margin-right:6px}
+.b-inv{background:var(--green-soft);color:var(--green)}
+.b-ver{background:var(--blue-soft);color:var(--blue)}
+.b-est{background:var(--amber-soft);color:var(--amber)}
+.rank{display:grid;grid-template-columns:26px 1.4fr .9fr .9fr .9fr;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #efefe9;font-size:12.5px}
+.rank:last-child{border-bottom:none}
+.rank .n{width:24px;height:24px;border-radius:50%;background:#111;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:12px}
+.rank.top .n{background:var(--yellow);color:#000}
+.tor{display:grid;grid-template-columns:150px 1fr 90px;gap:10px;align-items:center;padding:6px 0;font-size:12px}
+.tortrack{background:#f0f0ea;border-radius:6px;height:16px;position:relative;overflow:hidden}
+.torfill{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,#e0a94b,#c33227);border-radius:6px}
+.ttable{width:100%;border-collapse:collapse;font-size:12.5px}
+.ttable th,.ttable td{padding:9px 8px;border-bottom:1px solid #efefe9;text-align:right}
+.ttable th:first-child,.ttable td:first-child{text-align:left}
+.ttable th{font-size:10.5px;text-transform:uppercase;color:var(--muted)}
+.guidebox{background:#fbfbf8;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:12.5px;line-height:1.7}
+.guidebox h4{margin:12px 0 5px;font-size:13px}.guidebox h4:first-child{margin-top:0}
+.gl{display:grid;grid-template-columns:170px 1fr;gap:6px 12px;font-size:12px}
+.gl b{color:var(--ink)}
+.chk{font-size:12.5px;line-height:1.9;margin:0;padding-left:2px;list-style:none}
+.chk li{padding-left:22px;position:relative}
+.chk li:before{content:"";position:absolute;left:0;top:5px;width:13px;height:13px;border:2px solid var(--green);border-radius:4px}
+.toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:11px 15px;border-radius:11px;opacity:0;transform:translateY(8px);transition:.2s;box-shadow:var(--shadow);z-index:9}
+.toast.show{opacity:1;transform:none}
+@media(max-width:1080px){.grid{grid-template-columns:1fr}.controls{position:static;max-height:none}.two,.lev-grid{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){
+  .shell{padding:9px}
+  .grid{display:flex;flex-direction:column;gap:14px}
+  .main{order:1}.controls{order:2}
+  .mbar{display:flex;flex-wrap:wrap;gap:7px;position:sticky;top:0;z-index:8;background:var(--paper);padding:8px 0 7px;box-shadow:0 6px 8px -6px rgba(0,0,0,.15)}
+  .hero{padding:18px;border-radius:16px}
+  .hero h1{font-size:28px}
+  .hero p{font-size:12.5px}
+  .hero-actions{width:100%}
+  .hero-actions button{padding:10px 10px;font-size:12.5px;flex:1}
+  .pad{padding:15px}
+  .controls{padding:15px}
+  .kpis{grid-template-columns:1fr 1fr;gap:9px}
+  .kpi{padding:12px}
+  .kv{font-size:25px}
+  .planner{grid-template-columns:1fr 1fr}
+  .guards{grid-template-columns:1fr 1fr}
+  .mer{grid-template-columns:1fr 1fr}
+  .row{grid-template-columns:1.4fr .9fr}
+  .rnote{display:none}
+  .rank{grid-template-columns:22px 1.5fr .9fr;font-size:11.5px}
+  .rank .r4,.rank .r5{display:none}
+  .gl{grid-template-columns:1fr}
+  #segPlan{grid-template-columns:1fr 1fr 1fr!important}
+  .seg button{padding:10px 4px;font-size:12px}
+  .tor{grid-template-columns:90px 1fr 58px;gap:7px;font-size:10.5px}
+  .cols{height:178px;gap:6px}
+  .col .cap{font-size:8.5px}
+  .collab{font-size:8.5px;bottom:-32px}
+  input[type=number]{padding:11px 9px;font-size:16px}
+  input[type=range]{height:24px}
+  .subh{font-size:16px}
+  .title{font-size:19px}
+  .ttable{font-size:11.5px}.ttable th,.ttable td{padding:8px 6px}
+  .zone-big{font-size:20px}
+}
 
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    line-height:1.35;
-  }
+.phonepanel{display:none}
+@media(max-width:640px){html:not(.hasjs) .phonepanel{display:block;margin-top:14px}}
+.pp{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 6px 20px rgba(0,0,0,.05);padding:16px;position:relative}
+.pp>input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.pph{font-weight:900;font-size:15px;margin-bottom:12px}
+.ppsub{font-weight:900;font-size:13px;margin:18px 0 8px}
+.pp-ctl .ppseg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px}
+.pp-ctl label,.pp-ctl2 label{display:block;text-align:center;padding:12px 4px;border-radius:10px;background:#eeeee9;color:#4b4b46;font-weight:800;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pp-ctl2{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px}
+.pp-ctl2 label{padding:11px 2px;font-size:12px}
+.pp-var,.pp-vol{display:none}
+.ppt{font-weight:900;font-size:15px;margin:8px 0 10px}
+.ppk{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.ppc{border:1px solid var(--line);border-radius:13px;padding:12px}
+.ppc.k0{background:#111;color:#fff;border-color:#111}.ppc.k1{background:var(--yellow-soft);border-color:#efd873}.ppc.k2{background:var(--green-soft);border-color:#bfe6cf}.ppc.k3{background:var(--blue-soft);border-color:#c3d8f6}
+.ppc span{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.02em;color:var(--muted);display:block}
+.ppc.k0 span{color:#bbb}
+.ppc b{font-size:25px;font-weight:950;display:block;margin:3px 0;line-height:1.03}
+.ppc small{font-size:11px;color:var(--muted)}.ppc.k0 small{color:#ccc}
+.ppc small.u{font-size:.78em}
+.ppr{margin-top:11px;background:#fafaf7;border:1px solid var(--line);border-radius:11px;padding:10px 12px;font-size:12px;font-weight:700;text-align:center}
+.pp-vol{background:var(--green-soft);border:1px solid #bfe6cf;border-radius:11px;padding:11px 13px;font-size:13px;line-height:1.5}
+.ppnote{margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.6}
+#pm-US:checked~.pp-ctl .ppseg.m label[for=pm-US],#pm-AU:checked~.pp-ctl .ppseg.m label[for=pm-AU],#pb-ties:checked~.pp-ctl .ppseg.b label[for=pb-ties],#pb-shirts:checked~.pp-ctl .ppseg.b label[for=pb-shirts],#pv-cash:checked~.pp-ctl .ppseg.v label[for=pv-cash],#pv-loaded:checked~.pp-ctl .ppseg.v label[for=pv-loaded]{background:#111;color:#fff}
+#pl-1:checked~.pp-ctl2 label[for=pl-1],#pl-2:checked~.pp-ctl2 label[for=pl-2],#pl-3:checked~.pp-ctl2 label[for=pl-3],#pl-4:checked~.pp-ctl2 label[for=pl-4],#pl-5:checked~.pp-ctl2 label[for=pl-5]{background:#111;color:#fff}
+#pm-US:checked~#pb-ties:checked~#pv-cash:checked~.pp-vars .v-US-ties-cash,
+#pm-US:checked~#pb-ties:checked~#pv-loaded:checked~.pp-vars .v-US-ties-loaded,
+#pm-US:checked~#pb-shirts:checked~#pv-cash:checked~.pp-vars .v-US-shirts-cash,
+#pm-US:checked~#pb-shirts:checked~#pv-loaded:checked~.pp-vars .v-US-shirts-loaded,
+#pm-AU:checked~#pb-ties:checked~#pv-cash:checked~.pp-vars .v-AU-ties-cash,
+#pm-AU:checked~#pb-ties:checked~#pv-loaded:checked~.pp-vars .v-AU-ties-loaded,
+#pm-AU:checked~#pb-shirts:checked~#pv-cash:checked~.pp-vars .v-AU-shirts-cash,
+#pm-AU:checked~#pb-shirts:checked~#pv-loaded:checked~.pp-vars .v-AU-shirts-loaded{display:block}
+#pl-1:checked~.pp-vars2 .vol-1,#pl-2:checked~.pp-vars2 .vol-2,#pl-3:checked~.pp-vars2 .vol-3,#pl-4:checked~.pp-vars2 .vol-4,#pl-5:checked~.pp-vars2 .vol-5{display:block}
 
-  .shell{max-width:1500px;margin:0 auto;padding:22px}
-  .hero{
-    background:var(--black);
-    color:var(--white);
-    border-radius:24px;
-    padding:24px 26px;
-    display:flex;
-    justify-content:space-between;
-    gap:24px;
-    align-items:center;
-    box-shadow:var(--shadow);
-  }
-  .eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    background:var(--yellow);
-    color:var(--black);
-    font-weight:900;
-    padding:7px 11px;
-    border-radius:999px;
-    font-size:12px;
-    letter-spacing:.06em;
-  }
-  h1{font-size:clamp(26px,4vw,48px);margin:10px 0 6px;line-height:1.03}
-  .hero p{color:#cfcfcf;margin:0;max-width:800px}
-  .hero-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-  button{
-    appearance:none;border:none;cursor:pointer;font:inherit;font-weight:800;
-    border-radius:12px;padding:12px 16px;transition:.15s ease;
-  }
-  button:hover{transform:translateY(-1px)}
-  .btn-primary{background:var(--yellow);color:var(--black)}
-  .btn-secondary{background:#2b2b2b;color:#fff;border:1px solid #444}
-  .btn-light{background:#fff;color:var(--ink);border:1px solid var(--line)}
-  .btn-small{padding:8px 11px;font-size:13px;border-radius:10px}
-
-  .grid{display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px;margin-top:18px}
-  .panel{
-    background:var(--white);
-    border:1px solid var(--line);
-    border-radius:20px;
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
-  }
-  .controls{padding:18px;position:sticky;top:14px;align-self:start;max-height:calc(100vh - 28px);overflow:auto}
-  .panel-title{font-weight:950;font-size:17px;margin:0 0 12px}
-  .section{border-top:1px solid var(--line);padding-top:15px;margin-top:15px}
-  .section:first-of-type{border-top:none;padding-top:0;margin-top:0}
-  .label-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}
-  label{font-size:13px;font-weight:800}
-  .hint{font-size:11px;color:var(--muted);font-weight:600}
-  .segmented{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-  .segmented.four{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .segmented button{
-    background:#efefeb;color:#4e4e49;padding:10px 8px;border:1px solid transparent;font-size:13px;
-  }
-  .segmented button.active{background:var(--black);color:#fff;border-color:var(--black)}
-  .field{margin-top:12px}
-  .input-wrap{display:grid;grid-template-columns:1fr 104px;gap:10px;align-items:center}
-  input[type="range"]{width:100%;accent-color:var(--black)}
-  input[type="number"]{
-    width:100%;border:1px solid var(--line);background:#fbfbf8;border-radius:10px;
-    padding:10px 9px;font:inherit;font-weight:800;color:var(--ink);
-  }
-  .input-prefix{position:relative}
-  .unit{font-size:11px;color:var(--muted);margin-top:4px}
-  details{border-top:1px solid var(--line);margin-top:15px;padding-top:12px}
-  summary{font-weight:900;cursor:pointer}
-  .toggle-row{display:flex;align-items:center;justify-content:space-between;margin:10px 0}
-  .switch{position:relative;width:46px;height:26px}
-  .switch input{display:none}
-  .slider{position:absolute;inset:0;background:#d4d4cf;border-radius:999px;cursor:pointer}
-  .slider:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s}
-  .switch input:checked + .slider{background:var(--black)}
-  .switch input:checked + .slider:before{transform:translateX(20px)}
-
-  .main{display:flex;flex-direction:column;gap:18px}
-  .headline-card{padding:20px}
-  .headline-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
-  .headline-title{font-size:24px;font-weight:950;margin:0}
-  .status{
-    font-size:12px;font-weight:900;padding:7px 10px;border-radius:999px;background:var(--green-soft);color:var(--green);
-  }
-  .kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
-  .kpi{
-    border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff;
-  }
-  .kpi.hero-kpi{background:var(--black);color:#fff;border-color:var(--black)}
-  .kpi.yellow{background:var(--yellow-soft);border-color:#f1d351}
-  .kpi.green{background:var(--green-soft);border-color:#bce7cd}
-  .kpi.orange{background:var(--orange-soft);border-color:#f2d2a2}
-  .kpi-label{font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-  .hero-kpi .kpi-label{color:#bdbdbd}
-  .kpi-value{font-size:clamp(24px,3vw,38px);font-weight:950;margin-top:4px;white-space:nowrap}
-  .kpi-sub{font-size:12px;color:var(--muted);margin-top:5px}
-  .hero-kpi .kpi-sub{color:#bdbdbd}
-
-  .two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
-  .card-pad{padding:20px}
-  .subhead{font-size:18px;font-weight:950;margin:0 0 5px}
-  .desc{font-size:13px;color:var(--muted);margin:0 0 16px}
-  .metric-row{
-    display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;padding:11px 0;border-bottom:1px solid #ecece7;align-items:center
-  }
-  .metric-row:last-child{border-bottom:none}
-  .metric-name{font-weight:850;font-size:13px}
-  .metric-val{text-align:right;font-weight:950}
-  .metric-note{text-align:right;color:var(--muted);font-size:12px}
-
-  .stack{height:34px;border-radius:999px;overflow:hidden;display:flex;background:#eee;margin:16px 0 10px}
-  .stack > div{height:100%;min-width:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;overflow:hidden;white-space:nowrap}
-  .seg-payment{background:#5876a8}
-  .seg-cogs{background:#7e57c2}
-  .seg-fulfil{background:#e68623}
-  .seg-other{background:#a85555}
-  .seg-meta{background:#343434}
-  .seg-profit{background:#1c9458}
-  .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-  .legend-item{font-size:11px;color:var(--muted);display:flex;gap:7px;align-items:center}
-  .dot{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
-
-  .planner-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 16px}
-  .mini-card{background:#f7f7f3;border:1px solid var(--line);border-radius:14px;padding:13px}
-  .planner-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-  .planner-kpi{background:#fff;border:1px solid var(--line);padding:13px;border-radius:14px}
-  .planner-kpi b{font-size:21px;display:block;margin-top:3px}
-  .planner-kpi span{font-size:11px;color:var(--muted);font-weight:750}
-
-  .guardrail{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-  .guard{border-radius:14px;padding:13px;border:1px solid var(--line)}
-  .guard strong{display:block;font-size:17px}
-  .guard small{color:var(--muted)}
-  .guard.red{background:var(--red-soft);border-color:#f1c1bd}
-  .guard.orange{background:var(--orange-soft);border-color:#efcf9b}
-  .guard.green{background:var(--green-soft);border-color:#bce7cd}
-
-  .scenario-table{width:100%;border-collapse:collapse;font-size:13px}
-  .scenario-table th,.scenario-table td{padding:11px 9px;border-bottom:1px solid #ecece7;text-align:right}
-  .scenario-table th:first-child,.scenario-table td:first-child{text-align:left}
-  .scenario-table th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-  .scenario-table tr.selected{background:var(--yellow-soft)}
-  .scenario-table tr:last-child td{border-bottom:none}
-
-  .footnote{font-size:12px;color:var(--muted);margin-top:12px}
-  .toast{
-    position:fixed;right:20px;bottom:20px;background:var(--black);color:#fff;padding:12px 16px;border-radius:12px;
-    opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s;box-shadow:var(--shadow);z-index:5
-  }
-  .toast.show{opacity:1;transform:none}
-  .mobile-note{display:none}
-
-  @media (max-width:1050px){
-    .grid{grid-template-columns:1fr}
-    .controls{position:static;max-height:none}
-    .kpi-grid{grid-template-columns:repeat(2,1fr)}
-    .two-col{grid-template-columns:1fr}
-  }
-  @media (max-width:650px){
-    .shell{padding:10px}
-    .hero{padding:20px;align-items:flex-start;flex-direction:column}
-    .hero-actions{justify-content:flex-start}
-    .kpi-grid{grid-template-columns:1fr 1fr}
-    .planner-grid{grid-template-columns:1fr 1fr}
-    .guardrail{grid-template-columns:1fr}
-    .legend{grid-template-columns:1fr 1fr}
-    .metric-row{grid-template-columns:1.2fr .8fr}
-    .metric-note{display:none}
-    .headline-top{flex-direction:column}
-    .mobile-note{display:block;font-size:11px;color:var(--muted);margin-top:8px}
-  }
+@media(max-width:640px){html:not(.hasjs) .mbar{display:none}}
 </style>
 </head>
 <body>
+<script>document.documentElement.className+=' hasjs';</script>
 <div class="shell">
   <header class="hero">
     <div>
-      <span class="eyebrow">OTAA • SHIRT ECONOMICS</span>
-      <h1>Meta Breakeven & Scaling Dashboard</h1>
-      <p>Live unit economics for the Classic Fit 2.0 range. Includes COGS, reversals, payment fees, GST, fulfilment, US duties and optional extra variable costs.</p>
+      <span class="eyebrow">OTAA · MEDIA BUYER SCALING</span>
+      <h1>Meta Scaling Calculator</h1>
+      <p>Real unit economics for new-customer Meta campaigns — two buckets, both markets, the AU-warehouse vs Cart.com US routing split, cash-variable ⇄ fully-loaded costs, a whole-business order→profit view, and buyer tools for allocation, promos, sensitivity and scaling pace. All ROAS is <b style="color:#fff">Shopify-true</b> (not Meta-reported) — steer by these + your blended MER.</p>
     </div>
     <div class="hero-actions">
-      <button class="btn-secondary" id="copyDan">Copy Dan Targets</button>
-      <button class="btn-primary" id="resetBtn">Reset Defaults</button>
+      <button class="btn-dark" id="guideBtn">📖 How to use</button>
+      <button class="btn-dark" id="copyBrief">Copy buyer brief</button>
+      <button class="btn-primary" id="reset">Reset to verified</button>
     </div>
   </header>
 
+  <div id="mbar" class="mbar">
+    <div class="seg" id="mbMarket"><button data-v="US" class="active">🇺🇸 USA</button><button data-v="AU">🇦🇺 AU</button></div>
+    <div class="seg" id="mbBucket"><button data-v="ties" class="active">👔 Ties</button><button data-v="shirts">👕 Shirts</button></div>
+    <div class="seg" id="mbView"><button data-v="cash" class="active">💵 Cash</button><button data-v="loaded">🏭 Loaded</button></div>
+    <div class="seg" id="mbCur"><button data-v="AUD" class="active">A$</button><button data-v="USD">US$</button></div>
+  </div>
+
+  <section class="phonepanel"><div class="pp">
+<input type="radio" name="pm" id="pm-US" checked="" value="on"><input type="radio" name="pm" id="pm-AU" value="on">
+<input type="radio" name="pb" id="pb-ties" checked="" value="on"><input type="radio" name="pb" id="pb-shirts" value="on">
+<input type="radio" name="pv" id="pv-cash" checked="" value="on"><input type="radio" name="pv" id="pv-loaded" value="on">
+<input type="radio" name="pl" id="pl-1" value="on"><input type="radio" name="pl" id="pl-2" checked="" value="on"><input type="radio" name="pl" id="pl-3" value="on"><input type="radio" name="pl" id="pl-4" value="on"><input type="radio" name="pl" id="pl-5" value="on">
+<div class="pph">📱 Tap to switch — works without loading anything</div>
+<div class="pp-ctl">
+<div class="ppseg m"><label for="pm-US">🇺🇸 USA</label><label for="pm-AU">🇦🇺 AU</label></div>
+<div class="ppseg b"><label for="pb-ties">👔 Ties</label><label for="pb-shirts">👕 Shirts</label></div>
+<div class="ppseg v"><label for="pv-cash">💵 Cash</label><label for="pv-loaded">🏭 Loaded</label></div>
+</div>
+<div class="pp-vars"><div class="pp-var v-US-ties-cash">
+<div class="ppt">🇺🇸 USA · 👔 Ties &amp; Acc. · 💵 Cash</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>1.54x</b><small>CPA A$92</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>2.00x+</b><small>CPA ≤ A$71</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>2.22x+</b><small>CPA ≤ A$64</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$92.05</b><small>65% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$71 &nbsp; 🟡 Hold to A$92 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Fulfilment A$32 gross − A$9 customer ship = <b>A$23 net</b>. Cart-Texas order ≈A$27 (US$18.96 verified: A$11 handling + A$16 freight); 38% still AU→US DHL A$40. Drops as volume shifts to Texas.</div>
+</div><div class="pp-var v-US-ties-loaded">
+<div class="ppt">🇺🇸 USA · 👔 Ties &amp; Acc. · 🏭 Loaded</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>1.63x</b><small>CPA A$87</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>2.16x+</b><small>CPA ≤ A$66</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>2.42x+</b><small>CPA ≤ A$59</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$86.81</b><small>65% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$66 &nbsp; 🟡 Hold to A$87 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Fulfilment A$32 gross − A$9 customer ship = <b>A$23 net</b>. Cart-Texas order ≈A$27 (US$18.96 verified: A$11 handling + A$16 freight); 38% still AU→US DHL A$40. Drops as volume shifts to Texas.</div>
+</div><div class="pp-var v-US-shirts-cash">
+<div class="ppt">🇺🇸 USA · 👕 Shirts · 💵 Cash</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>2.39x</b><small>CPA A$72</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>3.71x+</b><small>CPA ≤ A$46</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>4.55x+</b><small>CPA ≤ A$38</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$72.14</b><small>42% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$46 &nbsp; 🟡 Hold to A$72 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Fulfilment A$44 gross − A$9 customer ship = <b>A$34 net</b>. Cart-Texas order ≈A$27 (US$18.96 verified: A$11 handling + A$16 freight); 38% still AU→US DHL A$40. Drops as volume shifts to Texas.</div>
+</div><div class="pp-var v-US-shirts-loaded">
+<div class="ppt">🇺🇸 USA · 👕 Shirts · 🏭 Loaded</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>2.58x</b><small>CPA A$67</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>4.18x+</b><small>CPA ≤ A$41</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>5.28x+</b><small>CPA ≤ A$33</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$66.89</b><small>42% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$41 &nbsp; 🟡 Hold to A$67 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Fulfilment A$44 gross − A$9 customer ship = <b>A$34 net</b>. Cart-Texas order ≈A$27 (US$18.96 verified: A$11 handling + A$16 freight); 38% still AU→US DHL A$40. Drops as volume shifts to Texas.</div>
+</div><div class="pp-var v-AU-ties-cash">
+<div class="ppt">🇦🇺 Australia · 👔 Ties &amp; Acc. · 💵 Cash</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>1.54x</b><small>CPA A$60</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>1.95x+</b><small>CPA ≤ A$48</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>2.14x+</b><small>CPA ≤ A$43</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$60.37</b><small>71% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$48 &nbsp; 🟡 Hold to A$60 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Australia Post ≈A$11 all-in (carrier only; pick/pack sits in fixed wages). Customers pay little/no shipping, so net ≈ gross.</div>
+</div><div class="pp-var v-AU-ties-loaded">
+<div class="ppt">🇦🇺 Australia · 👔 Ties &amp; Acc. · 🏭 Loaded</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>1.99x</b><small>CPA A$47</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>2.74x+</b><small>CPA ≤ A$34</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>3.13x+</b><small>CPA ≤ A$30</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$46.58</b><small>71% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$34 &nbsp; 🟡 Hold to A$47 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Australia Post ≈A$11 all-in (carrier only; pick/pack sits in fixed wages). Customers pay little/no shipping, so net ≈ gross.</div>
+</div><div class="pp-var v-AU-shirts-cash">
+<div class="ppt">🇦🇺 Australia · 👕 Shirts · 💵 Cash</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>2.22x</b><small>CPA A$66</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>3.18x+</b><small>CPA ≤ A$46</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>3.72x+</b><small>CPA ≤ A$40</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$66.24</b><small>50% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$46 &nbsp; 🟡 Hold to A$66 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Australia Post ≈A$14 all-in (carrier only; pick/pack sits in fixed wages). Customers pay little/no shipping, so net ≈ gross.</div>
+</div><div class="pp-var v-AU-shirts-loaded">
+<div class="ppt">🇦🇺 Australia · 👕 Shirts · 🏭 Loaded</div>
+<div class="ppk">
+<div class="ppc k0"><span>🛑 Breakeven</span><b>2.80x</b><small>CPA A$52</small></div>
+<div class="ppc k1"><span>🟢 Scale · Healthy</span><b>4.53x+</b><small>CPA ≤ A$32</small></div>
+<div class="ppc k2"><span>🚀 Strong</span><b>5.71x+</b><small>CPA ≤ A$26</small></div>
+<div class="ppc k3"><span>💰 Contribution</span><b>A$52.44</b><small>50% margin</small></div>
+</div>
+<div class="ppr">🟢 Scale ≤ A$32 &nbsp; 🟡 Hold to A$52 &nbsp; 🔴 Stop above</div>
+<div class="ppr" style="background:#fff8e1;border-color:#ffe08a">🚚 Australia Post ≈A$14 all-in (carrier only; pick/pack sits in fixed wages). Customers pay little/no shipping, so net ≈ gross.</div>
+</div></div>
+<div class="ppsub">📈 Whole-business profit at scale — tap a volume:</div>
+<div class="pp-ctl2"><label for="pl-1">0.75×</label><label for="pl-2">now</label><label for="pl-3">1.5×</label><label for="pl-4">2×</label><label for="pl-5">3×</label></div>
+<div class="pp-vars2"><div class="pp-vol vol-1"><b>2,955</b> orders/mo (0.75×) → operating profit <b style="color:var(--red)">−A$41,544/mo</b> · 66% contribution margin · breakeven ~4,072 orders</div><div class="pp-vol vol-2"><b>3,940</b> orders/mo (now) → operating profit <b style="color:var(--red)">−A$4,925/mo</b> · 66% contribution margin · breakeven ~4,072 orders</div><div class="pp-vol vol-3"><b>5,910</b> orders/mo (1.5×) → operating profit <b style="color:var(--green)">A$68,312/mo</b> · 66% contribution margin · breakeven ~4,072 orders</div><div class="pp-vol vol-4"><b>7,880</b> orders/mo (2×) → operating profit <b style="color:var(--green)">A$141,550/mo</b> · 66% contribution margin · breakeven ~4,072 orders</div><div class="pp-vol vol-5"><b>11,820</b> orders/mo (3×) → operating profit <b style="color:var(--green)">A$288,024/mo</b> · 66% contribution margin · breakeven ~4,072 orders</div></div>
+<div class="ppnote">This offline view shows the headline guardrails and profit-at-scale. For the full sliders, promo, sensitivity &amp; trajectory tools, open this file in your phone's browser (Safari/Chrome) or on desktop.</div>
+</div></section>
+
   <div class="grid">
+    <!-- ================= CONTROLS ================= -->
     <aside class="panel controls">
-      <h2 class="panel-title">Controls</h2>
+      <h2>Inputs</h2>
+      <p class="tiny">Verified defaults from your files. Everything is editable — outputs recompute live.</p>
 
       <div class="section">
-        <div class="label-row"><label>Market</label><span class="hint">Changes tax and fulfilment</span></div>
-        <div class="segmented" id="marketBtns">
-          <button data-market="US" class="active">USA</button>
-          <button data-market="AU">Australia</button>
-        </div>
+        <div class="lab"><span>Market</span><span class="hint">tax · fulfilment · payment</span></div>
+        <div class="seg" id="segMarket"><button data-v="US" class="active">🇺🇸 USA</button><button data-v="AU">🇦🇺 Australia</button></div>
       </div>
-
+      <div class="section" id="curSection">
+        <div class="lab"><span>💱 Display currency</span><span class="hint">your Meta account is AUD</span></div>
+        <div class="seg" id="segCur"><button data-v="AUD" class="active">A$ AUD</button><button data-v="USD">US$ USD</button></div>
+        <div class="unit">Shows every figure in one currency — no conversion maths. USA only; Australia is always A$.</div>
+      </div>
       <div class="section">
-        <div class="label-row"><label>Basket</label><span class="hint">Choose campaign basket</span></div>
-        <div class="segmented four" id="basketBtns">
-          <button data-basket="blend" class="active">Blended</button>
-          <button data-basket="standard">1 Standard</button>
-          <button data-basket="french">1 French Cuff</button>
-          <button data-basket="trio">3-Shirt Trio</button>
-        </div>
+        <div class="lab"><span>Product bucket</span><span class="hint">campaign type</span></div>
+        <div class="seg" id="segBucket"><button data-v="ties" class="active">👔 Ties &amp; Acc.</button><button data-v="shirts">👕 Shirts</button></div>
+        <div class="unit" id="bucketNote">Ties &amp; Accessories = neckties, bow ties, pocket squares, cufflinks &amp; more. See the funnel below.</div>
       </div>
-
       <div class="section">
-        <div class="label-row"><label>Cost mode</label><span class="hint">Average vs downside</span></div>
-        <div class="segmented" id="modeBtns">
-          <button data-mode="base" class="active">Base</button>
-          <button data-mode="stress">Stress</button>
-        </div>
+        <div class="lab"><span>🎁 Offer</span><span class="hint">single vs bundle builder</span></div>
+        <div class="seg" id="segOffer" style="grid-template-columns:repeat(2,1fr)"><button data-o="0" class="active">Single</button><button data-o="1">3-tie</button><button data-o="2">5-tie ⭐</button><button data-o="3">7-tie</button></div>
+        <div class="unit" id="offerNote">Single-order economics. Pick a bundle to load its price, units, fulfilment &amp; guardrails.</div>
       </div>
-
       <div class="section">
-        <div class="field">
-          <div class="label-row"><label>Trio share of orders</label><span class="hint" id="trioShareLabel">28.3%</span></div>
-          <div class="input-wrap">
-            <input id="trioShare" type="range" min="0" max="70" step="1" value="28.2609">
-            <input id="trioShareNum" type="number" min="0" max="70" step="1" value="28.3">
-          </div>
-          <div class="unit">Used only for the blended basket.</div>
-        </div>
-
-        <div class="field">
-          <div class="label-row"><label>French-cuff share of single orders</label><span class="hint" id="frenchShareLabel">0.0%</span></div>
-          <div class="input-wrap">
-            <input id="frenchShare" type="range" min="0" max="50" step="1" value="0">
-            <input id="frenchShareNum" type="number" min="0" max="50" step="1" value="0">
-          </div>
-          <div class="unit">Lets the blended basket include French cuffs.</div>
-        </div>
+        <div class="lab"><span>Cost view</span><span class="hint">what the CPA must cover</span></div>
+        <div class="seg" id="segView"><button data-v="cash" class="active">Cash-variable</button><button data-v="loaded">Fully-loaded</button></div>
+        <div class="unit" id="viewNote">Cash-variable = only costs that move per order. Use for in-flight bidding.</div>
+      </div>
+      <div class="section">
+        <div class="lab"><span>Reversal scenario</span><span class="hint">refund reserve</span></div>
+        <div class="seg" id="segStress"><button data-v="base" class="active">Base (actual)</button><button data-v="stress">Stress (12%)</button></div>
       </div>
 
-      <details open>
-        <summary>Pricing</summary>
-        <div class="field">
-          <div class="label-row"><label>Standard shirt price</label><span class="hint" id="currencyPrice1">USD</span></div>
-          <input id="priceStandard" type="number" min="1" step="1" value="129">
-        </div>
-        <div class="field">
-          <div class="label-row"><label>French cuff price</label><span class="hint" id="currencyPrice2">USD</span></div>
-          <input id="priceFrench" type="number" min="1" step="1" value="139">
-        </div>
-        <div class="field">
-          <div class="label-row"><label>Trio price</label><span class="hint" id="currencyPrice3">USD</span></div>
-          <input id="priceTrio" type="number" min="1" step="1" value="299">
-        </div>
+      <details open="">
+        <summary>Basket &amp; price <span class="badge b-ver">VERIFIED</span></summary>
+        <div class="field" id="fld_aov"><div class="lab"><span>Avg order value (new cust.)</span><span class="hint" id="aovCur">AUD, ex-tax/ship</span></div><div class="iwrap"><input id="aovR" type="range" min="30" max="250" step="1" value="132"><input id="aov" type="number" step="1" value="131.51"></div></div>
+        <div class="field" id="fld_units"><div class="lab"><span>Units / order</span><span class="hint">drives COGS</span></div><div class="iwrap"><input id="unitsR" type="range" min="1" max="8" step=".1" value="2.3"><input id="units" type="number" step=".1" value="2.3"></div></div>
+        <div class="field" id="fld_ship"><div class="lab"><span>Customer-paid shipping</span><span class="hint">AUD/order · US 4-mo A$9.38</span></div><div class="iwrap"><input id="shipR" type="range" min="0" max="45" step=".5" value="9.5"><input id="ship" type="number" step=".5" value="9.38"></div></div>
+        <div class="field"><div class="lab"><span>Extra sale / promo discount</span><span class="hint" id="promoLab">0%</span></div><div class="iwrap"><input id="promoR" type="range" min="0" max="50" step="1" value="0"><input id="promoN" type="number" step="1" value="0"></div><div class="unit">On top of everyday discounts — see the Promo panel.</div></div>
       </details>
 
       <details>
         <summary>Variable costs</summary>
-        <div class="field">
-          <div class="label-row"><label>COGS per shirt</label><span class="hint">AUD</span></div>
-          <input id="cogs" type="number" min="0" step=".1" value="24.5">
-        </div>
-        <div class="field">
-          <div class="label-row"><label>Sales-value reversal reserve</label><span class="hint" id="revLabel">8.75%</span></div>
-          <div class="input-wrap">
-            <input id="reversal" type="range" min="0" max="25" step=".25" value="8.75">
-            <input id="reversalNum" type="number" min="0" max="25" step=".25" value="8.75">
-          </div>
-        </div>
-        <div class="field">
-          <div class="label-row"><label>Payment rate</label><span class="hint" id="paymentLabel">3.50%</span></div>
-          <div class="input-wrap">
-            <input id="paymentRate" type="range" min="0" max="6" step=".1" value="3.5">
-            <input id="paymentRateNum" type="number" min="0" max="6" step=".1" value="3.5">
-          </div>
-        </div>
-        <div class="field">
-          <div class="label-row"><label>Fixed payment fee</label><span class="hint">AUD/order</span></div>
-          <input id="fixedFee" type="number" min="0" step=".05" value=".3">
-        </div>
-        <div class="field">
-          <div class="label-row"><label>Extra variable cost</label><span class="hint">AUD/order</span></div>
-          <input id="otherCost" type="number" min="0" step=".5" value="0">
-          <div class="unit">Optional reserve for return postage, packing extras or other per-order leakage.</div>
-        </div>
+        <div class="field"><div class="lab"><span>COGS / unit</span><span class="hint" id="cogsBadge">AUD · <span class="badge b-ver">VER</span></span></div><div class="iwrap"><input id="cogsR" type="range" min="0" max="10" step=".05" value="2.45"><input id="cogs" type="number" step=".01" value="2.43"></div></div>
+        <div class="field"><div class="lab"><span>Reversal reserve</span><span class="hint" id="revLab">5.17%</span></div><div class="iwrap"><input id="revR" type="range" min="0" max="20" step=".25" value="5.25"><input id="revN" type="number" step=".25" value="5.17"></div></div>
+        <div class="field"><div class="lab"><span>Payment rate</span><span class="hint" id="payLab">3.0%</span></div><div class="iwrap"><input id="payR" type="range" min="0" max="6" step=".1" value="3"><input id="payN" type="number" step=".1" value="3"></div></div>
+        <div class="field"><div class="lab"><span>Fixed payment fee</span><span class="hint">AUD/order</span></div><input id="payFixed" type="number" step=".05" value="0.3"></div>
+        <div class="field"><div class="lab"><span>Packaging &amp; other variable</span><span class="hint" id="otherLab">A$0.00</span></div><div class="iwrap"><input id="otherR" type="range" min="0" max="10" step=".1" value="0"><input id="otherN" type="number" step=".1" value="0"></div><div class="unit">Audited at A$0 — consumables sit in overhead. Slide up to stress-test.</div></div>
+      </details>
+
+      <details id="usFulBox">
+        <summary>US fulfilment &amp; routing</summary>
+        <div class="field"><div class="lab"><span>Cart.com (US 3PL) share</span><span class="hint" id="cartLab">62%</span></div><div class="iwrap"><input id="cartR" type="range" min="0" max="100" step="1" value="62"><input id="cartN" type="number" step="1" value="62"></div><div class="unit">Rest ships AU→US via DHL from Dandenong. 30-day actual: 829 Cart / 548 AU.</div></div>
+        <div class="field"><div class="lab"><span>Cart.com cost / order</span><span class="hint">AUD · US$18.96 4-mo verified</span></div><div class="iwrap"><input id="cartCostR" type="range" min="10" max="60" step=".5" value="27"><input id="cartCost" type="number" step=".5" value="26.93"></div></div>
+        <div class="field"><div class="lab"><span>AU→US DHL cost / order</span><span class="hint">AUD, incl duties</span></div><div class="iwrap"><input id="dhlCostR" type="range" min="20" max="90" step="1" value="40"><input id="dhlCost" type="number" step=".5" value="40"></div></div>
+      </details>
+      <details id="auFulBox" style="display: none;">
+        <summary>AU fulfilment</summary>
+        <div class="field"><div class="lab"><span>Australia Post / order</span><span class="hint">AUD, all-in</span></div><div class="iwrap"><input id="auFulR" type="range" min="5" max="25" step=".5" value="11"><input id="auFul" type="number" step=".5" value="11"></div></div>
+      </details>
+
+      <details open="">
+        <summary>Scale, fixed &amp; overhead</summary>
+        <div class="field"><div class="lab"><span>Monthly orders (all markets)</span><span class="hint" id="ordLab">~3,940/mo</span></div><div class="iwrap"><input id="ordR" type="range" min="1000" max="15000" step="100" value="3900"><input id="ordN" type="number" step="100" value="3940"></div><div class="unit">Default = your current run-rate. Drag up to see operating leverage.</div></div>
+        <div class="field"><div class="lab"><span>US share of orders</span><span class="hint" id="usShareLab">53.3%</span></div><div class="iwrap"><input id="usShareR" type="range" min="0" max="100" step="1" value="53"><input id="usShareN" type="number" step="1" value="53.3"></div></div>
+        <div class="field"><div class="lab"><span>Warehouse rent (AU)</span><span class="hint">AUD/mo</span></div><input id="rent" type="number" step="100" value="14600"></div>
+        <div class="field"><div class="lab"><span>Warehouse wages + super (AU)</span><span class="hint">AUD/mo</span></div><input id="wages" type="number" step="100" value="21800"></div>
+        <div class="field"><div class="lab"><span>Blended MER (all marketing)</span><span class="hint" id="merLab">36%</span></div><div class="iwrap"><input id="merR" type="range" min="15" max="50" step="1" value="36"><input id="merN" type="number" step="1" value="36"></div><div class="unit">Marketing ÷ revenue. Actual ran 36–38%; target 30%.</div></div>
+        <div class="field"><div class="lab"><span>Corporate overhead</span><span class="hint">AUD/mo · ⚠ estimate</span></div><div class="iwrap"><input id="opexR" type="range" min="0" max="250000" step="5000" value="115000"><input id="opex" type="number" step="1000" value="115000"></div><div class="unit">Below the contribution line — doesn't move any guardrail.</div></div>
       </details>
 
       <details>
-        <summary>Fulfilment & FX</summary>
-        <div class="field">
-          <div class="label-row"><label>US 1-shirt fulfilment</label><span class="hint">AUD/order</span></div>
-          <input id="usOneFulfil" type="number" min="0" step=".1" value="59.94">
-        </div>
-        <div class="field">
-          <div class="label-row"><label>US trio fulfilment</label><span class="hint">AUD/order</span></div>
-          <input id="usTrioFulfil" type="number" min="0" step=".1" value="72.68">
-        </div>
-        <div class="field">
-          <div class="label-row"><label>AU fulfilment</label><span class="hint">AUD/order</span></div>
-          <input id="auFulfil" type="number" min="0" step=".1" value="13">
-        </div>
-        <div class="field">
-          <div class="label-row"><label>AUD/USD</label><span class="hint">USD per AUD</span></div>
-          <input id="fx" type="number" min=".3" max="1.2" step=".0001" value=".6955">
-        </div>
+        <summary>Cohort &amp; LTV <span class="badge b-ver">VERIFIED</span></summary>
+        <div class="field"><div class="lab"><span>Repeat rate (this bucket)</span><span class="hint" id="retLab">30%</span></div><div class="iwrap"><input id="retR" type="range" min="0" max="80" step="1" value="30"><input id="retN" type="number" step="1" value="30"></div><div class="unit">Share of orders from returning customers → sets orders/customer. Shirts 57% vs Ties 30% (Shopify 12-mo).</div></div>
+        <div class="field"><div class="lab"><span>New-customer share (this market)</span><span class="hint" id="nsLab">71%</span></div><div class="iwrap"><input id="nsR" type="range" min="30" max="100" step="1" value="71"><input id="nsN" type="number" step="1" value="71"></div><div class="unit">Of all orders. Used to turn Meta's blended CPA into true new-customer cost (NCAC).</div></div>
+        <div class="field"><div class="lab"><span>Returning AOV uplift</span><span class="hint" id="raLab">+15.5%</span></div><input id="raN" type="number" step=".5" value="15.5"></div>
+        <div class="field"><div class="lab"><span>Target LTV : CAC</span><span class="hint">healthy ≥ 3</span></div><input id="ltvRatioN" type="number" step=".5" value="3"></div>
       </details>
 
       <details>
-        <summary>Scaling targets</summary>
-        <div class="field">
-          <div class="label-row"><label>Healthy retained margin after Meta</label><span class="hint" id="healthyLabel">15%</span></div>
-          <div class="input-wrap">
-            <input id="healthyTarget" type="range" min="5" max="30" step="1" value="15">
-            <input id="healthyTargetNum" type="number" min="5" max="30" step="1" value="15">
-          </div>
-        </div>
-        <div class="field">
-          <div class="label-row"><label>Strong retained margin after Meta</label><span class="hint" id="strongLabel">20%</span></div>
-          <div class="input-wrap">
-            <input id="strongTarget" type="range" min="5" max="35" step="1" value="20">
-            <input id="strongTargetNum" type="number" min="5" max="35" step="1" value="20">
-          </div>
-        </div>
+        <summary>Scaling targets &amp; FX</summary>
+        <div class="field"><div class="lab"><span>Healthy margin after Meta</span><span class="hint" id="hLab">15%</span></div><div class="iwrap"><input id="hR" type="range" min="5" max="30" step="1" value="15"><input id="hN" type="number" step="1" value="15"></div></div>
+        <div class="field"><div class="lab"><span>Strong margin after Meta</span><span class="hint" id="sLab">20%</span></div><div class="iwrap"><input id="sR" type="range" min="5" max="35" step="1" value="20"><input id="sN" type="number" step="1" value="20"></div></div>
+        <div class="field"><div class="lab"><span>AUD → USD</span><span class="hint">USD per AUD · workbook 0.704</span></div><div class="iwrap"><input id="fxR" type="range" min="0.60" max="0.80" step="0.001" value="0.704"><input id="fx" type="number" step=".0001" value="0.704"></div></div>
       </details>
     </aside>
 
+    <!-- ================= MAIN ================= -->
     <main class="main">
-      <section class="panel headline-card">
-        <div class="headline-top">
-          <div>
-            <h2 class="headline-title" id="scenarioTitle">USA • Blended shirt basket</h2>
-            <p class="desc" id="scenarioSubtitle">Base case using average DHL fulfilment and 8.75% sales-value reversals.</p>
-          </div>
-          <span class="status" id="statusPill">Healthy scale target</span>
-        </div>
-
-        <div class="kpi-grid">
-          <div class="kpi hero-kpi">
-            <div class="kpi-label">Breakeven ROAS</div>
-            <div class="kpi-value" id="beRoas">2.10x</div>
-            <div class="kpi-sub">Absolute mathematical floor</div>
-          </div>
-          <div class="kpi yellow">
-            <div class="kpi-label">Breakeven CPA</div>
-            <div class="kpi-value" id="beCpa">$84</div>
-            <div class="kpi-sub" id="beCpaSub">USD per acquired order</div>
-          </div>
-          <div class="kpi green">
-            <div class="kpi-label">Healthy scale</div>
-            <div class="kpi-value" id="healthyRoas">2.95x</div>
-            <div class="kpi-sub" id="healthyCpa">CPA ≤ $60</div>
-          </div>
-          <div class="kpi orange">
-            <div class="kpi-label">Strong scale</div>
-            <div class="kpi-value" id="strongRoas">3.41x</div>
-            <div class="kpi-sub" id="strongCpa">CPA ≤ $52</div>
+      <section class="panel pad" id="guidePanel" style="display:none">
+        <div class="toprow"><h3 class="subh">📖 How to use this — and what every number means</h3><button class="btn-light" id="guideClose" style="padding:7px 12px;font-size:12px">Hide</button></div>
+        <div class="guidebox">
+          <h4>The 3-step routine</h4>
+          1. Pick <b>market</b> + <b>bucket</b>. Read the four headline tiles: <b>breakeven</b> (never operate here), <b>healthy</b> &amp; <b>strong</b> scale targets, and <b>contribution per order</b>.<br>
+          2. Type your live Meta CPA into the <b>Live CPA zone</b> — it tells you Scale / Hold / Pull back.<br>
+          3. Use <b>Budget allocation</b> to choose where to add spend, <b>Promo</b> before a sale, <b>Sensitivity</b> to see what to watch, and the <b>order→profit</b> + <b>trajectory</b> views for the business picture.
+          <h4>Glossary</h4>
+          <div class="gl">
+            <b>CPA</b><span>Cost to acquire one new-customer order (Meta spend ÷ new orders). In AUD — your ad account currency.</span>
+            <b>ROAS</b><span>Revenue ÷ ad spend. Here it's <b>Shopify-true</b> (product + shipping + tax ÷ CPA), <b>not</b> Meta-reported. Steer by this and your blended MER.</span>
+            <b>Breakeven</b><span>The order makes zero contribution — an absolute floor. Never intentionally scale here.</span>
+            <b>Healthy / Strong</b><span>Leave 15% / 20% contribution after ads. Your green scaling zones.</span>
+            <b>Contribution margin</b><span>Revenue minus variable costs (product, shipping, payment, reversals). Holds flat as you scale.</span>
+            <b>MER</b><span>Total marketing ÷ total revenue (all channels, new + returning). Your whole-business steering metric — target ≤ 30%.</span>
+            <b>Cash-variable / Fully-loaded</b><span>Without / with the AU warehouse fixed cost absorbed per order.</span>
+            <b>Routing</b><span>US orders split between Cart.com (Texas 3PL) and AU→US DHL from Dandenong. More Cart = cheaper US fulfilment.</span>
           </div>
         </div>
       </section>
 
-      <section class="two-col">
-        <div class="panel card-pad">
-          <h3 class="subhead">Order economics</h3>
-          <p class="desc">Conservative model keeps full COGS and fulfilment against gross orders while reserving for revenue reversals.</p>
+      <section class="panel pad">
+        <div class="toprow">
+          <div><h2 class="title" id="scTitle">🇺🇸 USA · 👔 Ties &amp; Accessories</h2><p class="sub" id="scSub">Cash-variable · reversals 5.17% · AOV A$131.51 · MPV A$141.71</p></div>
+          <span class="pill g" id="scPill">Cash-variable view</span>
+        </div>
+        <div class="kpis">
+          <div class="kpi black"><div class="kl">🛑 Breakeven ROAS</div><div class="kv" id="beRoas">1.54x</div><div class="ks" id="beCpa">CPA A$92 · floor</div></div>
+          <div class="kpi yellow"><div class="kl">🟢 Scale target (Healthy)</div><div class="kv" id="hRoas">2.00x+</div><div class="ks" id="hCpa">CPA ≤ A$71</div></div>
+          <div class="kpi green"><div class="kl">🚀 Push harder (Strong)</div><div class="kv" id="sRoas">2.22x+</div><div class="ks" id="sCpa">CPA ≤ A$64</div></div>
+          <div class="kpi blue"><div class="kl">💰 Contribution / order</div><div class="kv" id="contribV">A$92.05</div><div class="ks" id="contribSub">before Meta · 65% margin</div></div>
+        </div>
+      </section>
 
-          <div class="metric-row"><div class="metric-name">Gross order value</div><div class="metric-val" id="grossValue">$177.04</div><div class="metric-note" id="grossNote">USD charged</div></div>
-          <div class="metric-row"><div class="metric-name">Retained sales after tax & reversals</div><div class="metric-val" id="retainedSales">$161.55</div><div class="metric-note">Used for margin targets</div></div>
-          <div class="metric-row"><div class="metric-name">Average shirts per order</div><div class="metric-val" id="qtyValue">1.57</div><div class="metric-note">Driven by trio mix</div></div>
-          <div class="metric-row"><div class="metric-name">Payment fees</div><div class="metric-val" id="paymentValue">$6.40</div><div class="metric-note">Converted to local currency</div></div>
-          <div class="metric-row"><div class="metric-name">Shirt COGS</div><div class="metric-val" id="cogsValue">$26.67</div><div class="metric-note">A$24.50 per shirt</div></div>
-          <div class="metric-row"><div class="metric-name">Fulfilment, duties & delivery</div><div class="metric-val" id="fulfilValue">$44.19</div><div class="metric-note" id="fulfilNote">Australia to USA</div></div>
-          <div class="metric-row"><div class="metric-name">Contribution before Meta</div><div class="metric-val" id="preMetaValue">$84.28</div><div class="metric-note" id="preMetaMargin">52.2% of retained sales</div></div>
 
-          <div class="stack" id="costStack">
-            <div class="seg-payment" id="barPayment"></div>
-            <div class="seg-cogs" id="barCogs"></div>
-            <div class="seg-fulfil" id="barFulfil"></div>
-            <div class="seg-other" id="barOther"></div>
-            <div class="seg-profit" id="barProfit"></div>
+      <section class="two">
+        <div class="panel pad">
+          <h3 class="subh">📊 Order economics</h3>
+          <p class="desc" id="ecoDesc">Where each order's revenue goes before ad spend.</p>
+          <div class="row"><div class="rn">Product AOV (net of discounts)</div><div class="rv" id="e_aov">A$131.51<span class="rvp">93.3%</span></div><div class="rnote" id="e_aov_n">ex tax &amp; shipping</div></div>
+          <div class="row"><div class="rn">− Reversal reserve</div><div class="rv neg" id="e_rev">−A$6.80<span class="rvp">4.8%</span></div><div class="rnote" id="e_rev_n">5.17% of AOV</div></div>
+          <div class="row"><div class="rn">− Payment fees</div><div class="rv neg" id="e_pay">−A$4.55<span class="rvp">3.2%</span></div><div class="rnote">gateway + fixed</div></div>
+          <div class="row"><div class="rn">− Product COGS</div><div class="rv neg" id="e_cogs">−A$5.59<span class="rvp">4.0%</span></div><div class="rnote" id="e_cogs_n">2.3 × A$2.43</div></div>
+          <div class="row"><div class="rn">− Fulfilment <span style="font-size:.85em;color:var(--muted)">(gross)</span></div><div class="rv neg" id="e_ful">−A$31.90<span class="rvp">22.6%</span></div><div class="rnote" id="e_ful_n">62% Cart TX A$26.93 / 38% AU→US DHL A$40.00</div></div>
+          <div class="row"><div class="rn" id="e_ship_l">+ Customer-paid shipping</div><div class="rv pos" id="e_ship">+A$9.38<span class="rvp">6.7%</span></div><div class="rnote" id="e_ship_n">customers cover the freight</div></div>
+          <div class="row" style="border-top:1px dashed var(--line)"><div class="rn" style="font-weight:800">= Net fulfilment <span style="font-size:.85em;color:var(--muted)">we absorb</span></div><div class="rv neg" id="e_ful_net">−A$22.52<span class="rvp">16.0%</span></div><div class="rnote" id="e_ful_net_n">Cart-only ≈A$17.55</div></div>
+          <div class="row"><div class="rn">− Packaging &amp; other variable</div><div class="rv neg" id="e_other">−A$0.00<span class="rvp">0.0%</span></div><div class="rnote">audited: nothing else variable — stress via sidebar</div></div>
+          <div class="row" id="fixRow" style="display: none;"><div class="rn">− Fixed cost absorption</div><div class="rv neg" id="e_fix">−A$5.24<span class="rvp">3.7%</span></div><div class="rnote" id="e_fix_n">pool ÷ 2,638 wh-orders</div></div>
+          <div class="row"><div class="rn" style="font-weight:900;color:var(--green)">Contribution before Meta</div><div class="rv pos" id="e_con">A$92.05<span class="rvp">65.3%</span></div><div class="rnote" id="e_con_n">65% of revenue</div></div>
+          <div class="stack" id="stack">
+            <div class="s-rev" id="b_rev" style="width: 4.8258%;"></div><div class="s-pay" id="b_pay" style="width: 3.23033%;"></div><div class="s-cogs" id="b_cogs" style="width: 3.96692%;"></div><div class="s-ful" id="b_ful" style="width: 22.6394%;">Fulfil</div><div class="s-fix" id="b_fix" style="width: 0%;"></div><div class="s-prof" id="b_prof" style="width: 65.3376%;">Contribution</div>
           </div>
           <div class="legend">
-            <div class="legend-item"><span class="dot seg-payment"></span>Payment fees</div>
-            <div class="legend-item"><span class="dot seg-cogs"></span>COGS</div>
-            <div class="legend-item"><span class="dot seg-fulfil"></span>Fulfilment</div>
-            <div class="legend-item"><span class="dot seg-other"></span>Other variable</div>
-            <div class="legend-item"><span class="dot seg-profit"></span>Pre-Meta contribution</div>
+            <div class="li"><span class="dot s-rev"></span>Reversals</div><div class="li"><span class="dot s-pay"></span>Payment</div><div class="li"><span class="dot s-cogs"></span>COGS</div>
+            <div class="li"><span class="dot s-ful"></span>Fulfilment</div><div class="li"><span class="dot s-fix"></span>Fixed</div><div class="li"><span class="dot s-prof"></span>Contribution</div>
           </div>
+          <div id="fulExplain" style="margin-top:12px;padding:11px 13px;background:#fff8e1;border:1px solid #ffe08a;border-radius:10px;font-size:.82rem;line-height:1.55;color:#4a3c00">🚚 <b>US fulfilment — 4 months of Cart.com invoices (Mar–Jun, 5,314 orders).</b> A Cart (Texas) order = <b>A$10.88</b> 3PL handling (pick/pack/storage/mgmt — steady ~US$7.66 every month) + <b>A$16.05</b> freight (US$11.30 accrued) = <b>A$26.93</b> all-in. Customers pay <b>A$9.38</b> shipping, so a Cart order nets <b>~A$17.55</b>. The blended <b>A$31.90</b> in the row above is higher only because 38% of US orders still ship AU→US by DHL (A$40.00) while we move volume to Texas — that, plus 3PL storage/mgmt spreading over more orders, is why net US fulfilment keeps falling.</div>
         </div>
 
-        <div class="panel card-pad">
-          <h3 class="subhead">Guardrails for Dan</h3>
-          <p class="desc">Use seven-day new-customer shirt results. Do not intentionally scale at mathematical breakeven.</p>
-
-          <div class="guardrail">
-            <div class="guard red">
-              <small>Absolute ceiling</small>
-              <strong id="guardBreak">2.10x / $84 CPA</strong>
-              <small>No buffer for volatility or overhead.</small>
-            </div>
-            <div class="guard orange">
-              <small>Practical downside floor</small>
-              <strong id="guardStress">2.59x / $68 CPA</strong>
-              <small>12.14% reversals and US P90 shipping.</small>
-            </div>
-            <div class="guard green">
-              <small>Scale here</small>
-              <strong id="guardScale">2.95x+ / ≤$60 CPA</strong>
-              <small id="guardScaleNote">Leaves 15% retained contribution.</small>
-            </div>
+        <div class="panel pad">
+          <h3 class="subh">🚦 Live CPA zone</h3>
+          <p class="desc">Type your current Meta CPA (AUD, your ad account currency) — Shopify-true, so cross-check spend vs Shopify weekly.</p>
+          <div class="dial-head"><span class="hint">YOUR CPA (A$)</span><span class="zone-big" id="zoneTxt">A$60 <span style="font-size:.6em;border:1px solid var(--green);color:var(--green);border-radius:4px;padding:1px 7px;vertical-align:3px;letter-spacing:1px">SCALE</span></span></div>
+          <div class="iwrap" style="margin-bottom:10px"><input id="cpaR" type="range" min="5" max="120" step="1" value="60"><input id="cpaN" type="number" step="1" value="60"></div>
+          <div class="zbar" id="zbar"><div class="z1" id="z1" style="width: 59.2633%;"></div><div class="z2" id="z2" style="width: 17.6598%;"></div><div class="z3" id="z3" style="flex: 1 1 0%;"></div>
+            <div style="position: absolute; top: 0px; bottom: 0px; width: 3px; background: rgb(17, 17, 17); box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 6px; left: 50.1377%;" id="zptr"></div></div>
+          <div class="znums"><span style="color:var(--green)" id="zScale">Scale ≤ A$71</span><span style="color:var(--red)" id="zStop">Stop ≥ A$92</span></div>
+          <div class="guards" style="margin-top:16px">
+            <div class="guard green"><small>🟢 SCALE</small><b id="g_scale">2.00x / ≤A$71</b><small>+15–20% budget / 2–3d</small></div>
+            <div class="guard dgreen"><small>🚀 PUSH</small><b id="g_push">2.22x / ≤A$64</b><small>while 7-day holds</small></div>
+            <div class="guard amber"><small>🟡 HOLD</small><b id="g_hold">1.54x–2.00x</b><small>no increases</small></div>
+            <div class="guard red"><small>🔴 PULL BACK</small><b id="g_stop">&lt; 1.54x / &gt;A$92</b><small>below breakeven</small></div>
           </div>
-
-          <button class="btn-light" id="copyScenario" style="width:100%;margin-top:14px">Copy Current Scenario</button>
-          <p class="footnote">Excluded from breakeven: salaries, software, fixed agency retainers, creative production and corporate overhead. Add genuinely variable leakage in “Extra variable cost”.</p>
         </div>
       </section>
 
-      <section class="panel card-pad">
-        <h3 class="subhead">Monthly scaling planner</h3>
-        <p class="desc">See what daily Meta spend produces at the selected CPA target.</p>
-        <div class="planner-controls">
-          <div class="mini-card">
-            <div class="label-row"><label>Target mode</label><span class="hint" id="plannerTargetLabel">Healthy</span></div>
-            <div class="segmented" id="plannerModeBtns">
-              <button data-planner="healthy" class="active">Healthy</button>
-              <button data-planner="strong">Strong</button>
-            </div>
-          </div>
-          <div class="mini-card">
-            <div class="label-row"><label>Daily Meta spend</label><span class="hint" id="dailySpendLabel">$500</span></div>
-            <div class="input-wrap">
-              <input id="dailySpend" type="range" min="50" max="5000" step="50" value="500">
-              <input id="dailySpendNum" type="number" min="0" max="100000" step="50" value="500">
-            </div>
-          </div>
+      <!-- BUDGET ALLOCATION -->
+      <section class="panel pad">
+        <h3 class="subh">🧭 Product bucket funnel — what you're really selling</h3>
+        <p class="desc">Real composition of the selected market's buckets (Shopify net sales, Mar–Jun 2026). A "Ties &amp; Accessories" campaign is mostly neckties — but bow ties, pocket squares &amp; cufflinks carry real weight. Match ad creative &amp; catalogue to what actually converts.</p>
+        <div id="funnelBox"><div style="font-weight:800;font-size:12px;margin:2px 0 8px">🇺🇸 USA · bucket split (net revenue)</div><div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:6px"><div style="font-size:12px;font-weight:700">Ties &amp; Accessories</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:20px"><div style="width:96%;height:100%;background:var(--yellow)"></div></div><div style="text-align:right;font-weight:800;font-size:12px">96% · A$1.19M</div></div><div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:6px"><div style="font-size:12px;font-weight:700">Shirts</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:20px"><div style="width:4%;height:100%;background:#c9c9c2"></div></div><div style="text-align:right;font-weight:800;font-size:12px">4% · A$56k</div></div><div style="font-weight:800;font-size:12px;margin:14px 0 8px">Inside 👔 Ties &amp; Accessories — share of the bucket</div><div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:700">Neckties</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:16px"><div style="width:100%;height:100%;background:linear-gradient(90deg,#111,#666)"></div></div><div style="text-align:right;font-size:11.5px;color:var(--muted)"><b style="color:var(--ink)">51%</b> · 9,382u</div></div><div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:700">Bow Ties</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:16px"><div style="width:41.17647058823529%;height:100%;background:linear-gradient(90deg,#111,#666)"></div></div><div style="text-align:right;font-size:11.5px;color:var(--muted)"><b style="color:var(--ink)">21%</b> · 3,961u</div></div><div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:700">Pocket Squares</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:16px"><div style="width:23.52941176470588%;height:100%;background:linear-gradient(90deg,#111,#666)"></div></div><div style="text-align:right;font-size:11.5px;color:var(--muted)"><b style="color:var(--ink)">12%</b> · 5,129u</div></div><div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:700">Cufflinks &amp; formal</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:16px"><div style="width:17.647058823529413%;height:100%;background:linear-gradient(90deg,#111,#666)"></div></div><div style="text-align:right;font-size:11.5px;color:var(--muted)"><b style="color:var(--ink)">9%</b> · 1,278u</div></div><div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:700">Other accessories</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:16px"><div style="width:11.76470588235294%;height:100%;background:linear-gradient(90deg,#111,#666)"></div></div><div style="text-align:right;font-size:11.5px;color:var(--muted)"><b style="color:var(--ink)">6%</b> · 1,952u</div></div><p class="foot">Neckties are ~half of every "Ties &amp; Accessories" campaign; bow ties + pocket squares + cufflinks make up most of the rest. Shirts are a small (4% of US revenue), higher-AOV but lower-margin bucket. Tap 👕 Shirts above to run the shirt economics.</p></div>
+      </section>
+
+      <section class="panel pad">
+        <h3 class="subh">🥇 Where to put the next dollar — budget allocation</h3>
+        <p class="desc">All four market × bucket cells ranked by profit per acquired order (new-customer, current cost view). Feed incremental spend top-down while each holds its CPA target.</p>
+        <div class="rank" style="border-bottom:2px solid var(--line);font-weight:900;color:var(--muted);font-size:10.5px;text-transform:uppercase">
+          <div>#</div><div>Market · bucket</div><div style="text-align:right">Contribution/order</div><div style="text-align:right" class="r4">Contribution margin</div><div style="text-align:right" class="r5">Healthy CPA</div>
         </div>
-        <div class="planner-grid">
-          <div class="planner-kpi"><span>Monthly Meta spend</span><b id="monthSpend">$15,000</b></div>
-          <div class="planner-kpi"><span>Estimated new orders</span><b id="monthOrders">250</b></div>
-          <div class="planner-kpi"><span>Estimated shirts sold</span><b id="monthShirts">391</b></div>
-          <div class="planner-kpi"><span>Gross shirt revenue</span><b id="monthRevenue">$44,261</b></div>
-          <div class="planner-kpi"><span>Contribution after Meta</span><b id="monthContribution">$6,071</b></div>
-          <div class="planner-kpi"><span>After-Meta contribution margin</span><b id="monthMargin">15.0%</b></div>
-          <div class="planner-kpi"><span>Target CPA</span><b id="plannerCpa">$60</b></div>
-          <div class="planner-kpi"><span>Target ROAS</span><b id="plannerRoas">2.95x</b></div>
+        <div id="allocRows"><div class="rank top"><div class="n">1</div><div><b>USA</b> · Ties &amp; Accessories <span class="hint">(viewing)</span></div><div style="text-align:right;font-weight:900;color:var(--green)">A$92.05</div><div style="text-align:right" class="r4">65%</div><div style="text-align:right" class="r5">A$71</div></div><div class="rank"><div class="n">2</div><div><b>USA</b> · Shirts</div><div style="text-align:right;font-weight:900;color:var(--green)">A$72.14</div><div style="text-align:right" class="r4">42%</div><div style="text-align:right" class="r5">A$46</div></div><div class="rank"><div class="n">3</div><div><b>AU</b> · Shirts</div><div style="text-align:right;font-weight:900;color:var(--green)">A$66.24</div><div style="text-align:right" class="r4">50%</div><div style="text-align:right" class="r5">A$46</div></div><div class="rank"><div class="n">4</div><div><b>AU</b> · Ties &amp; Accessories</div><div style="text-align:right;font-weight:900;color:var(--green)">A$60.37</div><div style="text-align:right" class="r4">71%</div><div style="text-align:right" class="r5">A$48</div></div></div>
+        <p class="foot" id="allocNote">Ranked by contribution dollars per acquired order (cash-variable). <b>USA Ties &amp; Accessories</b> yields the most profit per order (A$92.05), so it clears budget first — but weigh against reach: your biggest bucket by volume is US Ties. Highest-margin cell: AU Ties &amp; Accessories at 71%.</p>
+      </section>
+
+      <!-- PROMO + SENSITIVITY -->
+      <section class="two">
+        <div class="panel pad">
+          <h3 class="subh">🏷️ Promo / sale scenario</h3>
+          <p class="desc">Model an extra discount on top of everyday pricing and see how the profitable CPA ceiling moves before you launch a sale. Set the depth in the sidebar (Extra sale / promo discount).</p>
+          <div class="row" style="border-bottom:2px solid var(--line)"><div class="rn" style="font-weight:900">Metric</div><div class="rv">Normal</div><div class="rv" id="promoCol">At 0% off</div></div>
+          <div class="row"><div class="rn">Effective AOV</div><div class="rv" id="pr_aov0">A$131.51</div><div class="rv" id="pr_aov1">A$131.51</div></div>
+          <div class="row"><div class="rn">Contribution / order</div><div class="rv" id="pr_con0">A$92.05</div><div class="rv" id="pr_con1"><span style="color:var(--ink)">A$92.05</span></div></div>
+          <div class="row"><div class="rn">Breakeven CPA</div><div class="rv" id="pr_be0">A$92</div><div class="rv" id="pr_be1">A$92</div></div>
+          <div class="row"><div class="rn">Healthy CPA</div><div class="rv" id="pr_h0">A$71</div><div class="rv" id="pr_h1">A$71</div></div>
+          <div class="row"><div class="rn">Healthy ROAS</div><div class="rv" id="pr_hr0">2.00x</div><div class="rv" id="pr_hr1">2.00x</div></div>
+          <p class="foot" id="promoNote">Set an <b>extra sale / promo discount</b> in the sidebar to model a sale. Everyday discounts are already in the AOV — this is additional depth on top.</p>
+        </div>
+        <div class="panel pad">
+          <h3 class="subh">⚖️ Sensitivity — what moves breakeven most</h3>
+          <p class="desc">How much the breakeven CPA for this cell shifts when each input moves against you. Watch the top bars closely as you scale.</p>
+          <div id="torRows"><div class="tor"><div style="font-weight:700">AOV −10%</div><div class="tortrack"><div class="torfill" style="width:100%"></div></div><div style="text-align:right;font-weight:900;color:var(--red)">−A$12.07</div></div><div class="tor"><div style="font-weight:700">AUD +10% (US AOV −)</div><div class="tortrack"><div class="torfill" style="width:90.90909090909082%"></div></div><div style="text-align:right;font-weight:900;color:var(--red)">−A$10.98</div></div><div class="tor"><div style="font-weight:700">Reversals → 12%</div><div class="tortrack"><div class="torfill" style="width:74.39066097681581%"></div></div><div style="text-align:right;font-weight:900;color:var(--red)">−A$8.98</div></div><div class="tor"><div style="font-weight:700">More AU→US DHL (+A$5 ful)</div><div class="tortrack"><div class="torfill" style="width:41.410353741597774%"></div></div><div style="text-align:right;font-weight:900;color:var(--red)">−A$5.00</div></div><div class="tor"><div style="font-weight:700">Fulfilment +15%</div><div class="tortrack"><div class="torfill" style="width:39.62548467462735%"></div></div><div style="text-align:right;font-weight:900;color:var(--red)">−A$4.78</div></div><div class="tor"><div style="font-weight:700">COGS +20%</div><div class="tortrack"><div class="torfill" style="width:9.257698682471501%"></div></div><div style="text-align:right;font-weight:900;color:var(--red)">−A$1.12</div></div></div>
+          <p class="foot">Bars show the A$ drop in breakeven CPA from the labelled adverse move. Longest bar = biggest risk to your margin.</p>
         </div>
       </section>
 
-      <section class="panel card-pad">
-        <h3 class="subhead">Basket comparison</h3>
-        <p class="desc">All rows use the active market, cost mode and assumptions.</p>
-        <div style="overflow:auto">
-          <table class="scenario-table">
-            <thead>
-              <tr>
-                <th>Basket</th>
-                <th>Price</th>
-                <th>Pre-Meta contribution</th>
-                <th>Breakeven CPA</th>
-                <th>Breakeven ROAS</th>
-                <th>Healthy CPA</th>
-                <th>Healthy ROAS</th>
-              </tr>
-            </thead>
-            <tbody id="scenarioRows"></tbody>
-          </table>
+      <!-- ============ ORDER → PROFIT ============ -->
+      <section class="panel pad">
+        <h3 class="subh">📈 Operating leverage — contribution margin &amp; profit as you scale</h3>
+        <p class="desc">Whole-business monthly economics (new + returning). <b>Pure contribution margin is the headline</b> — revenue minus product, shipping, payment and all marketing. Fixed overhead (warehouse + corporate) sits <b>below the line</b> for reference and is not part of contribution margin. <span class="hint">Always in A$ — this is the whole company (AUD), independent of the US display toggle.</span></p>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;background:#111;color:#fff;border-radius:13px;padding:14px 18px">
+          <span style="font-weight:900;font-size:14px;white-space:nowrap">Monthly orders</span>
+          <input id="ordR2" type="range" min="1000" max="15000" step="100" style="flex:1;min-width:220px;accent-color:var(--yellow)" value="3900">
+          <input id="ordN2" type="number" step="100" style="width:110px;background:#1d1d1a;color:#fff;border-color:#3a3a34" value="3940">
+          <span style="font-weight:900;color:var(--yellow);white-space:nowrap" id="ord2Lab">×1.0 · now</span>
         </div>
+        <div class="lev-grid">
+          <div class="chart"><div class="cols" id="profitCols"><div class="col"><div class="colbar" style="top:132px;height:44px;background:linear-gradient(180deg,#1aa06b,#0f7a52)"></div><div class="cap" style="top:114px;color:var(--ink)">A$109,856</div><div class="collab" style="">2,955/mo<br>0.75×</div></div><div class="col"><div class="colbar" style="top:117.33333333333334px;height:58.66666666666666px;background:linear-gradient(180deg,#ffd84d,#f0b400)"></div><div class="cap" style="top:99.33333333333334px;color:var(--ink)">A$146,475</div><div class="collab" style="color:#b8860b;font-weight:900">3,940/mo<br>now</div></div><div class="col"><div class="colbar" style="top:88px;height:88px;background:linear-gradient(180deg,#1aa06b,#0f7a52)"></div><div class="cap" style="top:70px;color:var(--ink)">A$219,712</div><div class="collab" style="">5,910/mo<br>1.50×</div></div><div class="col"><div class="colbar" style="top:58.666666666666686px;height:117.33333333333331px;background:linear-gradient(180deg,#1aa06b,#0f7a52)"></div><div class="cap" style="top:40.666666666666686px;color:var(--ink)">A$292,950</div><div class="collab" style="">7,880/mo<br>2×</div></div><div class="col"><div class="colbar" style="top:0px;height:176px;background:linear-gradient(180deg,#1aa06b,#0f7a52)"></div><div class="cap" style="top:-2px;color:var(--ink)">A$439,424</div><div class="collab" style="">11,820/mo<br>3×</div></div></div><div style="height:34px"></div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="mer">
+              <div class="mercard" style="background:var(--yellow-soft);border-color:#efd873"><div class="kl">💰 Contribution margin (after ads)</div><b id="bz_cmads"><span style="color:var(--green)">30.1%</span></b><div class="ks">the media-buyer margin</div></div>
+              <div class="mercard"><div class="kl">Contribution before ads</div><b id="bz_cm">66.1%</b><div class="ks">after product, ship &amp; payment</div></div>
+              <div class="mercard"><div class="kl">Contribution / order</div><b id="bz_porder">+A$81.69</b><div class="ks">pre-marketing</div></div>
+              <div class="mercard"><div class="kl">Contribution / month</div><b id="bz_afterm"><span style="color:var(--green)">A$146,475</span></b><div class="ks">after ads, before overhead</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px" class="row"><div class="rn">Revenue (net, all orders)</div><div class="rv" id="bz_rev">A$487,212</div><div class="rnote" id="bz_rev_n">A$123.66 × 3,940</div></div>
+        <div class="row"><div class="rn">= Contribution before marketing</div><div class="rv pos" id="bz_con">A$321,871</div><div class="rnote" id="bz_con_n">66.1% margin</div></div>
+        <div class="row"><div class="rn">− Marketing (all channels, at MER)</div><div class="rv neg" id="bz_mkt">−A$175,396</div><div class="rnote" id="bz_mkt_n">36% MER · Meta ~40%</div></div>
+        <div class="row" style="background:var(--green-soft);border-radius:10px"><div class="rn" style="font-weight:950;color:var(--green)">= CONTRIBUTION MARGIN (after ads)</div><div class="rv pos" id="bz_afterm2"><span style="color:var(--green)">A$146,475</span></div><div class="rnote" id="bz_afterm2_n">30.1% of revenue</div></div>
+        <div style="margin:14px 4px 2px;font-size:10.5px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">↓ Below the contribution line — fixed overhead (reference only, not in contribution margin)</div>
+        <div class="row"><div class="rn" style="color:var(--muted)">− Warehouse fixed (rent + wages)</div><div class="rv neg" id="bz_fix">−A$36,400</div><div class="rnote">constant as you scale</div></div>
+        <div class="row"><div class="rn" style="color:var(--muted)">− Corporate overhead</div><div class="rv neg" id="bz_opex">−A$115,000</div><div class="rnote">constant as you scale</div></div>
+        <div class="row"><div class="rn" style="font-weight:800;color:var(--muted)">= Operating profit (after overhead)</div><div class="rv" id="bz_prof2"><span style="color:var(--red)">−A$4,925</span></div><div class="rnote" id="bz_prof2_n">-1.0% operating margin</div></div>
+        <div style="margin-top:12px;background:var(--green-soft);border:1px solid #bfe6cf;border-radius:12px;padding:12px 14px;font-size:12.5px;font-weight:700" id="bz_goals">🎯 &nbsp;<b>Goals:</b> contribution margin after ads ≥ 20% &nbsp;·&nbsp; blended MER ≤ 30%. &nbsp; <b>Now:</b> 66% before ads · <b>30.1% after ads</b> · 36% MER. Overhead is below the line and does not affect contribution margin.</div>
+        <p class="foot" id="bz_note">Contribution margin holds at <b>30.1%</b> as you scale — it's pure variable economics, unaffected by overhead. At <b>3,940</b> orders/mo that's <b>A$146,475/mo</b> after ads; double the volume → <b>A$292,950/mo</b>. For reference only, fixed overhead of A$151,400/mo means the business nets positive above ~4,072 orders/mo at 36% MER.</p>
+      </section>
+
+      <!-- BUNDLE ECONOMICS -->
+      <section class="panel pad">
+        <h3 class="subh">🎁 Bundle economics — per bundle campaign</h3>
+        <p class="desc">Media-buyer targets for each bundle (current cost view · new-customer · Shopify-true ROAS). Bigger tie bundles carry more margin dollars, so they break even at a lower ROAS. Prices verified live in Shopify — US US$129/199/269, AU A$150/240/315 for 3/5/7 ties. Or pick a bundle in the 🎁 Offer selector to load it into the whole calculator.</p>
+        <div style="overflow:auto"><table class="ttable">
+          <thead><tr><th>Bundle</th><th>Price</th><th>Contribution</th><th>Margin</th><th>Breakeven CPA / ROAS</th><th>Healthy CPA / ROAS</th></tr></thead>
+          <tbody id="bundleRows"><tr><td>🇺🇸 <b>Necktie 3-tie bundle</b></td><td>A$183</td><td style="font-weight:900;color:var(--green)">A$129</td><td>70%</td><td>A$129 / 1.43x</td><td>≤A$101 / 1.82x+</td></tr><tr><td>🇺🇸 <b>Necktie 5-tie bundle ⭐</b></td><td>A$283</td><td style="font-weight:900;color:var(--green)">A$215</td><td>76%</td><td>A$215 / 1.32x</td><td>≤A$173 / 1.65x+</td></tr><tr><td>🇺🇸 <b>Necktie 7-tie bundle</b></td><td>A$382</td><td style="font-weight:900;color:var(--green)">A$302</td><td>79%</td><td>A$302 / 1.27x</td><td>≤A$244 / 1.57x+</td></tr><tr><td>🇺🇸 <b>Shirt 3-pack</b></td><td>A$425</td><td style="font-weight:900;color:var(--green)">A$260</td><td>61%</td><td>A$260 / 1.64x</td><td>≤A$196 / 2.18x+</td></tr><tr><td>🇦🇺 <b>Necktie 3-tie bundle</b></td><td>A$150</td><td style="font-weight:900;color:var(--green)">A$109</td><td>80%</td><td>A$109 / 1.38x</td><td>≤A$88 / 1.70x+</td></tr><tr><td>🇦🇺 <b>Necktie 5-tie bundle ⭐</b></td><td>A$240</td><td style="font-weight:900;color:var(--green)">A$180</td><td>83%</td><td>A$180 / 1.33x</td><td>≤A$147 / 1.63x+</td></tr><tr><td>🇦🇺 <b>Necktie 7-tie bundle</b></td><td>A$315</td><td style="font-weight:900;color:var(--green)">A$239</td><td>83%</td><td>A$239 / 1.32x</td><td>≤A$196 / 1.61x+</td></tr><tr><td>🇦🇺 <b>Shirt 3-pack</b></td><td>A$299</td><td style="font-weight:900;color:var(--green)">A$162</td><td>59%</td><td>A$162 / 1.85x</td><td>≤A$121 / 2.47x+</td></tr></tbody>
+        </table></div>
+        <p class="foot" id="bundleNote">All bundles ship free (per your live orders). ROAS is Shopify-true on product + shipping + tax (Dan-confirmed pixel). Contribution is pure — before overhead. Prices verified live in Shopify (Jul 2026).</p>
+      </section>
+
+      <!-- SCALING TRAJECTORY -->
+      <section class="panel pad">
+        <h3 class="subh">🗓️ Scaling trajectory — 30 / 60 / 90 days</h3>
+        <p class="desc">Ramps daily spend on a rule while <b>letting CPA inflate as you scale</b> (diminishing returns) — so it stays honest instead of promising infinite profit. Uses the current market · bucket at the target below.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px">
+          <div><div class="lab"><span>Start daily spend</span><span class="hint">A$</span></div><input id="trStart" type="number" step="100" value="1000"></div>
+          <div><div class="lab"><span>Increase every</span><span class="hint">days</span></div><input id="trDays" type="number" step="1" value="7"></div>
+          <div><div class="lab"><span>Budget step</span><span class="hint" id="trPctLab">+10%</span></div><div class="iwrap"><input id="trPctR" type="range" min="0" max="40" step="1" value="10"><input id="trPctN" type="number" step="1" value="10"></div></div>
+          <div><div class="lab"><span>CPA inflation / 2× spend</span><span class="hint" id="trInflLab">+12%</span></div><div class="iwrap"><input id="trInflR" type="range" min="0" max="60" step="1" value="12"><input id="trInflN" type="number" step="1" value="12"></div></div>
+          <div><div class="lab"><span>Target</span><span class="hint">CPA basis</span></div>
+            <div class="seg three" id="segTr"><button data-v="be">Breakeven</button><button data-v="healthy" class="active">Healthy</button><button data-v="strong">Strong</button></div></div>
+        </div>
+        <div style="overflow:auto"><table class="ttable">
+          <thead><tr><th>Checkpoint</th><th>Daily spend</th><th>Target CPA (inflated)</th><th>New orders (cum.)</th><th>Spend to date</th><th>Contribution after Meta (cum.)</th></tr></thead>
+          <tbody id="trRows"><tr><td><b>Day 30</b></td><td>A$1,464</td><td>A$76</td><td>485</td><td>A$35,415</td><td style="font-weight:900;color:var(--green)">A$9,234</td></tr><tr><td><b>Day 60</b></td><td>A$2,144</td><td>A$80</td><td>1,167</td><td>A$88,626</td><td style="font-weight:900;color:var(--green)">A$18,805</td></tr><tr><td><b>Day 90</b></td><td>A$3,138</td><td>A$85</td><td>2,130</td><td>A$168,521</td><td style="font-weight:900;color:var(--green)">A$27,510</td></tr></tbody>
+        </table></div>
+        <p class="foot" id="trNote">Starting A$1,000/day at the healthy CPA (A$71), +10% every 7 days, with CPA inflating 12% per doubling of spend. By day 90 you're spending <b>A$3,138/day</b> at a <b>A$85</b> CPA for <b>A$27,510</b> cumulative contribution after Meta. If CPA inflates faster than this, ramp slower — the honest limit is where target CPA crosses breakeven (A$92).</p>
+      </section>
+
+      <!-- CAMPAIGN PLANNER -->
+      <section class="panel pad">
+        <h3 class="subh">🧮 Campaign planner (single bucket)</h3>
+        <p class="desc">What a given Meta budget produces on the <b id="plModeTxt">Healthy</b> target for <b id="plCell">USA Ties &amp; Accessories</b>.</p>
+        <div class="seg" style="grid-template-columns:repeat(3,160px);margin-bottom:6px" id="segPlan"><button data-v="be">At breakeven</button><button data-v="healthy" class="active">Healthy</button><button data-v="strong">Strong</button></div>
+        <div class="field" style="max-width:420px"><div class="lab"><span>Daily Meta spend</span><span class="hint" id="spendLab">A$1,000</span></div><div class="iwrap"><input id="spendR" type="range" min="100" max="10000" step="100" value="1000"><input id="spendN" type="number" step="100" value="1000"></div></div>
+        <div class="planner">
+          <div class="mini"><span>Monthly spend</span><b id="p_spend">A$30,000</b></div>
+          <div class="mini"><span>New orders</span><b id="p_orders">423</b></div>
+          <div class="mini"><span>Gross revenue</span><b id="p_rev">A$59,943</b></div>
+          <div class="mini"><span>Target CPA / ROAS</span><b id="p_cpa">A$71 / 2.00x</b></div>
+          <div class="mini"><span>Contribution after Meta</span><b id="p_con"><span style="color:var(--green)">A$8,940</span></b></div>
+          <div class="mini"><span>After-Meta margin</span><b id="p_marg">15.0%</b></div>
+          <div class="mini"><span>Units sold</span><b id="p_units">973</b></div>
+          <div class="mini"><span>View</span><b id="p_view">Cash · Healthy</b></div>
+        </div>
+      </section>
+
+      <!-- REFERENCE & HANDOFF -->
+      <section class="panel pad" id="ltvPanel">
+        <h3 class="subh">🔁 New vs returning — CAC, NCAC &amp; LTV goals</h3>
+        <p class="desc">How much you can really pay to acquire a customer once repeat orders are counted. Real cohort data from Shopify (438k customers, 12 months). Updates live — tune the repeat rate &amp; new-share in the sidebar's Cohort &amp; LTV panel.</p>
+        <div id="ltvBox"><div class="ltmix">👥 <b>🇺🇸 USA customer mix (Shopify, Mar–Jun):</b> <b>71% new</b> / 29% returning · returning customers spend <b>+15.5%</b> more per order · across the whole store, <b>23% of buyers (your champions + loyal) drive 49% of revenue.</b></div><div class="ltgoals"><div class="ltg g1"><div class="lgh">💵 Cash-safe CPA</div><div class="lgv">≤ A$92</div><div class="lgs">Profit on the first order. The safe ceiling if you can't wait for repeats.</div></div><div class="ltg g2"><div class="lgh">🎯 NCAC — true new-customer cost</div><div class="lgv">Meta CPA × 1.41</div><div class="lgs">Only 71% of orders are new, so your real cost per net-new customer is higher than Meta's CPA. A A$60 CPA ≈ A$85/new customer.</div></div><div class="ltg g3"><div class="lgh">🚀 LTV-max CPA</div><div class="lgv">≤ A$132</div><div class="lgs">Over 1.43 orders/customer you can pay up to this and still breakeven on lifetime. Healthy (3:1): ≤ A$44.</div></div></div><div class="fc" style="border-color:#111"><div class="fe">🎽</div><div><span class="fh">Shirts are your LTV play — LTV <span id="lt_shirtltv">A$168</span>/customer vs Ties A$132</span><p>Validated on 12 months of Shopify: <b>shirt buyers return 57% of the time vs 30% for ties</b> — 1.6× stickier, worth 2.33 orders/customer vs 1.43. So even though shirts break even at a <i>lower</i> first-order CPA (A$72 vs A$92), their lifetime value is <b>+28% higher</b>. Play it two ways: <b>Ties = efficient cash acquisition</b> (fast payback), <b>Shirts = pay up to acquire and bank the repeats.</b></p></div></div><div class="fcfresh">📎 <b>How LTV is built:</b> first-order contribution × orders-per-customer (from the real returning rate, 1÷(1−rate)). Conservative — it ignores that returning customers spend +15.5% more, so true LTV is a little higher. Tune the repeat rate &amp; new-share in the sidebar's <b>Cohort &amp; LTV</b> panel. Anchor: 438k customers, 1.37 orders each, A$149 lifetime revenue.</div></div>
+      </section>
+
+      <section class="panel pad" id="focusPanel">
+        <h3 class="subh">🎯 Where to focus the spend — key highlights from the data</h3>
+        <p class="desc">Auto-computed from the verified numbers — updates live as you move any slider. Plain-English guidance for whoever runs the ads.</p>
+        <div id="focusBox"><div class="fc"><div class="fe">🥇</div><div><span class="fh">Put the next dollar into USA Ties &amp; Accessories — <span id="fc_top">A$92</span>/order</span><p>Highest contribution per acquired order, and Ties &amp; Acc is 96% of US revenue with 74.5% of orders from new customers — the deepest pool to scale into. Scale while ROAS ≥ 2.00x (CPA ≤ A$71).</p></div></div><div class="fc"><div class="fe">🎁</div><div><span class="fh">Bundles are the margin engine — <span id="fc_bundle">A$215</span>/order on the Necktie 5-tie bundle</span><p>That's <b>2.3×</b> a single order, so a bundle campaign can profitably pay a CPA up to <b>A$173</b> (healthy) and still breaks even at just 1.32x. Bigger packs → more margin dollars → lower breakeven ROAS. Pick it in the 🎁 Offer selector to plan against it.</p></div></div><div class="fc"><div class="fe">🚚</div><div><span class="fh">Finish the Texas shift — <span id="fc_route">A$10,430</span>/mo sitting on the table</span><p>798 US orders/mo still ship AU→US by DHL at A$40 vs A$27 from Cart Texas. This is an ops lever, not an ad lever — but every point of routing shift lowers breakeven for <i>every</i> US campaign. Watch the Cart share slider.</p></div></div><div class="fc"><div class="fe">📉</div><div><span class="fh">Close the MER gap — <span id="fc_mer">A$29,233</span>/mo of margin</span><p>Blended MER is 36% vs the 30% target. At today's volume that gap costs A$29,233/mo of after-ads contribution. Cut the lowest-ROAS spend first — the allocation table shows where each dollar earns most.</p></div></div><div class="fc"><div class="fe">⚠️</div><div><span class="fh">Returns are running hot right now — plan with the Stress toggle</span><p>Last 30 days (checked 21 Jul): returns hit <b>9.1% US / 6.5% AU</b> vs the normal 5.17/4.44% reserves — the post-Father's-Day wave. At 12% stress this cell's breakeven CPA tightens from A$92 to <b><span id="fc_stress">A$83</span></b>. Tighten caps ~8% until returns normalise.</p></div></div><div class="fcrules"><b style="color:#ffc400">📏 Three rules that keep this simple:</b><br>1&nbsp; Steer by <b>Shopify-true ROAS + blended MER</b> — never Meta-reported numbers alone.<br>2&nbsp; Scale <b>+15–20% every 2–3 days</b> while 7-day ROAS holds the healthy line. Below breakeven for 3 days → cut, don't average down.<br>3&nbsp; A dollar of CPA saved = a dollar of contribution — but a dollar of AOV added ≈ 90c of contribution. Push bundles &amp; AOV as hard as CPA.</div><div class="fcfresh">✅ <b>Freshness check — 21 Jul 2026 (last 30 days vs model):</b> AOVs at or above model (US +4%, AU +11% — the model stays conservative) · customer-paid shipping within A$0.45 · ⚠ returns elevated (see above) · volume at the seasonal trough (US share 48% vs 53% baseline). Re-run the refresh queries monthly — they're in the reference panel below.</div></div>
+      </section>
+
+      <section class="panel pad">
+        <h3 class="subh">✅ Weekly operating checklist</h3>
+        <p class="desc">Run this every week so the calculator is used the same way no matter who's behind the ads.</p>
+        <ul class="chk">
+          <li>Judge on the <b>7-day rolling</b> window, <b>new-customer</b> campaigns only.</li>
+          <li>Reconcile Meta spend to <b>Shopify net sales</b> and check <b>blended MER ≤ 30%</b> — you steer by Shopify/MER, not Meta-reported ROAS.</li>
+          <li><b>Green</b> (CPA ≤ healthy): raise budget <b>+15–20% every 2–3 days</b> while the 7-day holds.</li>
+          <li><b>Amber</b> (healthy → breakeven): hold, no increases.</li>
+          <li><b>Red</b> (above breakeven CPA): pull back.</li>
+          <li>Put new budget where <b>Budget allocation</b> ranks highest, while each cell holds its target.</li>
+          <li>Monthly: refresh AOV, reversal %, routing %, FX and COGS if they've moved; re-confirm corporate overhead.</li>
+        </ul>
+      </section>
+
+      <section class="panel pad">
+        <h3 class="subh">📋 Where every default comes from</h3>
+        <p class="desc"><span class="badge b-inv">INVOICE</span>billed actuals · <span class="badge b-ver">VERIFIED</span>Shopify/Xero actuals · <span class="badge b-est">ESTIMATE</span>confirm &amp; refresh</p>
+        <div class="src" id="srcBox"><span class="badge b-ver">VERIFIED</span><b>AOV, units &amp; mix</b> — Shopify Mar–Jun 2026 (US 8,848 orders A$1.33M, AU 7,765 orders A$789k — matched to workbook exactly). Campaign = NEW-customer (US ties A$131.51/2.3u, US shirts A$161.96/1.7u — Shopify net A$162 ✓; AU ties A$83.39/3.0u, AU shirts A$131.53/1.8u — Shopify net A$134 ✓); business = blended new+returning. New-customer rate US 74.5%, AU 65.5%.<br><span class="badge b-ver">VERIFIED</span><b>Customer-paid shipping</b> — Shopify Mar–Jun: US A$9.38/order (shipping revenue A$82,953 ÷ 8,848; Standard tier A$9.12), AU A$1.05/order.<br><span class="badge b-ver">VERIFIED</span><b>US pass-through sales tax</b> — Shopify Mar–Jun: A$7,657 tax on A$1,326,914 (net+shipping) = 0.58% of order value, applied to the Meta value &amp; payment base. AU GST 10% exact.<br><span class="badge b-ver">AUDITED</span><b>Nothing else variable</b> — packaging consumables sit inside overhead (not per-order), US returns handling is inside Cart's US$7.66, AU pick/pack is inside fixed wages, FX conversion is inside the Xero-verified 3.0% payment rate, DHL duties+MPF are inside the A$40/60 lane cost. A "Packaging &amp; other variable" line (default A$0) is in the economics so nothing is silently unmodelled.<br><span class="badge b-ver">VERIFIED</span><b>Reversal reserve</b> — Shopify 90d: US 5.17%, AU 4.44%. Stress 12% (June spiked to 13.6%).<br><span class="badge b-ver">VERIFIED</span><b>COGS</b> — Shopify cost-of-goods by product type, sales-weighted (Mar–Jun). Ties &amp; Acc blended A$2.43 US / A$2.34 AU per unit (neckties A$2.81, pocket squares A$1.13, cufflinks A$5.08…); shirts A$24.40. Cross-checked to variant unit-cost via API.<br><span class="badge b-ver">VERIFIED</span><b>Payment</b> — Xero June: AU ~2.2%, US ~3.0% + A$0.30.<br><span class="badge b-ver">VERIFIED</span><b>US routing</b> — Cart fulfils 58–65% of US orders (4-mo avg 60%, Jun 65%); rest AU→US DHL from Dandenong. Tool default 62%.<br><span class="badge b-inv">INVOICE</span><b>Cart.com US 3PL</b> — 4 months of invoices (Mar–Jun, 5,314 orders): 3PL handling <b>US$7.66</b> (pick/pack/storage/mgmt — stable every month) + freight <b>US$11.30</b> (accrued, June post-fix) = <b>US$18.96 = A$26.93</b>/order. Shirts heavier A$34.<br><span class="badge b-inv">INVOICE</span><b>AU→US DHL</b> — DHL audits Mar–Jun (1,000+ US AWBs/mo): ties A$40, shirts A$60 incl. duties + MPF.<br><span class="badge b-inv">INVOICE</span><b>Australia Post</b> — 5 invoices Feb–Jun: <b>A$10.75–11.00 all-in per parcel</b> (postage+fuel+security). Carrier only — pick/pack labour is in the fixed warehouse pool, so it is not double-counted here. Ties A$11.00 · <span class="badge b-est">EST</span> shirts A$14.00.<br><span class="badge b-inv">INVOICE</span><b>Fixed pool</b> — Xero: rent A$14.6k + wages/super A$21.8k (AU warehouse only).<br><span class="badge b-est">ESTIMATE</span><b>Corporate overhead A$115k/mo</b> — between April (A$108k) &amp; June (A$136k). Confirm your true monthly non-warehouse overhead.<br><span class="badge b-inv">CONFIRMED</span><b>Meta value basis</b> — Dan confirmed the Shopify→Meta pixel includes shipping + tax in the purchase value, so the ROAS denominator here is correct.<br><span class="badge b-ver">VERIFIED</span><b>Bundles</b> — necktie ladder verified live in Shopify: US US$129/199/269, AU A$150/240/315 for 3/5/7 ties (order-verified #469741); shirt 3-pack US$299 / AU A$298.98. Pick one in the 🎁 Offer selector to load it into the calculator.</div>
+        <h4 style="margin:16px 0 6px;font-size:13px">Change log &amp; last-verified</h4>
+        <div class="src" id="logBox">• <b>v1.8 · 21 Jul 2026</b> — full equation audit &amp; independent validation (Python model vs UI, every cell/view/bundle/planner figure cross-checked). US tax verified to 0.58% (was 0.47), AU customer shipping to A$1.05. Added "Packaging &amp; other variable" line (audited A$0) so nothing is silently missing. Sliders on every key driver (AOV, units, shipping, COGS, Cart, DHL, AU Post, FX, overhead, other). Inputs lock/dim when a bundle offer is active. CPA-zone slider range now adapts to bundle-size CPAs. Note: US-Ties and AU-Ties breakeven ROAS both display 1.54x — a genuine coincidence (1.5376 vs 1.5388), not a bug; the CPAs differ (A$92 vs A$60).<br>• <b>v1.7 · 21 Jul 2026</b> — baked in the 4-month Cart.com invoice audit (US$7.66 handling + US$11.30 freight); triple-checked AOV/units/mix/shipping vs Shopify (Mar–Jun, exact match); % on every economics line; 🎁 bundle-builder offer selector (loads any bundle into the whole calculator); product-bucket funnel; real AU bundle prices A$150/240/315; US shipping A$9.38 verified.<br>• <b>v1.6 · 21 Jul 2026</b> — AUD/USD display toggle (defaults AUD); US fulfilment shown gross → customer shipping → net.<br>• <b>v1.4.1 · 20 Jul 2026</b> — fixed figures showing blank on older phone browsers (removed ES2020 syntax; now ES2015-compatible, runs on iOS 9+/Android 5+).<br>• <b>v1.4 · 20 Jul 2026</b> — mobile-optimised: sticky quick-switch bar (🇺🇸/🇦🇺 · 👔/👕 · 💵/🏭), outputs-first layout, bigger touch targets, reflowed charts &amp; tables — no horizontal scroll on phones.<br>• <b>v1.3 · 20 Jul 2026</b> — triple-checked every cost vs source invoices; corrected AU fulfilment to A$11 carrier-only (handling was double-counted against the fixed wages pool). Added emoji cues for faster scanning.<br>• <b>v1.2 · 20 Jul 2026</b> — added handoff guide, weekly checklist, confidence flags, change log; budget-allocation, promo, sensitivity &amp; trajectory tools.<br>• <b>v1.1 · 20 Jul 2026</b> — switched campaign targets to new-customer economics; added order→profit slider &amp; contribution margin.<br>• <b>v1.0 · 20 Jul 2026</b> — two buckets × two markets, US routing lever, cash/loaded, breakeven/healthy/strong guardrails.<br>• <b>Sources last verified:</b> Shopify Mar–Jun 2026 (pulled 21 Jul) · Cart.com 4-mo invoice audit Mar–Jun · DHL audits Mar–Jun · Australia Post Feb–Jun · Xero Jun. Refresh monthly or when refund %, FX, routing or COGS move.</div>
       </section>
     </main>
   </div>
@@ -503,379 +675,523 @@
 <div class="toast" id="toast">Copied</div>
 
 <script>
-const defaults = {
-  market:'US', basket:'blend', mode:'base', plannerMode:'healthy',
-  trioShare:28.2609, frenchShare:0,
-  prices:{US:{standard:129,french:139,trio:299},AU:{standard:129,french:139,trio:299}},
-  cogs:24.5, reversalBase:8.75, reversalStress:12.14,
-  payment:{US:3.5,AU:2.0}, fixedFee:.30, otherCost:0,
-  fulfil:{US:{oneBase:59.9396969697,trioBase:72.68,oneStress:77.834,trioStress:78.294},AU:{oneBase:13,trioBase:13,oneStress:13,trioStress:13}},
-  fx:.6955, healthy:15, strong:20, dailySpend:500
+const D = {
+  fx:0.704, usCur:'AUD', market:'US', bucket:'ties', view:'cash', stress:false, planMode:'healthy', offer:0,
+  cell:{ US:{ties:{P:131.51,units:2.3,ship:9.38}, shirts:{P:161.96,units:1.7,ship:9.38}},
+         AU:{ties:{P:83.39,units:3.0,ship:1.05},  shirts:{P:131.53,units:1.8,ship:2.0}} },
+  blend:{ US:{ties:{P:137.31,units:2.7}, shirts:{P:169.00,units:1.8}},
+          AU:{ties:{P:90.83,units:3.9},  shirts:{P:147.54,units:2.0}} },
+  cogsUnit:{US:{ties:2.43,shirts:24.40},AU:{ties:2.34,shirts:24.40}},
+  rev:{US:5.17,AU:4.44}, revStress:12,
+  pay:{US:3.0,AU:2.2}, payFixed:0.30, usTax:0.58, gst:10, otherVar:{US:0,AU:0},
+  cartCost:{ties:26.93,shirts:34}, dhlCost:{ties:40,shirts:60}, cartShare:62,
+  cartHandling:10.88, cartFreight:16.05,
+  auFul:{ties:11.00,shirts:14.00},
+  rent:14600, wages:21800,
+  orders:3940, usShare:53.3, shirtUS:4.5, shirtAU:6.7, mer:36, opex:115000,
+  newShare:{US:71,AU:62}, retAov:{US:15.5,AU:18.2}, retRate:{ties:30,shirts:57}, ltvRatio:3,
+  healthy:15, strong:20, dailySpend:1000, cpa:60, promo:0,
+  trStart:1000, trDays:7, trPct:10, trInfl:12, trTarget:'healthy'
 };
+let s = JSON.parse(JSON.stringify(D));
+const $=id=>document.getElementById(id);
+const clampNum=(v,d=0)=>Number(v).toLocaleString('en-AU',{minimumFractionDigits:d,maximumFractionDigits:d});
+const xx=v=>isFinite(v)&&v>0?clampNum(v,2)+'x':'—';
+const aud=v=>'A$'+clampNum(v,2);
+const audk=v=>(v<0?'−A$':'A$')+clampNum(Math.abs(v),0);
+// Market + display-currency aware money. US in USD mode → US$ (converted from AUD internal); otherwise A$. One clean currency, no dual display. AU is always A$.
+function fmtCur(v,d){ if(s.market==='US'&&s.usCur==='USD')return 'US$'+clampNum(v*s.fx,d); return 'A$'+clampNum(v,d); }
+const money2=v=>fmtCur(v,2);
+const money0=v=>fmtCur(v,0);
+function audkCur(v){ var av=Math.abs(v); if(s.market==='US'&&s.usCur==='USD')return (v<0?'−US$':'US$')+clampNum(av*s.fx,0); return (v<0?'−A$':'A$')+clampNum(av,0); }
+function cpaMoney(v){ return isFinite(v)?fmtCur(v,0):'—'; }
+const bucketName=b=>b==='ties'?'Ties & Accessories':'Shirts';
 
-let state = JSON.parse(JSON.stringify(defaults));
-
-const $ = id => document.getElementById(id);
-const money = (v, market=state.market, decimals=0) => {
-  const currency = market==='US' ? 'USD' : 'AUD';
-  return new Intl.NumberFormat('en-AU',{style:'currency',currency,minimumFractionDigits:decimals,maximumFractionDigits:decimals}).format(v);
-};
-const num = (v,d=2) => Number(v).toLocaleString('en-AU',{minimumFractionDigits:d,maximumFractionDigits:d});
-const pct = v => `${num(v*100,1)}%`;
-const xfmt = v => isFinite(v) && v>0 ? `${num(v,2)}x` : '—';
-const safe = v => isFinite(v) ? v : 0;
-
-function scenarioName(type){
-  return {blend:'Blended shirt basket',standard:'1 standard shirt',french:'1 French cuff',trio:'3-shirt trio'}[type];
+function calc(market,bucket,opts){
+  opts=opts||{};
+  const c=s.cell[market][bucket];
+  let P=opts.P!=null?opts.P:c.P; const units=opts.units!=null?opts.units:c.units, S=opts.ship!=null?opts.ship:c.ship;
+  if(opts.promo) P=P*(1-opts.promo/100);
+  const MPV = market==='US' ? (P+S)*(1+s.usTax/100) : (P+S)*(1+s.gst/100);
+  const netRev=P+S;
+  const revrate=opts.revRate!=null?opts.revRate:((opts.stress!=null?opts.stress:s.stress)?s.revStress/100:s.rev[market]/100);
+  const reversal=revrate*P;
+  const payment=s.pay[market]/100*MPV + s.payFixed;
+  const cogs=units*s.cogsUnit[market][bucket]*(opts.cogsMul!=null?opts.cogsMul:1);
+  const cshare=(opts.cartShare!=null?opts.cartShare:s.cartShare)/100;
+  const fulfilBase = market==='US' ? cshare*s.cartCost[bucket]+(1-cshare)*s.dhlCost[bucket] : s.auFul[bucket];
+  const fulfil=opts.fulfil!=null?opts.fulfil:fulfilBase*(opts.fulMul!=null?opts.fulMul:1);
+  const other=opts.otherVar!=null?opts.otherVar:s.otherVar[market];
+  const contribCash=netRev-reversal-payment-cogs-fulfil-other;
+  const V=opts.orders!=null?opts.orders:s.orders;
+  const us=V*(s.usShare/100), au=V*(1-s.usShare/100);
+  const who=au+(1-cshare)*us;
+  const fFull=who>0?(s.rent+s.wages)/who:0;
+  const fOrder = market==='AU'?fFull:(1-cshare)*fFull;
+  const contribLoaded=contribCash-fOrder;
+  const contrib=(opts.view!=null?opts.view:s.view)==='loaded'?contribLoaded:contribCash;
+  const g=c=>({beCpa:c, beRoas:c>0?MPV/c:Infinity,
+    hCpa:c-s.healthy/100*netRev, hRoas:(c-s.healthy/100*netRev)>0?MPV/(c-s.healthy/100*netRev):Infinity,
+    sCpa:c-s.strong/100*netRev, sRoas:(c-s.strong/100*netRev)>0?MPV/(c-s.strong/100*netRev):Infinity});
+  return {P,units,S,MPV,netRev,reversal,payment,cogs,fulfil,other,fOrder,contribCash,contribLoaded,contrib,
+    margin:contribCash/netRev, who, g:g(contrib), gCash:g(contribCash), gLoaded:g(contribLoaded)};
 }
 
-function readState(){
-  state.trioShare = Math.max(0, Math.min(70, +$('trioShareNum').value || 0));
-  state.frenchShare = Math.max(0, Math.min(50, +$('frenchShareNum').value || 0));
-  state.prices[state.market].standard = +$('priceStandard').value || 0;
-  state.prices[state.market].french = +$('priceFrench').value || 0;
-  state.prices[state.market].trio = +$('priceTrio').value || 0;
-  state.cogs = +$('cogs').value || 0;
-  state.fixedFee = +$('fixedFee').value || 0;
-  state.otherCost = +$('otherCost').value || 0;
-  state.fx = +$('fx').value || .6955;
-  state.healthy = +$('healthyTargetNum').value || 0;
-  state.strong = +$('strongTargetNum').value || 0;
-  state.dailySpend = +$('dailySpendNum').value || 0;
+// ---- Bundle-builder offers: single vs bundle, scoped to current market+bucket ----
+function offerList(){ return BUNDLES.filter(function(b){return b.m===s.market&&b.bk===s.bucket;}); }
+function offerParams(){
+  if(!s.offer) return null;
+  var b=offerList()[s.offer-1]; if(!b) return null;
+  var P = b.m==='US' ? b.usd/s.fx : b.audIncl/(1+s.gst/100);
+  var ful;
+  if(b.m==='US'){ var ca=b.cart!=null?b.cart:s.cartCost[b.bk], dh=b.dhl!=null?b.dhl:s.dhlCost[b.bk]; ful=s.cartShare/100*ca+(1-s.cartShare/100)*dh; }
+  else { ful=b.auful!=null?b.auful:s.auFul[b.bk]; }
+  return {P:P,units:b.units,ship:0,fulfil:ful,b:b};
+}
+function offerOpts(){ var op=offerParams(); return op?{P:op.P,units:op.units,ship:op.ship,fulfil:op.fulfil}:{}; }
+// baseCalc = current cell, honouring the selected offer; extra opts override
+function baseCalc(extra){ var o=offerOpts(); extra=extra||{}; for(var k in extra) o[k]=extra[k]; return calc(s.market,s.bucket,o); }
 
-  if(state.mode==='base'){
-    state.reversalBase = +$('reversalNum').value || 0;
-    state.payment[state.market] = +$('paymentRateNum').value || 0;
-    if(state.market==='US'){
-      state.fulfil.US.oneBase = +$('usOneFulfil').value || 0;
-      state.fulfil.US.trioBase = +$('usTrioFulfil').value || 0;
-    } else {
-      state.fulfil.AU.oneBase = +$('auFulfil').value || 0;
-      state.fulfil.AU.trioBase = +$('auFulfil').value || 0;
-    }
-  } else {
-    state.reversalStress = +$('reversalNum').value || 0;
-    state.payment[state.market] = +$('paymentRateNum').value || 0;
-    if(state.market==='US'){
-      state.fulfil.US.oneStress = +$('usOneFulfil').value || 0;
-      state.fulfil.US.trioStress = +$('usTrioFulfil').value || 0;
-    } else {
-      state.fulfil.AU.oneStress = +$('auFulfil').value || 0;
-      state.fulfil.AU.trioStress = +$('auFulfil').value || 0;
-    }
-  }
+function blendMarket(mkt,shirtPct){
+  const bt=s.blend[mkt].ties, bs=s.blend[mkt].shirts, w=shirtPct/100;
+  const t=calc(mkt,'ties',{view:'cash',P:bt.P,units:bt.units}), sh=calc(mkt,'shirts',{view:'cash',P:bs.P,units:bs.units});
+  return {con:(1-w)*t.contribCash+w*sh.contribCash, net:(1-w)*t.netRev+w*sh.netRev};
+}
+function business(V){
+  const usS=s.usShare/100, U=blendMarket('US',s.shirtUS), A=blendMarket('AU',s.shirtAU);
+  const us=V*usS, au=V*(1-usS);
+  const revenue=us*U.net+au*A.net, contrib=us*U.con+au*A.con;
+  const marketing=s.mer/100*revenue, fixed=s.rent+s.wages;
+  const profit=contrib-marketing-fixed-s.opex;
+  const contribBlend=usS*U.con+(1-usS)*A.con, netBlend=usS*U.net+(1-usS)*A.net;
+  const perOrderMargin=contribBlend-s.mer/100*netBlend;
+  const beVol=perOrderMargin>0?(fixed+s.opex)/perOrderMargin:Infinity;
+  return {V,revenue,contrib,marketing,fixed,opex:s.opex,profit,perOrder:profit/V,margin:profit/revenue,beVol,contribBlend,netBlend};
 }
 
-function calc(type, opts={}){
-  const market = opts.market || state.market;
-  const mode = opts.mode || state.mode;
-  const prices = state.prices[market];
-  const trioShare = (opts.trioShare ?? state.trioShare)/100;
-  const frenchWithinSingles = (opts.frenchShare ?? state.frenchShare)/100;
-  const singleShare = 1-trioShare;
-
-  let price, qty, oneWeight, trioWeight;
-  if(type==='standard'){price=prices.standard;qty=1;oneWeight=1;trioWeight=0;}
-  if(type==='french'){price=prices.french;qty=1;oneWeight=1;trioWeight=0;}
-  if(type==='trio'){price=prices.trio;qty=3;oneWeight=0;trioWeight=1;}
-  if(type==='blend'){
-    const blendedSinglePrice = prices.standard*(1-frenchWithinSingles)+prices.french*frenchWithinSingles;
-    price = singleShare*blendedSinglePrice + trioShare*prices.trio;
-    qty = singleShare*1 + trioShare*3;
-    oneWeight=singleShare;trioWeight=trioShare;
-  }
-
-  const fx = state.fx;
-  const grossAUD = market==='US' ? price/fx : price;
-  const exTaxAUD = market==='AU' ? grossAUD/1.10 : grossAUD;
-  const reversalPct = (mode==='stress' ? state.reversalStress : state.reversalBase)/100;
-  const retainedAUD = exTaxAUD*(1-reversalPct);
-  const paymentRate = state.payment[market]/100;
-  const paymentAUD = grossAUD*paymentRate + state.fixedFee;
-  const cogsAUD = qty*state.cogs;
-
-  let oneFul, trioFul;
-  if(market==='US'){
-    oneFul = mode==='stress' ? state.fulfil.US.oneStress : state.fulfil.US.oneBase;
-    trioFul = mode==='stress' ? state.fulfil.US.trioStress : state.fulfil.US.trioBase;
-  }else{
-    oneFul = mode==='stress' ? state.fulfil.AU.oneStress : state.fulfil.AU.oneBase;
-    trioFul = mode==='stress' ? state.fulfil.AU.trioStress : state.fulfil.AU.trioBase;
-  }
-  const fulfilAUD = oneWeight*oneFul + trioWeight*trioFul;
-  const otherAUD = state.otherCost;
-  const contributionAUD = retainedAUD-paymentAUD-cogsAUD-fulfilAUD-otherAUD;
-  const localFactor = market==='US' ? fx : 1;
-  const retainedLocal = retainedAUD*localFactor;
-  const paymentLocal = paymentAUD*localFactor;
-  const cogsLocal = cogsAUD*localFactor;
-  const fulfilLocal = fulfilAUD*localFactor;
-  const otherLocal = otherAUD*localFactor;
-  const contributionLocal = contributionAUD*localFactor;
-  const beCPA = contributionLocal;
-  const beROAS = beCPA>0 ? price/beCPA : Infinity;
-  const healthyRate = state.healthy/100;
-  const strongRate = state.strong/100;
-  const healthyCPA = contributionLocal - healthyRate*retainedLocal;
-  const strongCPA = contributionLocal - strongRate*retainedLocal;
-  const healthyROAS = healthyCPA>0 ? price/healthyCPA : Infinity;
-  const strongROAS = strongCPA>0 ? price/strongCPA : Infinity;
-  const preMetaMargin = retainedLocal>0 ? contributionLocal/retainedLocal : 0;
-
-  return {
-    market,mode,type,price,qty,grossAUD,exTaxAUD,retainedAUD,paymentAUD,cogsAUD,fulfilAUD,otherAUD,contributionAUD,
-    retainedLocal,paymentLocal,cogsLocal,fulfilLocal,otherLocal,contributionLocal,
-    beCPA,beROAS,healthyCPA,healthyROAS,strongCPA,strongROAS,preMetaMargin
-  };
+function readInputs(){
+  const c=s.cell[s.market][s.bucket];
+  c.P=+$('aov').value||0; c.units=+$('units').value||0; c.ship=+$('ship').value||0;
+  s.promo=+$('promoN').value||0;
+  s.cogsUnit[s.market][s.bucket]=+$('cogs').value||0;
+  s.rev[s.market]=+$('revN').value||0; s.pay[s.market]=+$('payN').value||0; s.payFixed=+$('payFixed').value||0;
+  s.otherVar[s.market]=+$('otherN').value||0;
+  s.retRate[s.bucket]=+$('retN').value||0; s.newShare[s.market]=+$('nsN').value||0; s.retAov[s.market]=+$('raN').value||0; s.ltvRatio=+$('ltvRatioN').value||3;
+  if(s.market==='US'){ s.cartShare=+$('cartN').value||0; s.cartCost[s.bucket]=+$('cartCost').value||0; s.dhlCost[s.bucket]=+$('dhlCost').value||0; }
+  else { s.auFul[s.bucket]=+$('auFul').value||0; }
+  s.rent=+$('rent').value||0; s.wages=+$('wages').value||0;
+  s.orders=+$('ordN').value||0; s.usShare=+$('usShareN').value||0; s.mer=+$('merN').value||0; s.opex=+$('opex').value||0;
+  s.healthy=+$('hN').value||0; s.strong=+$('sN').value||0; s.fx=+$('fx').value||0.6955;
+  s.dailySpend=+$('spendN').value||0; s.cpa=+$('cpaN').value||0;
+  s.trStart=+$('trStart').value||0; s.trDays=Math.max(1,+$('trDays').value||1); s.trPct=+$('trPctN').value||0; s.trInfl=+$('trInflN').value||0;
 }
-
-function syncControls(){
-  const m=state.market;
-  $('currencyPrice1').textContent=m==='US'?'USD':'AUD incl. GST';
-  $('currencyPrice2').textContent=m==='US'?'USD':'AUD incl. GST';
-  $('currencyPrice3').textContent=m==='US'?'USD':'AUD incl. GST';
-  $('priceStandard').value=state.prices[m].standard;
-  $('priceFrench').value=state.prices[m].french;
-  $('priceTrio').value=state.prices[m].trio;
-  $('paymentRate').value=state.payment[m];
-  $('paymentRateNum').value=state.payment[m];
-  $('paymentLabel').textContent=`${num(state.payment[m],2)}%`;
-  $('trioShare').value=state.trioShare;
-  $('trioShareNum').value=num(state.trioShare,1);
-  $('frenchShare').value=state.frenchShare;
-  $('frenchShareNum').value=num(state.frenchShare,1);
-  $('healthyTarget').value=state.healthy;
-  $('healthyTargetNum').value=state.healthy;
-  $('strongTarget').value=state.strong;
-  $('strongTargetNum').value=state.strong;
-  $('dailySpend').value=Math.min(5000,state.dailySpend);
-  $('dailySpendNum').value=state.dailySpend;
-
-  if(state.mode==='base'){
-    $('reversal').value=state.reversalBase;
-    $('reversalNum').value=state.reversalBase;
-    if(m==='US'){
-      $('usOneFulfil').value=num(state.fulfil.US.oneBase,2);
-      $('usTrioFulfil').value=num(state.fulfil.US.trioBase,2);
-    }
-  } else {
-    $('reversal').value=state.reversalStress;
-    $('reversalNum').value=state.reversalStress;
-    if(m==='US'){
-      $('usOneFulfil').value=num(state.fulfil.US.oneStress,2);
-      $('usTrioFulfil').value=num(state.fulfil.US.trioStress,2);
-    }
-  }
-  $('auFulfil').value=num(state.mode==='base'?state.fulfil.AU.oneBase:state.fulfil.AU.oneStress,2);
-  $('revLabel').textContent=`${num(state.mode==='base'?state.reversalBase:state.reversalStress,2)}%`;
-  $('trioShareLabel').textContent=`${num(state.trioShare,1)}%`;
-  $('frenchShareLabel').textContent=`${num(state.frenchShare,1)}%`;
-  $('healthyLabel').textContent=`${num(state.healthy,0)}%`;
-  $('strongLabel').textContent=`${num(state.strong,0)}%`;
-  $('dailySpendLabel').textContent=money(state.dailySpend,m,0);
-
-  document.querySelectorAll('#marketBtns button').forEach(b=>b.classList.toggle('active',b.dataset.market===state.market));
-  document.querySelectorAll('#basketBtns button').forEach(b=>b.classList.toggle('active',b.dataset.basket===state.basket));
-  document.querySelectorAll('#modeBtns button').forEach(b=>b.classList.toggle('active',b.dataset.mode===state.mode));
-  document.querySelectorAll('#plannerModeBtns button').forEach(b=>b.classList.toggle('active',b.dataset.planner===state.plannerMode));
+function syncInputs(){
+  const c=s.cell[s.market][s.bucket];
+  $('aovR').max=s.bucket==='ties'?250:400;
+  $('aov').value=c.P; $('aovR').value=c.P; $('units').value=c.units; $('unitsR').value=c.units; $('ship').value=c.ship; $('shipR').value=c.ship;
+  $('promoR').value=s.promo; $('promoN').value=s.promo; $('promoLab').textContent=s.promo+'%';
+  $('cogsR').max=s.bucket==='ties'?10:40;
+  $('cogs').value=s.cogsUnit[s.market][s.bucket]; $('cogsR').value=s.cogsUnit[s.market][s.bucket];
+  $('otherR').value=s.otherVar[s.market]; $('otherN').value=s.otherVar[s.market]; $('otherLab').textContent='A$'+clampNum(s.otherVar[s.market],2);
+  $('retR').value=s.retRate[s.bucket]; $('retN').value=s.retRate[s.bucket]; $('retLab').textContent=s.retRate[s.bucket]+'%';
+  $('nsR').value=s.newShare[s.market]; $('nsN').value=s.newShare[s.market]; $('nsLab').textContent=s.newShare[s.market]+'%';
+  $('raN').value=s.retAov[s.market]; $('raLab').textContent='+'+clampNum(s.retAov[s.market],1)+'%'; $('ltvRatioN').value=s.ltvRatio;
+  var lock=s.offer>0;
+  ['aov','aovR','units','unitsR','ship','shipR'].forEach(function(id){$(id).disabled=lock;});
+  ['fld_aov','fld_units','fld_ship'].forEach(function(id){$(id).style.opacity=lock?.45:'';});
+  $('cogsBadge').innerHTML='AUD · <span class="badge b-ver">VER</span>';
+  $('revR').value=s.rev[s.market]; $('revN').value=s.rev[s.market]; $('revLab').textContent=clampNum(s.rev[s.market],2)+'%';
+  $('payR').value=s.pay[s.market]; $('payN').value=s.pay[s.market]; $('payLab').textContent=clampNum(s.pay[s.market],1)+'%';
+  $('payFixed').value=s.payFixed;
+  $('cartR').value=s.cartShare; $('cartN').value=s.cartShare; $('cartLab').textContent=s.cartShare+'%';
+  $('cartCost').value=s.cartCost[s.bucket]; $('cartCostR').value=s.cartCost[s.bucket];
+  $('dhlCost').value=s.dhlCost[s.bucket]; $('dhlCostR').value=s.dhlCost[s.bucket];
+  $('auFul').value=s.auFul[s.bucket]; $('auFulR').value=s.auFul[s.bucket];
+  $('rent').value=s.rent; $('wages').value=s.wages;
+  $('ordR').value=Math.min(15000,s.orders); $('ordN').value=s.orders; $('ordLab').textContent='~'+clampNum(s.orders,0)+'/mo';
+  $('ordR2').value=Math.min(15000,s.orders); $('ordN2').value=s.orders; $('ord2Lab').textContent='×'+clampNum(s.orders/3940,1)+(Math.abs(s.orders-3940)<50?' · now':'');
+  $('usShareR').value=s.usShare; $('usShareN').value=s.usShare; $('usShareLab').textContent=clampNum(s.usShare,1)+'%';
+  $('merR').value=s.mer; $('merN').value=s.mer; $('merLab').textContent=s.mer+'%'; $('opex').value=s.opex; $('opexR').value=s.opex;
+  $('hR').value=s.healthy; $('hN').value=s.healthy; $('hLab').textContent=s.healthy+'%';
+  $('sR').value=s.strong; $('sN').value=s.strong; $('sLab').textContent=s.strong+'%';
+  $('fx').value=s.fx; $('fxR').value=s.fx; $('spendR').value=Math.min(10000,s.dailySpend); $('spendN').value=s.dailySpend; $('spendLab').textContent='A$'+clampNum(s.dailySpend,0);
+  $('cpaR').value=Math.min(120,s.cpa); $('cpaN').value=s.cpa;
+  $('trStart').value=s.trStart; $('trDays').value=s.trDays; $('trPctR').value=s.trPct; $('trPctN').value=s.trPct; $('trPctLab').textContent='+'+s.trPct+'%'; $('trInflR').value=s.trInfl; $('trInflN').value=s.trInfl; $('trInflLab').textContent='+'+s.trInfl+'%';
+  $('aovCur').textContent = s.market==='AU'?'AUD ex-GST/ship':'AUD, ex-tax/ship';
+  $('usFulBox').style.display=s.market==='US'?'':'none';
+  $('auFulBox').style.display=s.market==='AU'?'':'none';
+  document.querySelectorAll('#segMarket button, #mbMarket button').forEach(b=>b.classList.toggle('active',b.dataset.v===s.market));
+  document.querySelectorAll('#segBucket button, #mbBucket button').forEach(b=>b.classList.toggle('active',b.dataset.v===s.bucket));
+  document.querySelectorAll('#segView button, #mbView button').forEach(b=>b.classList.toggle('active',b.dataset.v===s.view));
+  document.querySelectorAll('#segCur button, #mbCur button').forEach(b=>b.classList.toggle('active',b.dataset.v===s.usCur));
+  $('curSection').style.display=s.market==='US'?'':'none';
+  $('mbCur').style.display=s.market==='US'?'':'none';
+  document.querySelectorAll('#segStress button').forEach(b=>b.classList.toggle('active',b.dataset.v===(s.stress?'stress':'base')));
+  document.querySelectorAll('#segPlan button').forEach(b=>b.classList.toggle('active',b.dataset.v===s.planMode));
+  document.querySelectorAll('#segTr button').forEach(b=>b.classList.toggle('active',b.dataset.v===s.trTarget));
+  $('viewNote').textContent = s.view==='cash'
+    ? 'Cash-variable = only costs that move per order. Use for in-flight bidding.'
+    : 'Fully-loaded = also absorbs AU warehouse rent + wages at current volume.';
 }
 
 function render(){
-  readState();
-  syncControls();
+  readInputs(); syncInputs(); renderOfferSeg();
+  const op=offerParams();
+  const r=baseCalc(), g=r.g;
+  $('scTitle').innerHTML=(s.market==='US'?'🇺🇸 USA':'🇦🇺 Australia')+' · '+(s.bucket==='ties'?'👔':'👕')+' '+bucketName(s.bucket)+(op?' · 🎁 '+(op.b.short||'bundle').replace(' ⭐',''):'');
+  $('scSub').textContent=(s.view==='cash'?'Cash-variable':'Fully-loaded')+' · '+(s.stress?'stress reversals 12%':'reversals '+clampNum(s.rev[s.market],2)+'%')+(s.promo?' · '+s.promo+'% promo':'')+' · AOV '+money2(r.P)+' · MPV '+money2(r.MPV);
+  $('scPill').textContent=(s.view==='cash'?'Cash-variable view':'Fully-loaded view');
+  $('beRoas').textContent=xx(g.beRoas); $('beCpa').innerHTML='CPA '+cpaMoney(g.beCpa)+' · floor';
+  $('hRoas').textContent=xx(g.hRoas)+'+'; $('hCpa').innerHTML='CPA ≤ '+cpaMoney(g.hCpa);
+  $('sRoas').textContent=xx(g.sRoas)+'+'; $('sCpa').innerHTML='CPA ≤ '+cpaMoney(g.sCpa);
+  $('contribV').textContent=money2(r.contrib); $('contribSub').textContent=(s.view==='loaded'?'after fixed, ':'')+'before Meta · '+clampNum(r.margin*100,0)+'% margin';
 
-  const r=calc(state.basket);
-  const stress=calc(state.basket,{mode:'stress'});
-  const symbol=state.market==='US'?'USD':'AUD';
+  const NR=Math.max(r.netRev,.01), pv=(d,v)=>d+'<span class="rvp">'+clampNum(Math.abs(v)/NR*100,1)+'%</span>';
+  $('e_aov').innerHTML=pv(money2(r.P),r.P);
+  $('e_rev').innerHTML=pv('−'+money2(r.reversal),r.reversal); $('e_rev_n').textContent=(s.stress?'12%':clampNum(s.rev[s.market],2)+'%')+' of AOV';
+  $('e_pay').innerHTML=pv('−'+money2(r.payment),r.payment);
+  $('e_cogs').innerHTML=pv('−'+money2(r.cogs),r.cogs); $('e_cogs_n').textContent=clampNum(r.units,1)+' × '+money2(s.cogsUnit[s.market][s.bucket]);
+  $('e_ful').innerHTML=pv('−'+money2(r.fulfil),r.fulfil);
+  $('e_ful_n').textContent = s.market==='US' ? (s.cartShare+'% Cart TX '+money2(s.cartCost[s.bucket])+' / '+(100-s.cartShare)+'% AU→US DHL '+money2(s.dhlCost[s.bucket])) : 'Australia Post all-in';
+  $('e_ship').innerHTML=pv('+'+money2(r.S),r.S);
+  $('e_ship_n').textContent = s.market==='US' ? 'customers cover the freight' : 'collected at checkout';
+  var netFul=r.fulfil-r.S, cartTypical=s.cartHandling+s.cartFreight, cartNetB=Math.max(0,s.cartCost[s.bucket]-r.S), cartNetT=Math.max(0,cartTypical-r.S);
+  $('e_ful_net').innerHTML=pv('−'+money2(netFul),netFul);
+  $('e_ful_net_n').textContent = s.market==='US' ? ('Cart-only ≈'+money2(cartNetB)) : 'gross − customer ship';
+  $('e_other').innerHTML=pv('−'+money2(r.other),r.other);
+  $('fixRow').style.display=s.view==='loaded'?'':'none';
+  $('e_fix').innerHTML=pv('−'+money2(r.fOrder),r.fOrder); $('e_fix_n').textContent='pool ÷ '+clampNum(r.who,0)+' wh-orders';
+  $('e_con').innerHTML=pv(money2(r.contrib),r.contrib); $('e_con_n').textContent=clampNum(r.contrib/r.netRev*100,0)+'% of revenue';
+  if(s.market==='US'){
+    $('fulExplain').innerHTML='🚚 <b>US fulfilment — 4 months of Cart.com invoices (Mar–Jun, 5,314 orders).</b> A Cart (Texas) order = <b>'+money2(s.cartHandling)+'</b> 3PL handling (pick/pack/storage/mgmt — steady ~US$7.66 every month) + <b>'+money2(s.cartFreight)+'</b> freight (US$11.30 accrued) = <b>'+money2(cartTypical)+'</b> all-in. Customers pay <b>'+money2(r.S)+'</b> shipping, so a Cart order nets <b>~'+money2(cartNetT)+'</b>. The blended <b>'+money2(r.fulfil)+'</b> in the row above is higher only because '+(100-s.cartShare)+'% of US orders still ship AU→US by DHL ('+money2(s.dhlCost[s.bucket])+') while we move volume to Texas — that, plus 3PL storage/mgmt spreading over more orders, is why net US fulfilment keeps falling.';
+  } else {
+    $('fulExplain').innerHTML='🚚 <b>AU fulfilment.</b> Orders ship domestically via Australia Post at <b>'+money2(s.auFul[s.bucket])+'</b> all-in (carrier only — pick/pack labour sits in the fixed warehouse wages below, not here). Customers pay little to no shipping, so net fulfilment ≈ gross.';
+  }
+  const denom=Math.max(r.netRev,.01), W=x=>Math.max(0,x/denom*100)+'%';
+  $('b_rev').style.width=W(r.reversal); $('b_pay').style.width=W(r.payment); $('b_cogs').style.width=W(r.cogs);
+  $('b_ful').style.width=W(r.fulfil+r.other); $('b_fix').style.width=s.view==='loaded'?W(r.fOrder):'0%'; $('b_prof').style.width=W(Math.max(0,r.contrib));
+  $('b_cogs').textContent=r.cogs/denom>.09?'COGS':''; $('b_ful').textContent=r.fulfil/denom>.09?'Fulfil':''; $('b_prof').textContent=r.contrib/denom>.12?'Contribution':'';
 
-  $('scenarioTitle').textContent=`${state.market==='US'?'USA':'Australia'} • ${scenarioName(state.basket)}`;
-  $('scenarioSubtitle').textContent=state.mode==='base'
-    ? `Base case using ${state.market==='US'?'average DHL fulfilment':'A$13 fulfilment'} and ${num(state.reversalBase,2)}% sales-value reversals.`
-    : `Stress case using ${state.market==='US'?'P90 DHL fulfilment':'A$13 fulfilment'} and ${num(state.reversalStress,2)}% reversals.`;
+  $('g_scale').innerHTML=xx(g.hRoas)+' / ≤'+cpaMoney(g.hCpa);
+  $('g_push').innerHTML=xx(g.sRoas)+' / ≤'+cpaMoney(g.sCpa);
+  $('g_hold').innerHTML=xx(g.beRoas)+'–'+xx(g.hRoas);
+  $('g_stop').innerHTML='&lt; '+xx(g.beRoas)+' / &gt;'+cpaMoney(g.beCpa);
+  $('cpaR').max=Math.max(120,Math.ceil(g.beCpa*1.3/10)*10);
+  const maxD=Math.max(g.beCpa*1.3, s.cpa*1.1, 10), pct=v=>Math.min(100,Math.max(0,v/maxD*100));
+  $('z1').style.width=pct(g.hCpa)+'%'; $('z2').style.width=(pct(g.beCpa)-pct(g.hCpa))+'%'; $('z3').style.flex='1'; $('zptr').style.left=pct(s.cpa)+'%';
+  const zone=s.cpa<=g.hCpa?'SCALE':s.cpa<g.beCpa?'HOLD':'STOP', zc=zone==='SCALE'?'var(--green)':zone==='HOLD'?'var(--amber)':'var(--red)';
+  $('zoneTxt').innerHTML=fmtCur(s.cpa,0)+' <span style="font-size:.6em;border:1px solid '+zc+';color:'+zc+';border-radius:4px;padding:1px 7px;vertical-align:3px;letter-spacing:1px">'+zone+'</span>';
+  $('zScale').innerHTML='Scale ≤ '+cpaMoney(g.hCpa); $('zStop').innerHTML='Stop ≥ '+cpaMoney(g.beCpa);
 
-  $('beRoas').textContent=xfmt(r.beROAS);
-  $('beCpa').textContent=money(r.beCPA,state.market,0);
-  $('beCpaSub').textContent=`${symbol} per acquired order`;
-  $('healthyRoas').textContent=xfmt(r.healthyROAS);
-  $('healthyCpa').textContent=`CPA ≤ ${money(r.healthyCPA,state.market,0)}`;
-  $('strongRoas').textContent=xfmt(r.strongROAS);
-  $('strongCpa').textContent=`CPA ≤ ${money(r.strongCPA,state.market,0)}`;
+  renderLTV(); renderFocus(); renderFunnel(); renderAllocation(); renderPromo(); renderSensitivity(); renderBusiness(); renderBundles(); renderTrajectory(); renderPlanner(r); renderRef();
+}
 
-  $('grossValue').textContent=money(r.price,state.market,2);
-  $('grossNote').textContent=state.market==='AU'?'AUD charged incl. GST':'USD charged';
-  $('retainedSales').textContent=money(r.retainedLocal,state.market,2);
-  $('qtyValue').textContent=num(r.qty,2);
-  $('paymentValue').textContent=money(r.paymentLocal,state.market,2);
-  $('cogsValue').textContent=money(r.cogsLocal,state.market,2);
-  $('fulfilValue').textContent=money(r.fulfilLocal,state.market,2);
-  $('fulfilNote').textContent=state.market==='US'?'DHL, duties and delivery':'Domestic AU fulfilment';
-  $('preMetaValue').textContent=money(r.contributionLocal,state.market,2);
-  $('preMetaMargin').textContent=`${pct(r.preMetaMargin)} of retained sales`;
+function renderAllocation(){
+  const cells=[['US','ties'],['US','shirts'],['AU','ties'],['AU','shirts']];
+  const rows=cells.map(([m,bk])=>{const r=calc(m,bk,{view:s.view,promo:0}); return {m,bk,con:r.contribCash,cm:r.margin,h:r.g.hCpa};});
+  rows.sort((a,b)=>b.con-a.con);
+  $('allocRows').innerHTML=rows.map((x,i)=>'<div class="rank'+(i===0?' top':'')+'"><div class="n">'+(i+1)+'</div>'
+    +'<div><b>'+(x.m==='US'?'USA':'AU')+'</b> · '+bucketName(x.bk)+(x.m===s.market&&x.bk===s.bucket?' <span class="hint">(viewing)</span>':'')+'</div>'
+    +'<div style="text-align:right;font-weight:900;color:var(--green)">'+aud(x.con)+'</div>'
+    +'<div style="text-align:right" class="r4">'+clampNum(x.cm*100,0)+'%</div>'
+    +'<div style="text-align:right" class="r5">A$'+clampNum(x.h,0)+'</div></div>').join('');
+  $('allocNote').innerHTML='Ranked by contribution dollars per acquired order ('+(s.view==='cash'?'cash-variable':'fully-loaded')+'). <b>'+(rows[0].m==='US'?'USA':'AU')+' '+bucketName(rows[0].bk)+'</b> yields the most profit per order ('+aud(rows[0].con)+'), so it clears budget first — but weigh against reach: your biggest bucket by volume is US Ties. Highest-margin cell: '+(()=>{const t=[...rows].sort((a,b)=>b.cm-a.cm)[0];return (t.m==='US'?'USA':'AU')+' '+bucketName(t.bk)+' at '+clampNum(t.cm*100,0)+'%';})()+'.';
+}
 
-  const denom=Math.max(r.retainedLocal,0.01);
-  const widths = {
-    payment:Math.max(0,r.paymentLocal/denom*100),
-    cogs:Math.max(0,r.cogsLocal/denom*100),
-    fulfil:Math.max(0,r.fulfilLocal/denom*100),
-    other:Math.max(0,r.otherLocal/denom*100),
-    profit:Math.max(0,r.contributionLocal/denom*100)
-  };
-  $('barPayment').style.width=`${widths.payment}%`;
-  $('barCogs').style.width=`${widths.cogs}%`;
-  $('barFulfil').style.width=`${widths.fulfil}%`;
-  $('barOther').style.width=`${widths.other}%`;
-  $('barProfit').style.width=`${widths.profit}%`;
-  $('barPayment').textContent=widths.payment>8?'Fees':'';
-  $('barCogs').textContent=widths.cogs>8?'COGS':'';
-  $('barFulfil').textContent=widths.fulfil>8?'Fulfil':'';
-  $('barOther').textContent=widths.other>8?'Other':'';
-  $('barProfit').textContent=widths.profit>12?'Pre-Meta contribution':'';
+function renderPromo(){
+  const base=baseCalc({promo:0});
+  const pr=baseCalc({promo:s.promo});
+  $('promoCol').textContent='At '+s.promo+'% off';
+  $('pr_aov0').textContent=money2(base.P); $('pr_aov1').textContent=money2(pr.P);
+  $('pr_con0').textContent=money2(base.contrib); $('pr_con1').innerHTML='<span style="color:'+(pr.contrib>=0?'var(--ink)':'var(--red)')+'">'+money2(pr.contrib)+'</span>';
+  $('pr_be0').innerHTML=cpaMoney(base.g.beCpa); $('pr_be1').innerHTML=cpaMoney(pr.g.beCpa);
+  $('pr_h0').innerHTML=cpaMoney(base.g.hCpa); $('pr_h1').innerHTML=cpaMoney(pr.g.hCpa);
+  $('pr_hr0').textContent=xx(base.g.hRoas); $('pr_hr1').textContent=xx(pr.g.hRoas);
+  const drop=base.g.beCpa-pr.g.beCpa;
+  $('promoNote').innerHTML=s.promo>0
+    ? 'A <b>'+s.promo+'% sale</b> cuts contribution to <b>'+money2(pr.contrib)+'</b>/order and drops the breakeven CPA by <b>'+money2(drop)+'</b> (to '+cpaMoney(pr.g.beCpa)+'). To stay at your healthy target during the sale, hold CPA at or below <b>'+cpaMoney(pr.g.hCpa)+'</b>.'
+    : 'Set an <b>extra sale / promo discount</b> in the sidebar to model a sale. Everyday discounts are already in the AOV — this is additional depth on top.';
+}
 
-  $('guardBreak').textContent=`${xfmt(r.beROAS)} / ${money(r.beCPA,state.market,0)} CPA`;
-  $('guardStress').textContent=`${xfmt(stress.beROAS)} / ${money(stress.beCPA,state.market,0)} CPA`;
-  $('guardScale').textContent=`${xfmt(r.healthyROAS)}+ / ≤${money(r.healthyCPA,state.market,0)} CPA`;
-  $('guardScaleNote').textContent=`Leaves ${num(state.healthy,0)}% retained contribution.`;
+function renderSensitivity(){
+  const b0=baseCalc(); const base=b0.g.beCpa, P0=b0.P, F0=b0.fulfil;
+  const tests=[];
+  tests.push(['AOV −10%', baseCalc({P:P0*0.9}).g.beCpa]);
+  tests.push(['Reversals → 12%', baseCalc({revRate:0.12}).g.beCpa]);
+  tests.push(['Fulfilment +15%', baseCalc({fulfil:F0*1.15}).g.beCpa]);
+  tests.push(['COGS +20%', baseCalc({cogsMul:1.2}).g.beCpa]);
+  if(s.market==='US'){ tests.push(['More AU→US DHL (+A$5 ful)', baseCalc({fulfil:F0+5}).g.beCpa]);
+    tests.push(['AUD +10% (US AOV −)', baseCalc({P:P0/1.10}).g.beCpa]); }
+  const rows=tests.map(([lab,v])=>({lab,drop:base-v})).sort((a,b)=>b.drop-a.drop);
+  const max=Math.max(...rows.map(r=>Math.abs(r.drop)),0.01);
+  $('torRows').innerHTML=rows.map(r=>'<div class="tor"><div style="font-weight:700">'+r.lab+'</div>'
+    +'<div class="tortrack"><div class="torfill" style="width:'+Math.min(100,Math.abs(r.drop)/max*100)+'%"></div></div>'
+    +'<div style="text-align:right;font-weight:900;color:'+(r.drop>0?'var(--red)':'var(--green)')+'">'+(r.drop>0?'−':'+')+money2(Math.abs(r.drop))+'</div></div>').join('');
+}
 
-  renderPlanner(r);
-  renderScenarioTable();
+function renderBusiness(){
+  const b=business(s.orders);
+  const cm=b.revenue>0?b.contrib/b.revenue:0;
+  const afterM=b.contrib-b.marketing, afterMm=b.revenue>0?afterM/b.revenue:0;
+  // PRIMARY tiles — pure contribution margin
+  $('bz_cmads').innerHTML='<span style="color:'+(afterMm>=0?'var(--green)':'var(--red)')+'">'+clampNum(afterMm*100,1)+'%</span>';
+  $('bz_cm').textContent=clampNum(cm*100,1)+'%';
+  $('bz_porder').innerHTML='+A$'+clampNum(b.contribBlend,2);
+  $('bz_afterm').innerHTML='<span style="color:'+(afterM>=0?'var(--green)':'var(--red)')+'">'+audk(afterM)+'</span>';
+  // P&L
+  $('bz_rev').textContent='A$'+clampNum(b.revenue,0); $('bz_rev_n').textContent=aud(b.netBlend)+' × '+clampNum(s.orders,0);
+  $('bz_con').textContent='A$'+clampNum(b.contrib,0); $('bz_con_n').textContent=clampNum(cm*100,1)+'% margin';
+  $('bz_mkt').textContent='−A$'+clampNum(b.marketing,0); $('bz_mkt_n').textContent=s.mer+'% MER · Meta ~40%';
+  $('bz_afterm2').innerHTML='<span style="color:'+(afterM>=0?'var(--green)':'var(--red)')+'">'+audk(afterM)+'</span>';
+  $('bz_afterm2_n').textContent=clampNum(afterMm*100,1)+'% of revenue';
+  $('bz_fix').textContent='−A$'+clampNum(b.fixed,0);
+  $('bz_opex').textContent='−A$'+clampNum(b.opex,0);
+  $('bz_prof2').innerHTML='<span style="color:'+(b.profit>=0?'var(--green)':'var(--red)')+'">'+audk(b.profit)+'</span>';
+  $('bz_prof2_n').textContent=clampNum(b.margin*100,1)+'% operating margin';
+  $('bz_goals').innerHTML='🎯 &nbsp;<b>Goals:</b> contribution margin after ads ≥ 20% &nbsp;·&nbsp; blended MER ≤ 30%. &nbsp; <b>Now:</b> '+clampNum(cm*100,0)+'% before ads · <b>'+clampNum(afterMm*100,1)+'% after ads</b> · '+s.mer+'% MER. Overhead is below the line and does not affect contribution margin.';
+  // chart: CONTRIBUTION AFTER MARKETING as volume scales (grows with volume; margin constant)
+  const mults=[0.75,1,1.5,2,3], pts=mults.map(m=>{const V=Math.round(s.orders*m);const bb=business(V);return {V,p:bb.contrib-bb.marketing,cur:Math.abs(m-1)<.01};});
+  const maxP=Math.max.apply(null,pts.map(function(x){return x.p;}).concat([1])); const H=176;
+  $('profitCols').innerHTML=pts.map(function(x){
+    var h=Math.max(2,x.p/maxP*H), top=H-h;
+    var col=x.cur?'linear-gradient(180deg,#ffd84d,#f0b400)':'linear-gradient(180deg,#1aa06b,#0f7a52)';
+    return '<div class="col"><div class="colbar" style="top:'+top+'px;height:'+h+'px;background:'+col+'"></div>'
+      +'<div class="cap" style="top:'+Math.max(-2,top-18)+'px;color:var(--ink)">'+audk(x.p)+'</div>'
+      +'<div class="collab" style="'+(x.cur?'color:#b8860b;font-weight:900':'')+'">'+clampNum(x.V,0)+'/mo'+(x.cur?'<br>now':'<br>'+clampNum(x.V/s.orders,2).replace(/\.00$/,'')+'×')+'</div></div>';
+  }).join('');
+  const b2=business(s.orders*2); const a2=b2.contrib-b2.marketing;
+  $('bz_note').innerHTML='Contribution margin holds at <b>'+clampNum(afterMm*100,1)+'%</b> as you scale — it\'s pure variable economics, unaffected by overhead. At <b>'+clampNum(s.orders,0)+'</b> orders/mo that\'s <b>'+audk(afterM)+'/mo</b> after ads; double the volume → <b>'+audk(a2)+'/mo</b>. For reference only, fixed overhead of A$'+clampNum(b.fixed+b.opex,0)+'/mo means the business nets positive above ~'+clampNum(b.beVol,0)+' orders/mo at '+s.mer+'% MER.';
+}
+
+const BUNDLES=[
+ {m:'US',bk:'ties',name:'Necktie 3-tie bundle',short:'3-tie',usd:129,units:3},
+ {m:'US',bk:'ties',name:'Necktie 5-tie bundle ⭐',short:'5-tie ⭐',usd:199,units:5},
+ {m:'US',bk:'ties',name:'Necktie 7-tie bundle',short:'7-tie',usd:269,units:7},
+ {m:'US',bk:'shirts',name:'Shirt 3-pack',short:'3-pack',usd:299,units:3,cart:45,dhl:75},
+ {m:'AU',bk:'ties',name:'Necktie 3-tie bundle',short:'3-tie',audIncl:150,units:3},
+ {m:'AU',bk:'ties',name:'Necktie 5-tie bundle ⭐',short:'5-tie ⭐',audIncl:240,units:5},
+ {m:'AU',bk:'ties',name:'Necktie 7-tie bundle',short:'7-tie',audIncl:315,units:7},
+ {m:'AU',bk:'shirts',name:'Shirt 3-pack',short:'3-pack',audIncl:298.98,units:3,auful:18}
+];
+function cpaB(v,m){ if(!isFinite(v))return '—'; if(m==='US'&&s.usCur==='USD')return 'US$'+clampNum(v*s.fx,0); return 'A$'+clampNum(v,0); }
+// Verified product-bucket composition (Shopify net sales, Mar–Jun 2026)
+const FUNNEL={
+ US:{split:[['Ties & Accessories',96,'A$1.19M'],['Shirts',4,'A$56k']],
+     sub:[['Neckties',51,9382],['Bow Ties',21,3961],['Pocket Squares',12,5129],['Cufflinks & formal',9,1278],['Other accessories',6,1952]]},
+ AU:{split:[['Ties & Accessories',92,'A$646k'],['Shirts',8,'A$56k']],
+     sub:[['Neckties',52,9389],['Bow Ties',16,3492],['Pocket Squares',11,5511],['Cufflinks & formal',11,1437],['Other accessories',9,3995]]}
+};
+function renderFunnel(){
+  var box=$('funnelBox'); if(!box) return;
+  var f=FUNNEL[s.market], mx=f.sub[0][1];
+  var h='<div style="font-weight:800;font-size:12px;margin:2px 0 8px">'+(s.market==='US'?'🇺🇸 USA':'🇦🇺 Australia')+' · bucket split (net revenue)</div>';
+  f.split.forEach(function(x){
+    var col=x[0].charAt(0)==='T'?'var(--yellow)':'#c9c9c2';
+    h+='<div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:6px"><div style="font-size:12px;font-weight:700">'+x[0]+'</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:20px"><div style="width:'+x[1]+'%;height:100%;background:'+col+'"></div></div><div style="text-align:right;font-weight:800;font-size:12px">'+x[1]+'% · '+x[2]+'</div></div>';
+  });
+  h+='<div style="font-weight:800;font-size:12px;margin:14px 0 8px">Inside 👔 Ties &amp; Accessories — share of the bucket</div>';
+  f.sub.forEach(function(x){
+    h+='<div style="display:grid;grid-template-columns:118px 1fr 92px;gap:8px;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:700">'+x[0]+'</div><div style="background:#eee;border-radius:6px;overflow:hidden;height:16px"><div style="width:'+(x[1]/mx*100)+'%;height:100%;background:linear-gradient(90deg,#111,#666)"></div></div><div style="text-align:right;font-size:11.5px;color:var(--muted)"><b style="color:var(--ink)">'+x[1]+'%</b> · '+clampNum(x[2],0)+'u</div></div>';
+  });
+  h+='<p class="foot">Neckties are ~half of every "Ties &amp; Accessories" campaign; bow ties + pocket squares + cufflinks make up most of the rest. Shirts are a small ('+f.split[1][1]+'% of '+(s.market==='US'?'US':'AU')+' revenue), higher-AOV but lower-margin bucket. Tap 👕 Shirts above to run the shirt economics.</p>';
+  box.innerHTML=h;
+}
+function renderLTV(){
+  var box=$('ltvBox'); if(!box) return;
+  var r=baseCalc(); var C=r.contribCash;
+  var rr=s.retRate[s.bucket], n=1/(1-Math.min(rr,95)/100), ltv=C*n;
+  var ns=s.newShare[s.market], up=s.retAov[s.market];
+  var ncacMult=100/Math.max(ns,1);
+  var ob=s.bucket==='ties'?'shirts':'ties';
+  var oC=calc(s.market,ob,{view:'cash'}).contribCash, oN=1/(1-Math.min(s.retRate[ob],95)/100), oLtv=oC*oN;
+  var shirts = s.bucket==='shirts'?{lab:'Shirts',C:C,ltv:ltv,n:n} : {lab:'Shirts',C:oC,ltv:oLtv,n:oN};
+  var ties   = s.bucket==='ties'  ?{lab:'Ties & Acc',C:C,ltv:ltv,n:n} : {lab:'Ties & Acc',C:oC,ltv:oLtv,n:oN};
+  var mk=s.market==='US'?'🇺🇸 USA':'🇦🇺 Australia';
+  var M=money0;
+  var h='';
+  // mix card (real)
+  h+='<div class="ltmix">👥 <b>'+mk+' customer mix (Shopify, Mar–Jun):</b> <b>'+ns+'% new</b> / '+(100-ns)+'% returning · returning customers spend <b>+'+clampNum(up,1)+'%</b> more per order · across the whole store, <b>23% of buyers (your champions + loyal) drive 49% of revenue.</b></div>';
+  // three goal tiles
+  h+='<div class="ltgoals">';
+  h+='<div class="ltg g1"><div class="lgh">💵 Cash-safe CPA</div><div class="lgv">≤ '+M(C)+'</div><div class="lgs">Profit on the first order. The safe ceiling if you can\'t wait for repeats.</div></div>';
+  h+='<div class="ltg g2"><div class="lgh">🎯 NCAC — true new-customer cost</div><div class="lgv">Meta CPA × '+clampNum(ncacMult,2)+'</div><div class="lgs">Only '+ns+'% of orders are new, so your real cost per net-new customer is higher than Meta\'s CPA. A '+M(60)+' CPA ≈ '+M(60*ncacMult)+'/new customer.</div></div>';
+  h+='<div class="ltg g3"><div class="lgh">🚀 LTV-max CPA</div><div class="lgv">≤ '+M(ltv)+'</div><div class="lgs">Over '+clampNum(n,2)+' orders/customer you can pay up to this and still breakeven on lifetime. Healthy ('+clampNum(s.ltvRatio,0)+':1): ≤ '+M(ltv/s.ltvRatio)+'.</div></div>';
+  h+='</div>';
+  // cohort / shirts-vs-ties validation
+  var stickier=shirts.n/ties.n;
+  h+='<div class="fc" style="border-color:#111"><div class="fe">🎽</div><div><span class="fh">Shirts are your LTV play — LTV <span id="lt_shirtltv">'+M(shirts.ltv)+'</span>/customer vs Ties '+M(ties.ltv)+'</span>'+
+    '<p>Validated on 12 months of Shopify: <b>shirt buyers return '+clampNum(s.retRate.shirts,0)+'% of the time vs '+clampNum(s.retRate.ties,0)+'% for ties</b> — '+clampNum(stickier,1)+'× stickier, worth '+clampNum(shirts.n,2)+' orders/customer vs '+clampNum(ties.n,2)+'. So even though shirts break even at a <i>lower</i> first-order CPA ('+M(shirts.C)+' vs '+M(ties.C)+'), their lifetime value is <b>'+(shirts.ltv>ties.ltv?'+'+clampNum((shirts.ltv/ties.ltv-1)*100,0)+'% higher':'lower')+'</b>. Play it two ways: <b>Ties = efficient cash acquisition</b> (fast payback), <b>Shirts = pay up to acquire and bank the repeats.</b></p></div></div>';
+  h+='<div class="fcfresh">📎 <b>How LTV is built:</b> first-order contribution × orders-per-customer (from the real returning rate, 1÷(1−rate)). Conservative — it ignores that returning customers spend +'+clampNum(up,1)+'% more, so true LTV is a little higher. Tune the repeat rate &amp; new-share in the sidebar\'s <b>Cohort &amp; LTV</b> panel. Anchor: 438k customers, 1.37 orders each, A$149 lifetime revenue.</div>';
+  box.innerHTML=h;
+}
+function renderFocus(){
+  var box=$('focusBox'); if(!box) return;
+  // 1. top cell by contribution $ (cash, cross-market)
+  var rows=[['US','ties'],['US','shirts'],['AU','ties'],['AU','shirts']].map(function(c){var r=calc(c[0],c[1],{view:'cash',promo:0});return {m:c[0],bk:c[1],con:r.contribCash,h:r.gCash.hCpa,hR:r.gCash.hRoas};});
+  rows.sort(function(a,b){return b.con-a.con;});
+  var top=rows[0];
+  // 2. star bundle for the current market+bucket
+  var list=offerList(), star=null, i;
+  for(i=0;i<list.length;i++){ if((list[i].short||'').indexOf('⭐')>=0){star=list[i];break;} }
+  if(!star&&list.length) star=list[0];
+  var bd=null;
+  if(star){
+    var P=star.m==='US'?star.usd/s.fx:star.audIncl/(1+s.gst/100);
+    var ful; if(star.m==='US'){var ca=star.cart!=null?star.cart:s.cartCost[star.bk],dh=star.dhl!=null?star.dhl:s.dhlCost[star.bk];ful=s.cartShare/100*ca+(1-s.cartShare/100)*dh;} else {ful=star.auful!=null?star.auful:s.auFul[star.bk];}
+    var rb=calc(star.m,star.bk,{view:'cash',P:P,units:star.units,ship:0,fulfil:ful});
+    var single=calc(s.market,s.bucket,{view:'cash',promo:0});
+    bd={name:star.name.replace(' ⭐',''),con:rb.contribCash,h:rb.gCash.hCpa,ratio:rb.contribCash/Math.max(single.contribCash,.01),beR:rb.gCash.beRoas};
+  }
+  // 3. routing prize (ops lever)
+  var dhlOrders=s.orders*(s.usShare/100)*(1-s.cartShare/100);
+  var routeSave=dhlOrders*(s.dhlCost.ties-s.cartCost.ties);
+  // 4. MER gap
+  var b=business(s.orders);
+  var merGap=(s.mer-30)/100*b.revenue;
+  // 5. reversal stress on the current cell
+  var st=calc(s.market,s.bucket,{view:'cash',revRate:0.12});
+  var cu=calc(s.market,s.bucket,{view:'cash'});
+  function card(e,h,txt){return '<div class="fc"><div class="fe">'+e+'</div><div><span class="fh">'+h+'</span><p>'+txt+'</p></div></div>';}
+  var h='';
+  h+=card('🥇','Put the next dollar into '+(top.m==='US'?'USA':'AU')+' '+bucketName(top.bk)+' — <span id="fc_top">A$'+clampNum(top.con,0)+'</span>/order',
+    'Highest contribution per acquired order, and Ties &amp; Acc is '+(top.m==='US'?'96%':'92%')+' of '+(top.m==='US'?'US':'AU')+' revenue with '+(top.m==='US'?'74.5%':'65.5%')+' of orders from new customers — the deepest pool to scale into. Scale while ROAS ≥ '+xx(top.hR)+' (CPA ≤ A$'+clampNum(top.h,0)+').');
+  if(bd) h+=card('🎁','Bundles are the margin engine — <span id="fc_bundle">A$'+clampNum(bd.con,0)+'</span>/order on the '+bd.name,
+    'That\'s <b>'+clampNum(bd.ratio,1)+'×</b> a single order, so a bundle campaign can profitably pay a CPA up to <b>A$'+clampNum(bd.h,0)+'</b> (healthy) and still breaks even at just '+xx(bd.beR)+'. Bigger packs → more margin dollars → lower breakeven ROAS. Pick it in the 🎁 Offer selector to plan against it.');
+  h+=card('🚚','Finish the Texas shift — <span id="fc_route">A$'+clampNum(routeSave,0)+'</span>/mo sitting on the table',
+    clampNum(dhlOrders,0)+' US orders/mo still ship AU→US by DHL at A$'+clampNum(s.dhlCost.ties,0)+' vs A$'+clampNum(s.cartCost.ties,0)+' from Cart Texas. This is an ops lever, not an ad lever — but every point of routing shift lowers breakeven for <i>every</i> US campaign. Watch the Cart share slider.');
+  h+=card('📉', s.mer>30 ? ('Close the MER gap — <span id="fc_mer">A$'+clampNum(merGap,0)+'</span>/mo of margin' ) : 'MER target met — protect it as you scale',
+    s.mer>30 ? ('Blended MER is '+s.mer+'% vs the 30% target. At today\'s volume that gap costs A$'+clampNum(merGap,0)+'/mo of after-ads contribution. Cut the lowest-ROAS spend first — the allocation table shows where each dollar earns most.')
+             : 'Blended MER is at or below the 30% target. As you scale, hold it by only adding budget where 7-day ROAS clears the healthy line.');
+  h+=card('⚠️','Returns are running hot right now — plan with the Stress toggle',
+    'Last 30 days (checked 21 Jul): returns hit <b>9.1% US / 6.5% AU</b> vs the normal 5.17/4.44% reserves — the post-Father\'s-Day wave. At 12% stress this cell\'s breakeven CPA tightens from A$'+clampNum(cu.gCash.beCpa,0)+' to <b><span id="fc_stress">A$'+clampNum(st.gCash.beCpa,0)+'</span></b>. Tighten caps ~8% until returns normalise.');
+  h+='<div class="fcrules"><b style="color:#ffc400">📏 Three rules that keep this simple:</b><br>1&nbsp; Steer by <b>Shopify-true ROAS + blended MER</b> — never Meta-reported numbers alone.<br>2&nbsp; Scale <b>+15–20% every 2–3 days</b> while 7-day ROAS holds the healthy line. Below breakeven for 3 days → cut, don\'t average down.<br>3&nbsp; A dollar of CPA saved = a dollar of contribution — but a dollar of AOV added ≈ 90c of contribution. Push bundles &amp; AOV as hard as CPA.</div>';
+  h+='<div class="fcfresh">✅ <b>Freshness check — 21 Jul 2026 (last 30 days vs model):</b> AOVs at or above model (US +4%, AU +11% — the model stays conservative) · customer-paid shipping within A$0.45 · ⚠ returns elevated (see above) · volume at the seasonal trough (US share 48% vs 53% baseline). Re-run the refresh queries monthly — they\'re in the reference panel below.</div>';
+  box.innerHTML=h;
+}
+function renderOfferSeg(){
+  var list=offerList(), seg=$('segOffer'); if(!seg) return;
+  var html='<button data-o="0"'+(!s.offer?' class="active"':'')+'>Single</button>';
+  for(var i=0;i<list.length;i++){ html+='<button data-o="'+(i+1)+'"'+(s.offer===i+1?' class="active"':'')+'>'+(list[i].short||list[i].name)+'</button>'; }
+  seg.innerHTML=html;
+  seg.querySelectorAll('button').forEach(function(btn){ btn.onclick=function(){ s.offer=+btn.dataset.o; render(); }; });
+  var op=offerParams();
+  $('offerNote').innerHTML = op
+    ? ('Showing <b>'+op.b.name+'</b> — '+(op.b.m==='US'?('US$'+clampNum(op.b.usd,0)):('A$'+clampNum(op.b.audIncl,0)))+' · '+op.b.units+' units · free shipping. Every guardrail &amp; the breakdown below now reflects this bundle.')
+    : 'Single-order economics. Pick a bundle to load its price, units, fulfilment &amp; guardrails.';
+}
+function renderBundles(){
+  $('bundleRows').innerHTML=BUNDLES.map(function(bd){
+    var P = bd.m==='US' ? bd.usd/s.fx : bd.audIncl/(1+s.gst/100);
+    var ful;
+    if(bd.m==='US'){ var cart=bd.cart!=null?bd.cart:s.cartCost[bd.bk], dhl=bd.dhl!=null?bd.dhl:s.dhlCost[bd.bk]; ful=s.cartShare/100*cart+(1-s.cartShare/100)*dhl; }
+    else { ful=bd.auful!=null?bd.auful:s.auFul[bd.bk]; }
+    var r=calc(bd.m,bd.bk,{view:s.view,P:P,units:bd.units,ship:0,fulfil:ful});
+    var g=r.g, m=bd.m, usd=(m==='US'&&s.usCur==='USD');
+    var priceDisp = m==='US' ? (usd?('US$'+clampNum(bd.usd,0)):('A$'+clampNum(bd.usd/s.fx,0))) : ('A$'+clampNum(bd.audIncl,0));
+    var conDisp = usd ? ('US$'+clampNum(r.contrib*s.fx,0)) : ('A$'+clampNum(r.contrib,0));
+    return '<tr'+(bd.est?' style="opacity:.6"':'')+'><td>'+(m==='US'?'🇺🇸':'🇦🇺')+' <b>'+bd.name+'</b></td>'
+      +'<td>'+priceDisp+'</td>'
+      +'<td style="font-weight:900;color:var(--green)">'+conDisp+'</td>'
+      +'<td>'+clampNum(r.margin*100,0)+'%</td>'
+      +'<td>'+cpaB(g.beCpa,m)+' / '+xx(g.beRoas)+'</td>'
+      +'<td>≤'+cpaB(g.hCpa,m)+' / '+xx(g.hRoas)+'+</td></tr>';
+  }).join('');
+  $('bundleNote').innerHTML='All bundles ship free (per your live orders). ROAS is Shopify-true on product + shipping + tax (Dan-confirmed pixel). Contribution is pure — before overhead. Prices verified live in Shopify (Jul 2026).';
+}
+function renderTrajectory(){
+  const r=baseCalc();
+  const startCPA=s.trTarget==='be'?r.g.beCpa:s.trTarget==='strong'?r.g.sCpa:r.g.hCpa;
+  const contrib=r.contrib;
+  let daily=s.trStart, cumO=0, cumP=0, cumS=0; const cp={};
+  for(let d=1;d<=90;d++){
+    if(d>1 && (d-1)%s.trDays===0) daily*=(1+s.trPct/100);
+    const infl=1+(s.trInfl/100)*Math.log2(Math.max(daily/s.trStart,1));
+    const cpa=startCPA*infl, orders=cpa>0?daily/cpa:0;
+    cumO+=orders; cumS+=daily; cumP+=orders*contrib-daily;
+    if(d===30||d===60||d===90) cp[d]={daily,cpa,cumO,cumP,cumS};
+  }
+  $('trRows').innerHTML=[30,60,90].map(d=>{const x=cp[d];return '<tr><td><b>Day '+d+'</b></td><td>'+money0(x.daily)+'</td><td>'+cpaMoney(x.cpa)+'</td><td>'+clampNum(x.cumO,0)+'</td><td>'+money0(x.cumS)+'</td><td style="font-weight:900;color:'+(x.cumP>=0?'var(--green)':'var(--red)')+'">'+audkCur(x.cumP)+'</td></tr>';}).join('');
+  const d90=cp[90];
+  $('trNote').innerHTML='Starting '+money0(s.trStart)+'/day at the '+s.trTarget+' CPA ('+cpaMoney(startCPA)+'), +'+s.trPct+'% every '+s.trDays+' days, with CPA inflating '+s.trInfl+'% per doubling of spend. By day 90 you\'re spending <b>'+money0(d90.daily)+'/day</b> at a <b>'+cpaMoney(d90.cpa)+'</b> CPA for <b>'+audkCur(d90.cumP)+'</b> cumulative contribution after Meta. If CPA inflates faster than this, ramp slower — the honest limit is where target CPA crosses breakeven ('+cpaMoney(r.g.beCpa)+').';
 }
 
 function renderPlanner(r){
-  const target = state.plannerMode==='healthy'
-    ? {cpa:r.healthyCPA,roas:r.healthyROAS,margin:state.healthy/100,label:'Healthy'}
-    : {cpa:r.strongCPA,roas:r.strongROAS,margin:state.strong/100,label:'Strong'};
-
-  $('plannerTargetLabel').textContent=target.label;
-  const spend=state.dailySpend*30;
-  const orders=target.cpa>0?spend/target.cpa:0;
-  const shirts=orders*r.qty;
-  const revenue=orders*r.price;
-  const contribution=orders*r.contributionLocal-spend;
-  const retained=orders*r.retainedLocal;
-  const margin=retained>0?contribution/retained:0;
-
-  $('monthSpend').textContent=money(spend,state.market,0);
-  $('monthOrders').textContent=num(orders,0);
-  $('monthShirts').textContent=num(shirts,0);
-  $('monthRevenue').textContent=money(revenue,state.market,0);
-  $('monthContribution').textContent=money(contribution,state.market,0);
-  $('monthMargin').textContent=pct(margin);
-  $('plannerCpa').textContent=money(target.cpa,state.market,0);
-  $('plannerRoas').textContent=xfmt(target.roas);
+  const g=r.g;
+  const tgt=s.planMode==='be'?{cpa:g.beCpa,roas:g.beRoas,lab:'Breakeven'}:s.planMode==='strong'?{cpa:g.sCpa,roas:g.sRoas,lab:'Strong'}:{cpa:g.hCpa,roas:g.hRoas,lab:'Healthy'};
+  $('plModeTxt').textContent=tgt.lab; $('plCell').textContent=(s.market==='US'?'USA':'AU')+' '+bucketName(s.bucket);
+  const spend=s.dailySpend*30, orders=tgt.cpa>0?spend/tgt.cpa:0, rev=orders*r.MPV, units=orders*r.units;
+  const con=orders*r.contrib-spend, marg=(orders*r.netRev)>0?con/(orders*r.netRev):0;
+  $('p_spend').textContent=money0(spend); $('p_orders').textContent=clampNum(orders,0);
+  $('p_rev').textContent=money0(rev);
+  $('p_cpa').innerHTML=cpaMoney(tgt.cpa)+' / '+xx(tgt.roas);
+  $('p_con').innerHTML='<span style="color:'+(con>=0?'var(--green)':'var(--red)')+'">'+money0(con)+'</span>';
+  $('p_marg').textContent=clampNum(marg*100,1)+'%'; $('p_units').textContent=clampNum(units,0); $('p_view').textContent=(s.view==='cash'?'Cash':'Loaded')+' · '+tgt.lab;
 }
 
-function renderScenarioTable(){
-  const types=['blend','standard','french','trio'];
-  $('scenarioRows').innerHTML=types.map(t=>{
-    const x=calc(t);
-    return `<tr class="${t===state.basket?'selected':''}">
-      <td><b>${scenarioName(t)}</b></td>
-      <td>${money(x.price,state.market,2)}</td>
-      <td>${money(x.contributionLocal,state.market,2)}</td>
-      <td>${money(x.beCPA,state.market,0)}</td>
-      <td>${xfmt(x.beROAS)}</td>
-      <td>${money(x.healthyCPA,state.market,0)}</td>
-      <td>${xfmt(x.healthyROAS)}</td>
-    </tr>`;
-  }).join('');
+function renderRef(){
+  $('srcBox').innerHTML=[
+    '<span class="badge b-ver">VERIFIED</span><b>AOV, units &amp; mix</b> — Shopify Mar–Jun 2026 (US 8,848 orders A$1.33M, AU 7,765 orders A$789k — matched to workbook exactly). Campaign = NEW-customer (US ties A$131.51/2.3u, US shirts A$161.96/1.7u — Shopify net A$162 ✓; AU ties A$83.39/3.0u, AU shirts A$131.53/1.8u — Shopify net A$134 ✓); business = blended new+returning. New-customer rate US 74.5%, AU 65.5%.',
+    '<span class="badge b-ver">VERIFIED</span><b>Customer-paid shipping</b> — Shopify Mar–Jun: US A$9.38/order (shipping revenue A$82,953 ÷ 8,848; Standard tier A$9.12), AU A$1.05/order.',
+    '<span class="badge b-ver">VERIFIED</span><b>US pass-through sales tax</b> — Shopify Mar–Jun: A$7,657 tax on A$1,326,914 (net+shipping) = 0.58% of order value, applied to the Meta value &amp; payment base. AU GST 10% exact.',
+    '<span class="badge b-ver">AUDITED</span><b>Nothing else variable</b> — packaging consumables sit inside overhead (not per-order), US returns handling is inside Cart\'s US$7.66, AU pick/pack is inside fixed wages, FX conversion is inside the Xero-verified 3.0% payment rate, DHL duties+MPF are inside the A$40/60 lane cost. A "Packaging &amp; other variable" line (default A$0) is in the economics so nothing is silently unmodelled.',
+    '<span class="badge b-ver">VERIFIED</span><b>Reversal reserve</b> — Shopify 90d: US 5.17%, AU 4.44%. Stress 12% (June spiked to 13.6%).',
+    '<span class="badge b-ver">VERIFIED</span><b>COGS</b> — Shopify cost-of-goods by product type, sales-weighted (Mar–Jun). Ties &amp; Acc blended A$2.43 US / A$2.34 AU per unit (neckties A$2.81, pocket squares A$1.13, cufflinks A$5.08…); shirts A$24.40. Cross-checked to variant unit-cost via API.',
+    '<span class="badge b-ver">VERIFIED</span><b>Payment</b> — Xero June: AU ~2.2%, US ~3.0% + A$0.30.',
+    '<span class="badge b-ver">VERIFIED</span><b>US routing</b> — Cart fulfils 58–65% of US orders (4-mo avg 60%, Jun 65%); rest AU→US DHL from Dandenong. Tool default 62%.',
+    '<span class="badge b-inv">INVOICE</span><b>Cart.com US 3PL</b> — 4 months of invoices (Mar–Jun, 5,314 orders): 3PL handling <b>US$7.66</b> (pick/pack/storage/mgmt — stable every month) + freight <b>US$11.30</b> (accrued, June post-fix) = <b>US$18.96 = A$26.93</b>/order. Shirts heavier A$34.',
+    '<span class="badge b-inv">INVOICE</span><b>AU→US DHL</b> — DHL audits Mar–Jun (1,000+ US AWBs/mo): ties A$40, shirts A$60 incl. duties + MPF.',
+    '<span class="badge b-inv">INVOICE</span><b>Australia Post</b> — 5 invoices Feb–Jun: <b>A$10.75–11.00 all-in per parcel</b> (postage+fuel+security). Carrier only — pick/pack labour is in the fixed warehouse pool, so it is not double-counted here. Ties A$11.00 · <span class="badge b-est">EST</span> shirts A$14.00.',
+    '<span class="badge b-inv">INVOICE</span><b>Fixed pool</b> — Xero: rent A$14.6k + wages/super A$21.8k (AU warehouse only).',
+    '<span class="badge b-est">ESTIMATE</span><b>Corporate overhead A$115k/mo</b> — between April (A$108k) &amp; June (A$136k). Confirm your true monthly non-warehouse overhead.',
+    '<span class="badge b-inv">CONFIRMED</span><b>Meta value basis</b> — Dan confirmed the Shopify→Meta pixel includes shipping + tax in the purchase value, so the ROAS denominator here is correct.',
+    '<span class="badge b-ver">VERIFIED</span><b>Bundles</b> — necktie ladder verified live in Shopify: US US$129/199/269, AU A$150/240/315 for 3/5/7 ties (order-verified #469741); shirt 3-pack US$299 / AU A$298.98. Pick one in the 🎁 Offer selector to load it into the calculator.'
+  ].map(x=>x).join('<br>');
+  $('logBox').innerHTML=[
+    '<b>v1.8 · 21 Jul 2026</b> — full equation audit &amp; independent validation (Python model vs UI, every cell/view/bundle/planner figure cross-checked). US tax verified to 0.58% (was 0.47), AU customer shipping to A$1.05. Added "Packaging &amp; other variable" line (audited A$0) so nothing is silently missing. Sliders on every key driver (AOV, units, shipping, COGS, Cart, DHL, AU Post, FX, overhead, other). Inputs lock/dim when a bundle offer is active. CPA-zone slider range now adapts to bundle-size CPAs. Note: US-Ties and AU-Ties breakeven ROAS both display 1.54x — a genuine coincidence (1.5376 vs 1.5388), not a bug; the CPAs differ (A$92 vs A$60).',
+    '<b>v1.7 · 21 Jul 2026</b> — baked in the 4-month Cart.com invoice audit (US$7.66 handling + US$11.30 freight); triple-checked AOV/units/mix/shipping vs Shopify (Mar–Jun, exact match); % on every economics line; 🎁 bundle-builder offer selector (loads any bundle into the whole calculator); product-bucket funnel; real AU bundle prices A$150/240/315; US shipping A$9.38 verified.',
+    '<b>v1.6 · 21 Jul 2026</b> — AUD/USD display toggle (defaults AUD); US fulfilment shown gross → customer shipping → net.',
+    '<b>v1.4.1 · 20 Jul 2026</b> — fixed figures showing blank on older phone browsers (removed ES2020 syntax; now ES2015-compatible, runs on iOS 9+/Android 5+).',
+    '<b>v1.4 · 20 Jul 2026</b> — mobile-optimised: sticky quick-switch bar (🇺🇸/🇦🇺 · 👔/👕 · 💵/🏭), outputs-first layout, bigger touch targets, reflowed charts &amp; tables — no horizontal scroll on phones.',
+    '<b>v1.3 · 20 Jul 2026</b> — triple-checked every cost vs source invoices; corrected AU fulfilment to A$11 carrier-only (handling was double-counted against the fixed wages pool). Added emoji cues for faster scanning.',
+    '<b>v1.2 · 20 Jul 2026</b> — added handoff guide, weekly checklist, confidence flags, change log; budget-allocation, promo, sensitivity &amp; trajectory tools.',
+    '<b>v1.1 · 20 Jul 2026</b> — switched campaign targets to new-customer economics; added order→profit slider &amp; contribution margin.',
+    '<b>v1.0 · 20 Jul 2026</b> — two buckets × two markets, US routing lever, cash/loaded, breakeven/healthy/strong guardrails.',
+    '<b>Sources last verified:</b> Shopify Mar–Jun 2026 (pulled 21 Jul) · Cart.com 4-mo invoice audit Mar–Jun · DHL audits Mar–Jun · Australia Post Feb–Jun · Xero Jun. Refresh monthly or when refund %, FX, routing or COGS move.'
+  ].map(x=>'• '+x).join('<br>');
 }
 
-async function copyText(text){
-  try{
-    if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(text);return true;}
-  }catch(e){}
-  const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();
-  let ok=false;try{ok=document.execCommand('copy');}catch(e){}
-  document.body.removeChild(ta);return ok;
+function copyBrief(){
+  const cpaM=(v,m)=>{ if(m==='US'&&s.usCur==='USD')return 'US$'+clampNum(v*s.fx,0); return 'A$'+clampNum(v,0); };
+  const mk=(m,bk)=>{const g=calc(m,bk,{view:s.view}).g;return (m==='US'?'USA':'AU')+' '+bucketName(bk)+': breakeven '+xx(g.beRoas)+'/'+cpaM(g.beCpa,m)+', healthy '+xx(g.hRoas)+'+/≤'+cpaM(g.hCpa,m)+', strong '+xx(g.sRoas)+'+/≤'+cpaM(g.sCpa,m);};
+  const b=business(s.orders);
+  const txt='OTAA Meta guardrails — '+(s.view==='cash'?'cash-variable':'fully-loaded')+' · new-customer 7-day click · ROAS is Shopify-true (steer by MER)\n'
+    +'• '+mk('US','ties')+'\n• '+mk('US','shirts')+'\n• '+mk('AU','ties')+'\n• '+mk('AU','shirts')+'\n'
+    +'Rules: green = +15–20% budget every 2–3 days while 7-day holds; amber = hold; red (below breakeven) = pull back.\n'
+    +'US routing '+s.cartShare+'% Cart / '+(100-s.cartShare)+'% AU→US DHL.\n'
+    +'Business: at '+clampNum(s.orders,0)+' orders/mo & '+s.mer+'% MER, operating profit '+audk(b.profit)+'/mo (breakeven ~'+clampNum(b.beVol,0)+' orders). 2× volume → '+audk(business(s.orders*2).profit)+'/mo.';
+  navigator.clipboard&&navigator.clipboard.writeText(txt).then(()=>toast('Buyer brief copied')).catch(()=>toast('Copy failed'));
 }
+function toast(m){$('toast').textContent=m;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1500);}
 
-function toast(msg='Copied'){
-  $('toast').textContent=msg;
-  $('toast').classList.add('show');
-  setTimeout(()=>$('toast').classList.remove('show'),1500);
-}
-
-function currentCopy(){
-  const r=calc(state.basket);
-  const s=calc(state.basket,{mode:'stress'});
-  const marketName=state.market==='US'?'USA':'Australia';
-  return `${marketName} shirts • ${scenarioName(state.basket)}
-Breakeven: ${xfmt(r.beROAS)} ROAS / ${money(r.beCPA,state.market,0)} CPA.
-Practical downside floor: ${xfmt(s.beROAS)} ROAS / ${money(s.beCPA,state.market,0)} CPA.
-Healthy scaling: ${xfmt(r.healthyROAS)}+ ROAS / ${money(r.healthyCPA,state.market,0)} CPA or lower.
-Strong scaling: ${xfmt(r.strongROAS)}+ ROAS / ${money(r.strongCPA,state.market,0)} CPA or lower.
-Includes COGS, reversals, payment fees, ${state.market==='AU'?'GST, AU fulfilment':'DHL fulfilment, duties and delivery'}.`;
-}
-
-function danCopy(){
-  const us=calc('blend',{market:'US',mode:'base'});
-  const usStress=calc('blend',{market:'US',mode:'stress'});
-  const au=calc('blend',{market:'AU',mode:'base'});
-  const auStress=calc('blend',{market:'AU',mode:'stress'});
-  return `Shirt Meta guardrails
-
-USA
-• Mathematical breakeven: ${xfmt(us.beROAS)} ROAS / ${money(us.beCPA,'US',0)} CPA
-• Practical downside floor: ${xfmt(usStress.beROAS)} ROAS / ${money(usStress.beCPA,'US',0)} CPA
-• Healthy scaling: ${xfmt(us.healthyROAS)}+ ROAS / ${money(us.healthyCPA,'US',0)} CPA or lower
-• Strong scaling: ${xfmt(us.strongROAS)}+ ROAS / ${money(us.strongCPA,'US',0)} CPA or lower
-
-Australia
-• Mathematical breakeven: ${xfmt(au.beROAS)} ROAS / ${money(au.beCPA,'AU',0)} CPA
-• Practical downside floor: ${xfmt(auStress.beROAS)} ROAS / ${money(auStress.beCPA,'AU',0)} CPA
-• Healthy scaling: ${xfmt(au.healthyROAS)}+ ROAS / ${money(au.healthyCPA,'AU',0)} CPA or lower
-• Strong scaling: ${xfmt(au.strongROAS)}+ ROAS / ${money(au.strongCPA,'AU',0)} CPA or lower
-
-Model includes COGS, sales-value reversals, payment fees, Australian GST, Australian fulfilment, and actual Australia-to-USA DHL fulfilment including duties and delivery.`;
-}
-
-function bindRange(rangeId,numId,labelId,suffix='%'){
-  $(rangeId).addEventListener('input',()=>{
-    $(numId).value=$(rangeId).value;
-    if(labelId) $(labelId).textContent=`${num(+$ (rangeId).value, suffix==='%'?1:0)}${suffix}`;
-    render();
-  });
-  $(numId).addEventListener('input',()=>{
-    $(rangeId).value=$(numId).value;
-    if(labelId) $(labelId).textContent=`${num(+$ (numId).value, suffix==='%'?1:0)}${suffix}`;
-    render();
-  });
-}
-
-document.querySelectorAll('#marketBtns button').forEach(b=>b.onclick=()=>{
-  readState();
-  state.market=b.dataset.market;
-  syncControls();render();
-});
-document.querySelectorAll('#basketBtns button').forEach(b=>b.onclick=()=>{state.basket=b.dataset.basket;render();});
-document.querySelectorAll('#modeBtns button').forEach(b=>b.onclick=()=>{
-  readState();
-  state.mode=b.dataset.mode;
-  syncControls();render();
-});
-document.querySelectorAll('#plannerModeBtns button').forEach(b=>b.onclick=()=>{state.plannerMode=b.dataset.planner;render();});
-
-bindRange('trioShare','trioShareNum','trioShareLabel','%');
-bindRange('frenchShare','frenchShareNum','frenchShareLabel','%');
-bindRange('reversal','reversalNum','revLabel','%');
-bindRange('paymentRate','paymentRateNum','paymentLabel','%');
-bindRange('healthyTarget','healthyTargetNum','healthyLabel','%');
-bindRange('strongTarget','strongTargetNum','strongLabel','%');
-bindRange('dailySpend','dailySpendNum','dailySpendLabel','');
-
-['priceStandard','priceFrench','priceTrio','cogs','fixedFee','otherCost','usOneFulfil','usTrioFulfil','auFulfil','fx'].forEach(id=>{
-  $(id).addEventListener('input',render);
-});
-
-$('copyScenario').onclick=async()=>{await copyText(currentCopy());toast('Scenario copied');};
-$('copyDan').onclick=async()=>{await copyText(danCopy());toast('Dan targets copied');};
-$('resetBtn').onclick=()=>{
-  state=JSON.parse(JSON.stringify(defaults));
-  syncControls();render();toast('Defaults restored');
-};
-
-syncControls();
-render();
+document.querySelectorAll('#segMarket button, #mbMarket button').forEach(b=>b.onclick=()=>{readInputs();s.market=b.dataset.v;s.offer=0;syncInputs();render();});
+document.querySelectorAll('#segBucket button, #mbBucket button').forEach(b=>b.onclick=()=>{readInputs();s.bucket=b.dataset.v;s.offer=0;syncInputs();render();});
+document.querySelectorAll('#segView button, #mbView button').forEach(b=>b.onclick=()=>{s.view=b.dataset.v;render();});
+document.querySelectorAll('#segCur button, #mbCur button').forEach(b=>b.onclick=()=>{s.usCur=b.dataset.v;render();});
+document.querySelectorAll('#segStress button').forEach(b=>b.onclick=()=>{s.stress=b.dataset.v==='stress';render();});
+document.querySelectorAll('#segPlan button').forEach(b=>b.onclick=()=>{s.planMode=b.dataset.v;render();});
+document.querySelectorAll('#segTr button').forEach(b=>b.onclick=()=>{s.trTarget=b.dataset.v;render();});
+function link(rId,nId){const r=$(rId),n=$(nId);r.oninput=()=>{n.value=r.value;render();};n.oninput=()=>{r.value=n.value;render();};}
+link('revR','revN');link('payR','payN');link('cartR','cartN');link('ordR','ordN');link('usShareR','usShareN');link('merR','merN');link('hR','hN');link('sR','sN');link('spendR','spendN');link('cpaR','cpaN');link('promoR','promoN');link('trPctR','trPctN');link('trInflR','trInflN');
+link('aovR','aov');link('unitsR','units');link('shipR','ship');link('cogsR','cogs');link('cartCostR','cartCost');link('dhlCostR','dhlCost');link('auFulR','auFul');link('fxR','fx');link('opexR','opex');link('otherR','otherN');link('retR','retN');link('nsR','nsN');
+$('ordR2').oninput=()=>{$('ordN').value=$('ordR2').value;$('ordR').value=$('ordR2').value;render();};
+$('ordN2').oninput=()=>{$('ordN').value=$('ordN2').value;$('ordR').value=Math.min(15000,+$('ordN2').value||0);render();};
+['payFixed','rent','wages','trStart','trDays','raN','ltvRatioN'].forEach(id=>$(id).oninput=render);
+$('reset').onclick=()=>{s=JSON.parse(JSON.stringify(D));syncInputs();render();toast('Reset to verified defaults');};
+$('copyBrief').onclick=copyBrief;
+$('guideBtn').onclick=()=>{const g=$('guidePanel');g.style.display=g.style.display==='none'?'':'none';g.scrollIntoView({behavior:'smooth',block:'start'});};
+$('guideClose').onclick=()=>{$('guidePanel').style.display='none';};
+syncInputs();render();
 </script>
-</body>
-</html>
+
+
+</body></html>
